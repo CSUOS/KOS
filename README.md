@@ -18,14 +18,10 @@
 ## 디렉토리
 
 ```
-.github/workflows
-  ㄴ Actions 기능을 사용한 CI 관련 파일 존재
-.vscode
-  ㄴ 디버깅 관련 vscode 설정파일 존재
-page
+frontend
   ㄴ 프론트엔드 관련 프로젝트. React로 진행중
-server
-  ㄴ 백엔드 관련 프로젝트. Koa로 진행중
+backend
+  ㄴ 백엔드 관련 프로젝트. MySQL로 진행중
 ```
 
 
