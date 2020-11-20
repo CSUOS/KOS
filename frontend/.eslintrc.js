@@ -18,10 +18,10 @@ export default {
             "error",
             4
         ],
-        "no-unused-vars":1,
         "no-use-before-define" : 1,
-        "no-redeclare":1,
         "no-console":0,
+        "linebreak-style":"windows",
+        "camelcase":["error",{ "properties": "always" }],
     },
     "settings":{
         "react":{
