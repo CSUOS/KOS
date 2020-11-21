@@ -25,6 +25,7 @@ module.exports = {
         "no-use-before-define" : 1,
         "no-console":0,
         "camelcase":["error",{ "properties": "always" }],
+        "no-tabs":0,
     },
     "settings":{
         "react":{
