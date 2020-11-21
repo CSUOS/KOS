@@ -1,11 +1,12 @@
 module.exports = {
     "parser": "babel-eslint",
     "env": {
+        "commonjs": true,
         "browser": true,
         "es2021": true
     },
     "extends": [
-        "eslint:recommended"
+        "airbnb-base"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -17,11 +18,12 @@ module.exports = {
     "rules": {
         "indent":[
             "error",
-            4
+            "tab"
         ],
+        "linebreak-style": ["error", "windows"],
+        "no-unused-vars":"warn",
         "no-use-before-define" : 1,
         "no-console":0,
-        "linebreak-style":"windows",
         "camelcase":["error",{ "properties": "always" }],
     },
     "settings":{
