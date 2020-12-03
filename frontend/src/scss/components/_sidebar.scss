@@ -1,0 +1,25 @@
+.kos-sidebar{
+    display: flex;
+    height: 50px;
+    align-items: center;
+	justify-content: space-between;
+	background-color: $main-color;
+	flex: 1;
+	.kos-sidebar-header{
+		display: flex;
+		align-items: center;
+		height: 100%;
+		img{
+			height: 100%;
+		}
+		h1{
+			margin: 0;
+			color: white;
+		}
+	}
+	.kos-sidebar-btn{
+		svg{
+			color: white;
+		}
+	}
+}
