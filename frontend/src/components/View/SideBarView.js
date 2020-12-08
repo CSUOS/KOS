@@ -3,9 +3,11 @@ import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
+// View는 Controller의 data 및 function을 사용하여 사용자와 상호작용
 function SideBarView(props) {
 	const {
-		handleSideBarClose
+		handleSideBarClose,
+		open
 	} = props;
 
 	return (

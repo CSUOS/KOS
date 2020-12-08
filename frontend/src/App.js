@@ -3,12 +3,12 @@ import Grid from '@material-ui/core/Grid';
 
 import './scss/main.scss';
 
-import { SideBarProvider } from './components';
+import Provider from './components/Provider';
 
 function App() {
 	return (
 		<Grid className="wrap">
-			<SideBarProvider/>
+			<Provider/>
 		</Grid>
 	);
 }
