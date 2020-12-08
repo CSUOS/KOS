@@ -1,12 +1,28 @@
-class SideBarModel {
-	constructor() {
-		this.open = true;
-	}
+import { useState, createContext, useContext } from 'react';
 
-	setOpen = (boolean) => {
-		this.open = boolean;
-		console.log(this.open);
-	};
+// create context to use open
+export const OpenStateContext = createContext();
+export const OpenDispatchContext = createContext();
+
+// Model은 Context 저장 및 제공
+export const OpenContextProvider = ({ children }) => {
+	const [open, setOpen] = useState(true);
+
+	return (
+		<OpenStateContext.Provider value = {open}>
+			<OpenDispatchContext.Provider value = {setOpen}>
+				{children}
+			</OpenDispatchContext.Provider>
+		</OpenStateContext.Provider>
+	);
+};
+
+export function useOpenState() {
+	const context = useContext(OpenStateContext);
+	return context;
 }
 
-export default SideBarModel;
+export function useOpenDispatch() {
+	const context = useContext(OpenDispatchContext);
+	return context;
+}
