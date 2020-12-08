@@ -10,7 +10,7 @@ function PageView(props) {
 
 	return (
 		<React.Fragment>
-			<Grid className="kos-page">
+			<Grid className="page">
 				{ open ?
 					undefined
 					: <ArrowForwardIosIcon onClick = { handleSideBarOpen }>click</ArrowForwardIosIcon>

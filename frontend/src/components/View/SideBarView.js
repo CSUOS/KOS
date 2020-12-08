@@ -11,19 +11,19 @@ function SideBarView(props) {
 	} = props;
 
 	return (
-		<React.Fragment>
-			<header className="kos-sidebar">
-				<Grid className="kos-sidebar-header">
+		<Grid className="sidebar">
+			<header className="sidebar-header">
+				<Grid className="sidebar-header-title">
 					<img src="/logo192.png"/>
 					<h1>KOS</h1>
 				</Grid>
-				<Grid className="kos-sidebar-btn">
+				<Grid className="sidebar-btn">
 					<Tooltip title="Close Sidebar" aria-label="close sidebar">
 						<ArrowBackIosIcon onClick={handleSideBarClose}/>
 					</Tooltip>
 				</Grid>
 			</header>
-		</React.Fragment>
+		</Grid>
 	);
 }
 
