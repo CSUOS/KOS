@@ -1,68 +1,30 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Frontend
 
-## Available Scripts
+### 폴더 구조
 
-In the project directory, you can run:
+- src
+  - components
+    - Model : 속성, 변경 메소드를 담고 있음 / State 관리
+    - UI : View에서 사용할 컴포넌트 UI 관리
+    - View
+    - Provider.js : ViewModel가 Model의 Context를 사용할 수 있도록 해줌
+    - ViewModel.js : Model의 Context를 이용해서 View의 요청 처리
+  - scss
+    - base : 변수 정의, mixin 정의, reset 등
+    - components : 컴포넌트별 css
+    - layout : 레이아웃 관련 css
+    - main.scss : App.js로 나가는 최종 css 생성
+  - App.js
 
-### `yarn start`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### MVVM 구조 구현
 
-### `yarn test`
+1. UI에서 공통적으로 사용할 UI 컴포넌트를 구현한다.
+2. View에서 크게 사용할 하나의 View를 구현한다.
+3. ViewModel.js에서 View를 적절한 위치에서 렌더링하고, 필요로 하는 속성과 메소드를 넘겨준다.
+4. ViewModel.js에서의 속성과 메소드는 Model의 Context를 가져와 구독한다.
+5. Model은 모든 컴포넌트의 공통 State를 관리하며, Context 형식으로 내보낸다.
+6. Provider로 Model과 ViewModel를 연결해준다.
+7. App.js에서 Provider를 렌더링한다.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
