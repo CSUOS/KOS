@@ -8,7 +8,7 @@ import Provider from './components/Provider';
 function App() {
 	return (
 		<Grid className="wrap">
-			<Provider/>
+			<Provider />
 		</Grid>
 	);
 }
