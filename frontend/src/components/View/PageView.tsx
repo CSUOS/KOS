@@ -2,12 +2,12 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
-function PageView({ props } : any) {
-	const {
-		handleSideBarOpen,
-		open
-	} = props;
+type PageViewProps = {
+	open : boolean;
+	handleSideBarOpen : any;
+}
 
+function PageView({ open, handleSideBarOpen } : PageViewProps) {
 	return (
 		<>
 			<Grid className="page">
