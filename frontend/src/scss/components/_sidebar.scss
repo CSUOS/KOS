@@ -1,25 +1,30 @@
-.kos-sidebar{
-    display: flex;
-    height: 50px;
-    align-items: center;
-	justify-content: space-between;
-	background-color: $main-color;
+.sidebar{
+	display: flex;
+	flex-direction: column;
 	flex: 1;
-	.kos-sidebar-header{
+	background-color: $main-color;
+	.sidebar-header{
 		display: flex;
+		height: 50px;
 		align-items: center;
-		height: 100%;
-		img{
+		justify-content: space-between;
+		border-bottom: 1px solid white;
+		.sidebar-header-title{
+			display: flex;
+			align-items: center;
 			height: 100%;
+			img{
+				height: 100%;
+			}
+			h1{
+				margin: 0;
+				color: white;
+			}
 		}
-		h1{
-			margin: 0;
-			color: white;
-		}
-	}
-	.kos-sidebar-btn{
-		svg{
-			color: white;
+		.sidebar-btn{
+			svg{
+				color: white;
+			}
 		}
 	}
 }
