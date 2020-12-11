@@ -1,7 +1,7 @@
 import React from 'react';
 import { Paper } from '@material-ui/core';
 
-function KosCard(props: any) {
+function KosCard(props) {
 	return (
 		<div className="kos-card-modal">
 			<Paper className="kos-card-modal-content">
@@ -14,5 +14,10 @@ function KosCard(props: any) {
 		</div>
 	);
 }
+
+KosCard.defaultProps = {
+	header: '제목',
+	subheader: '부제목'
+};
 
 export default KosCard;
