@@ -1,5 +1,7 @@
-function Task(){
-	return(
+import React from 'react';
+
+function Task() {
+	return (
 		<div>Task</div>
 	);
 }
