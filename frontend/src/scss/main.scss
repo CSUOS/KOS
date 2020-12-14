@@ -1,9 +1,9 @@
 // base
-@import './base/color';
-@import './base/font';
+@import './base/variable';
 @import './base/reset';
 
 // components
+@import './components/btn';
 @import './components/app';
 @import './components/sidebar';
 @import './components/page';
