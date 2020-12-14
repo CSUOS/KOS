@@ -1,0 +1,13 @@
+.btn{
+	border-radius: $radius;
+    display: inline-block;
+	button{
+		border : 1px solid $gray;
+		background-color: white;
+		cursor : pointer;
+		&:hover, &:active, &:focus{
+			outline: none;
+			box-shadow: 0 0 3px $shadow-color;
+		}
+	}
+}
