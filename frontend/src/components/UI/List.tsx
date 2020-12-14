@@ -1,5 +1,7 @@
-function List(){
-	return(
+import React from 'react';
+
+function List() {
+	return (
 		<div>List</div>
 	);
 }
