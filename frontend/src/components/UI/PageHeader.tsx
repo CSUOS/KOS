@@ -21,12 +21,12 @@ function PageHeader(
 			<Grid className="pageheader-main" container>
 				<h1>{mainTitle}</h1>
 				{hasCloseButton ? <Button
-					classList={['hi', 'hello']}
+					classList={['']}
 					value={<CloseIcon />}
 				/> : undefined}
 			</Grid>
-			<Grid className="pageheader-main" container>
-				<Box className="pageheader-sub">{subTitle}</Box>
+			<Grid className="pageheader-sub" container>
+				<p>{subTitle}</p>
 				<Box className="pageheader-option">{option}</Box>
 			</Grid>
 		</Grid>
