@@ -1,0 +1,20 @@
+.pageheader{
+	width: 100%;
+	border-bottom: 1.5px solid $gray;
+	justify-items: space-between;
+	align-items: center;
+	.pageheader-main{
+		h1{
+			font-weight: bold;
+			font-size: larger;
+		}
+	}
+	.pageheader-sub{
+		font-size: 20;
+	}
+	.pageheader-option{
+		display: flex;
+		justify-content: flex-end;
+		align-content: center;
+	}
+}
