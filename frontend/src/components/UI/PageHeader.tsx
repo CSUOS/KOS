@@ -17,27 +17,23 @@ type PageHeaderProps = {
 	option: any;
 }
 
-function PageHeader(
-	{
-		mainTitle, subTitle, hasCloseButton, option
-	}: PageHeaderProps
-) {
-	return (
-		<Grid className="pageheader">
-			<Grid className="pageheader-main" container>
-				<h1>{mainTitle}</h1>
-				{hasCloseButton ? <Button
-					classList={['']}
-					value={<CloseIcon />}
-				/> : undefined}
-			</Grid>
-			<Grid className="pageheader-sub" container>
-				<p>{subTitle}</p>
-				<Box className="pageheader-option">{option}</Box>
-			</Grid>
+const PageHeader = ({
+	mainTitle, subTitle, hasCloseButton, option
+}: PageHeaderProps) => (
+	<Grid className="pageheader">
+		<Grid className="pageheader-main" container>
+			<h1>{mainTitle}</h1>
+			{hasCloseButton ? <Button
+				classList={['']}
+				value={<CloseIcon />}
+			/> : undefined}
 		</Grid>
-	);
-}
+		<Grid className="pageheader-sub" container>
+			<p>{subTitle}</p>
+			<Box className="pageheader-option">{option}</Box>
+		</Grid>
+	</Grid>
+);
 
 PageHeader.defaultProps = {
 	subTitle: undefined,
