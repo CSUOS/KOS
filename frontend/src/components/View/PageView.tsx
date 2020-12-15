@@ -1,7 +1,7 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import { Button } from '../UI';
+import { Button, List } from '../UI';
 
 type PageViewProps = {
 	open : boolean;
@@ -24,6 +24,7 @@ function PageView({ open, handleSideBarOpen } : PageViewProps) {
 					// tooltip="tooltip value" // tooltip으로 표시하고 싶은 string 넘기기
 					// ttside="right" // tooltip을 표시하고 싶은 위치 넘기기 (top, right, bottom, left)
 				/>
+				<List />
 			</Grid>
 		</>
 	);

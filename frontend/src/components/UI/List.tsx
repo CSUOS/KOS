@@ -1,9 +1,7 @@
 import React from 'react';
 
-function List() {
-	return (
-		<div>List</div>
-	);
-}
+const List = () => (
+	<div>List</div>
+);
 
 export default List;

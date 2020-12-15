@@ -4,7 +4,7 @@ import SideBarView from './View/SideBarView';
 import PageView from './View/PageView';
 
 // View Model은 Model의 Context를 구독하고, 갱신하는 역할
-function ViewModel() {
+const ViewModel = () => {
 	const open : boolean = useOpenState();
 	const setOpen = useOpenDispatch();
 
@@ -31,6 +31,6 @@ function ViewModel() {
 			/>
 		</>
 	);
-}
+};
 
 export default ViewModel;
