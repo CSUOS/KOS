@@ -13,17 +13,15 @@ type WindowProps = {
 	children: any;
 }
 
-function Window({ open, children }: WindowProps) {
-	return (
-		<Grid container className="windowbackground">
-			<Box className="windowbackground-header" />
-			<Backdrop className="windowbackground-backrop" open={open}>
-				<Paper className="window">
-					<Grid className="window-content">{children}</Grid>
-				</Paper>
-			</Backdrop>
-		</Grid>
-	);
-}
+const Window = ({ open, children }: WindowProps) => (
+	<Grid container className="windowbackground">
+		<Box className="windowbackground-header" />
+		<Backdrop className="windowbackground-backrop" open={open}>
+			<Paper className="window">
+				<Grid className="window-content">{children}</Grid>
+			</Paper>
+		</Backdrop>
+	</Grid>
+);
 
 export default Window;
