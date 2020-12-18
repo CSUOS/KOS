@@ -19,14 +19,9 @@ type ButtonProps = {
 	// undefined면 default로 bottom
 }
 
-Button.defaultProps = {
-	tooltip: undefined,
-	ttside: undefined
-};
-
-function Button({
+const Button = ({
 	classList, value, tooltip, ttside
-} : ButtonProps) {
+} : ButtonProps) => {
 	let clsNames = 'btn';
 	const initialize = () => {
 		if (classList.length === 0) {
@@ -50,6 +45,11 @@ function Button({
 				</Tooltip>}
 		</Grid>
 	);
-}
+};
+
+Button.defaultProps = {
+	tooltip: undefined,
+	ttside: undefined,
+};
 
 export default Button;

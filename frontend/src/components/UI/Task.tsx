@@ -1,9 +1,7 @@
 import React from 'react';
 
-function Task() {
-	return (
-		<div>Task</div>
-	);
-}
+const Task = () => (
+	<div>List</div>
+);
 
 export default Task;

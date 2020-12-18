@@ -19,12 +19,10 @@ export const OpenContextProvider = ({ children } : any) => {
 
 export function useOpenState() {
 	const context = useContext(OpenStateContext);
-	if (!context) throw new Error('cannot use useOpenState'); // 유효하지 않을땐 에러를 발생
 	return context;
 }
 
 export function useOpenDispatch() {
 	const context = useContext(OpenDispatchContext);
-	if (!context) throw new Error('cannot use useOpenDispatch'); // 유효하지 않을땐 에러를 발생
 	return context;
 }
