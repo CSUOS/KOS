@@ -24,7 +24,7 @@ function PageView({ open, handleSideBarOpen } : PageViewProps) {
 					// tooltip="tooltip value" // tooltip으로 표시하고 싶은 string 넘기기
 					// ttside="right" // tooltip을 표시하고 싶은 위치 넘기기 (top, right, bottom, left)
 				/>
-				<List />
+				<List mainTitle="제목" /* for test only */ />
 			</Grid>
 		</>
 	);
