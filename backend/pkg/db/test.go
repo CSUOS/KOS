@@ -14,7 +14,8 @@ var db *sql.DB
 var dbName = "testABC"
 
 func DBInit() {
-	conn, err := sql.Open("mysql", os.Getenv("DB_PATH"))
+	conn, err := sql.Open("mysql", "root:1234@tcp(127.0.0.1:3306)/")
+	// DB_PATH 환경변수로 등록 후 사용
 
 	if err != nil {
 		fmt.Println(err.Error())
