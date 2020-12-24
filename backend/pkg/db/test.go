@@ -15,6 +15,7 @@ var dbName = "testABC"
 
 func DBInit() {
 	conn, err := sql.Open("mysql", "root:1234@tcp(127.0.0.1:3306)/")
+	// DB_PATH 환경변수로 등록 후 사용
 
 	if err != nil {
 		fmt.Println(err.Error())
@@ -48,8 +49,8 @@ func DBInit() {
 
 }
 
-func InsertTest(i int) {
-	conn, err := sql.Open("mysql", "root:1234@tcp(127.0.0.1:3306)/"+dbName)
+func InsertTest(i int)(bool) {
+	conn, err := sql.Open("mysql", os.Getenv("DB_PATH")+dbName)
 	defer conn.Close()
 	if err != nil {
 		fmt.Println(err)
@@ -60,5 +61,8 @@ func InsertTest(i int) {
 	_, err = conn.Exec("insert into test values (?);", i)
 	if err != nil {
 		fmt.Println(err)
+		return false;
 	}
+
+	return true;
 }
