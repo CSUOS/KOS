@@ -6,3 +6,4 @@ export { default as Window } from './Window';
 export { default as AttributeValuePair } from './AttributeValuePair';
 export { default as DatePicker } from './DatePicker';
 export { default as Chips } from './Chips';
+export { default as Checkboxes } from './Checkboxes';
