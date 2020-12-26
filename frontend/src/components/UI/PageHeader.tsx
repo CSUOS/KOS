@@ -1,6 +1,5 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import { Grid, Box } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import Button from './Button';
 /* ====[PageHeader 사용 예시]========
