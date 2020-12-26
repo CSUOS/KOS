@@ -1,26 +1,29 @@
 .list{
-	width: 380px;
 	display: flex;
 	flex-direction: column;
 	flex: 1;
+	width: 380px;
 	.list-container{
+		display: flex;
 		align-content: flex-start;
 		margin: 0;
-		padding: 0;
-		background-color: #ffffff;
-		border-radius: $list-radius;
+		padding: 0 20px 60px 20px;
+		background-color: $white;
+		border-radius: $box-radius;
 		box-shadow: 0 0 5px $shadow-color;
 		.list-header{
+			display: flex;
+			flex-direction: flex-end;
 			width: 100%;
 			height: 60px;
 			justify-content: space-between;
 			align-items: center;
-			border-bottom: 1px solid #000000;
+			border-bottom: 1px solid $gray;
 			text-indent: 1.0em;
 			h1{
 				margin: 0;
 				font-weight: bold;
-				font-size: 2.0em;
+				font-size: 1.5em;
 			}
 			Button{
 				width: 40px;
@@ -28,6 +31,7 @@
 			}
 		}
 		.list-main{
+			display: flex;
 			width: 100%;
 			align-items: center;
 			flex-direction: column;

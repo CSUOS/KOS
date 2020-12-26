@@ -3,7 +3,7 @@
     display: inline-block;
 	button{
 		border : 1px solid $gray;
-		background-color: white;
+		background-color: $white;
 		cursor : pointer;
 		&:hover, &:active, &:focus{
 			outline: none;
