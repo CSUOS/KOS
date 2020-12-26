@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import CloseIcon from '@material-ui/icons/Close';
@@ -13,7 +13,7 @@ option: subTitle과 같은 줄에 들어갈 기타 element. 선택사항.
 type PageHeaderProps = {
 	mainTitle: string;
 	subTitle?: string | undefined;
-	option?: JSX.Element | undefined;
+	option: ReactElement;
 }
 
 const PageHeader = ({
@@ -32,7 +32,6 @@ const PageHeader = ({
 
 PageHeader.defaultProps = {
 	subTitle: undefined,
-	option: undefined,
 };
 
 export default PageHeader;
