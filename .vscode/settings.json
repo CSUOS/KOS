@@ -1,6 +1,11 @@
 {
     "eslint.workingDirectories": [
-        { "mode": "auto" }
+        {
+            "mode": "auto"
+        }
     ],
-    "editor.insertSpaces": false
+    "editor.insertSpaces": false,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    }
 }
