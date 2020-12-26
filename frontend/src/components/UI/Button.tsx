@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Grid, Tooltip } from '@material-ui/core';
 
 /*
@@ -13,7 +13,7 @@ import { Grid, Tooltip } from '@material-ui/core';
 
 type ButtonProps = {
 	classList : Array<string>;
-	value : any;
+	value : string | ReactElement;
 	tooltip? : string | undefined;
 	ttside? : 'top' | 'right' | 'bottom' | 'left' | undefined;
 	// undefined면 default로 bottom
@@ -31,7 +31,7 @@ const Button = ({
 			clsNames += ` ${classList[i]}`;
 		}
 		if (ttside === undefined) {
-			ttside = 'bottom';
+			ttside = 'bottom'; // undefined면 default로 bottom
 		}
 	};
 	initialize();

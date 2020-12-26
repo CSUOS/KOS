@@ -5,7 +5,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 type SideBarViewProps = {
 	open : boolean;
-	handleSideBarClose : any;
+	handleSideBarClose : () => void;
 }
 
 // View는 Controller의 data 및 function을 사용하여 사용자와 상호작용

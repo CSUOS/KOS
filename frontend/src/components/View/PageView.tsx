@@ -5,7 +5,7 @@ import { Button, List } from '../UI';
 
 type PageViewProps = {
 	open : boolean;
-	handleSideBarOpen : any;
+	handleSideBarOpen : () => void;
 }
 
 function PageView({ open, handleSideBarOpen } : PageViewProps) {

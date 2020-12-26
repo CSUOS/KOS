@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import { useOpenState, useOpenDispatch } from './Model';
 import SideBarView from './View/SideBarView';
 import PageView from './View/PageView';
@@ -6,14 +6,14 @@ import PageView from './View/PageView';
 // View Model은 Model의 Context를 구독하고, 갱신하는 역할
 const ViewModel = () => {
 	const open : boolean = useOpenState();
-	const setOpen = useOpenDispatch();
+	const setOpen : Dispatch<boolean> | undefined = useOpenDispatch();
 
 	const handleSideBarOpen = () => {
-		setOpen(true);
+		if (setOpen !== undefined) setOpen(true);
 	};
 
 	const handleSideBarClose = () => {
-		setOpen(false);
+		if (setOpen !== undefined) setOpen(false);
 	};
 
 	return (
