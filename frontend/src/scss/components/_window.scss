@@ -1,0 +1,26 @@
+.windowbackground{
+	flex: 1;
+	background-color: white;
+	z-index: 0;
+	.windowbackground-header{
+		width: 100%;
+		min-height: 70;
+		max-height: 8%;
+		background-color: $main-color;
+	}
+	.windowbackground-backdrop{
+		z-index: 1;
+	}
+}
+
+.window{
+	min-width: 800px;
+	width: 70%;
+	.window-content{
+		margin: 30px 30px;
+		p{
+			margin: 10px 0px;	
+			font-size: 1.3em;
+		}
+	}
+}

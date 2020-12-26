@@ -1,19 +1,29 @@
 # Frontend
 
-## 폴더 구조
+### 폴더 구조
 
-- public
-  - index.html : 최종 html 파일
 - src
   - components
-    - Shared : 여러 Sub Component에서 함께 쓰는 Component
-    - Sub : View Component를 구성하는 요소 Component
-    - View : 페이지를 구성하는 요소 Component
-    - Model.tsx : 서버와 데이터를 주고받으며, source data를 유지하는 파일
-    - Provider.tsx : App.tsx로 전달되는 Components 파일의 최상위 컴포넌트
-    - ViewModel.tsx :  View Component의 최상위 컴포넌트
+    - Model : 속성, 변경 메소드를 담고 있음 / State 관리
+    - UI : View에서 사용할 컴포넌트 UI 관리
+    - View
+    - Provider.js : ViewModel가 Model의 Context를 사용할 수 있도록 해줌
+    - ViewModel.js : Model의 Context를 이용해서 View의 요청 처리
   - scss
-    - base : 폰트, 색상 등 처음 정할 컴포넌트의 스타일
-    - components : 컴포넌트 별 스타일
-    - layout : 전체 레이아웃
-    - main.scss : 모든 scss를 묶어서 App.tsx로 한번에 내보냄 
+    - base : 변수 정의, mixin 정의, reset 등
+    - components : 컴포넌트별 css
+    - layout : 레이아웃 관련 css
+    - main.scss : App.js로 나가는 최종 css 생성
+  - App.js
+
+
+
+### MVVM 구조 구현
+
+1. UI에서 공통적으로 사용할 UI 컴포넌트를 구현한다.
+2. View에서 크게 사용할 하나의 View를 구현한다.
+3. ViewModel.js에서 View를 적절한 위치에서 렌더링하고, 필요로 하는 속성과 메소드를 넘겨준다.
+4. ViewModel.js에서의 속성과 메소드는 Model의 Context를 가져와 구독한다.
+5. Model은 모든 컴포넌트의 공통 State를 관리하며, Context 형식으로 내보낸다.
+6. Provider로 Model과 ViewModel를 연결해준다.
+7. App.js에서 Provider를 렌더링한다.
