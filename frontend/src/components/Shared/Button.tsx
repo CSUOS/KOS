@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+	ReactElement, ReactFragment, createRef, forwardRef
+} from 'react';
 import { Grid, Tooltip } from '@material-ui/core';
 
 /*
@@ -11,17 +13,19 @@ import { Grid, Tooltip } from '@material-ui/core';
 	/>
 */
 
+const tooltipRef = createRef();
+
 type ButtonProps = {
 	classList : Array<string>;
-	value : any;
+	value : string | ReactElement | ReactFragment;
 	tooltip? : string | undefined;
 	ttside? : 'top' | 'right' | 'bottom' | 'left' | undefined;
 	// undefined면 default로 bottom
 }
 
-const Button = ({
+const Button = forwardRef<HTMLDivElement, ButtonProps>(({
 	classList, value, tooltip, ttside
-} : ButtonProps) => {
+}, ref) => {
 	let clsNames = 'btn';
 	const initialize = () => {
 		if (classList.length === 0) {
@@ -31,7 +35,7 @@ const Button = ({
 			clsNames += ` ${classList[i]}`;
 		}
 		if (ttside === undefined) {
-			ttside = 'bottom';
+			ttside = 'bottom'; // undefined면 default로 bottom
 		}
 	};
 	initialize();
@@ -40,12 +44,12 @@ const Button = ({
 			{tooltip === undefined ?
 				<button type="button" className="btn">{value}</button>
 				:
-				<Tooltip placement={ttside} title={tooltip}>
+				<Tooltip ref={ref} placement={ttside} title={tooltip}>
 					<button type="button" className="btn">{value}</button>
 				</Tooltip>}
 		</Grid>
 	);
-};
+});
 
 Button.defaultProps = {
 	tooltip: undefined,

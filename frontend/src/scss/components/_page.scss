@@ -2,3 +2,12 @@
 	flex: 4;
 	background-color: pink;
 }
+
+/* PageHeader */
+.page-header{
+	.main-header-con{
+		height: $header-height;
+		background-color: $main-color;
+		padding: 10px 0;
+	}
+}

@@ -11,3 +11,16 @@
 		}
 	}
 }
+
+.sidebar-btn{
+    display: flex;
+	height: 100%;
+	button{
+		background-color: transparent;
+		border: none;
+		svg{
+			fill: white;
+			height: 100%;
+		}
+	}
+}

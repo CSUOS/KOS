@@ -5,7 +5,7 @@
 	background-color: $main-color;
 	.sidebar-header{
 		display: flex;
-		height: 50px;
+		height: $header-height;
 		align-items: center;
 		justify-content: space-between;
 		border-bottom: 1px solid white;
@@ -18,11 +18,6 @@
 			}
 			h1{
 				margin: 0;
-				color: white;
-			}
-		}
-		.sidebar-btn{
-			svg{
 				color: white;
 			}
 		}

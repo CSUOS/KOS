@@ -1,8 +1,10 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, {
+	useState, createContext, useContext, Dispatch
+} from 'react';
 
 // create context to use open
-export const OpenStateContext = createContext<any>(null);
-export const OpenDispatchContext = createContext<any>(null);
+export const OpenStateContext = createContext<boolean>(true);
+export const OpenDispatchContext = createContext<Dispatch<boolean> | undefined>(undefined);
 
 // Model은 Context 저장 및 제공
 export const OpenContextProvider = ({ children } : any) => {

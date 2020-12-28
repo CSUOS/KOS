@@ -27,4 +27,3 @@
 5. Model은 모든 컴포넌트의 공통 State를 관리하며, Context 형식으로 내보낸다.
 6. Provider로 Model과 ViewModel를 연결해준다.
 7. App.js에서 Provider를 렌더링한다.
-
