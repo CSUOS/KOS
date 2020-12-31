@@ -1,8 +1,6 @@
 import React, { ReactElement } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import CloseIcon from '@material-ui/icons/Close';
-import Button from './Button';
+import { Grid } from '@material-ui/core';
+
 /* ====[PageHeader 사용 예시]========
 mainTitle: 페이지 이름
 subTitle: 페이지에 대한 설명. 선택사항.

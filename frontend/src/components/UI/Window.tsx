@@ -1,8 +1,5 @@
 import React from 'react';
-import Backdrop from '@material-ui/core/Backdrop';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import { Backdrop, Paper, Grid } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { Button } from '../Shared';
 /* ====[Window 사용 예시]========

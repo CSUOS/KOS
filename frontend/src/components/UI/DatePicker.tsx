@@ -1,7 +1,7 @@
 import 'date-fns';
 import React, { useState } from 'react';
 import DateFnsUtils from '@date-io/date-fns';
-import Grid from '@material-ui/core/Grid';
+import { Grid } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 const DatePicker = () => {
