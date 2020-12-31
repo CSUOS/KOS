@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import CloseIcon from '@material-ui/icons/Close';
-import Button from './Button';
+import { Button } from '../Shared';
 /* ====[Window 사용 예시]========
 open: window가 열렸는지, 닫혔는지
 children: window 안에 들어갈 내용
