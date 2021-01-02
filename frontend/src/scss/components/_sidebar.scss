@@ -1,7 +1,7 @@
 .sidebar{
 	display: flex;
 	flex-direction: column;
-	flex: 1;
+	width: 400px;
 	background-color: $main-color;
 	.sidebar-header{
 		display: flex;
