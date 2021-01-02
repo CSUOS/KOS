@@ -1,20 +1,24 @@
-import React from 'react';
+import React, { createRef, forwardRef } from 'react';
 
 import { Grid } from '@material-ui/core';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 import { Button } from '../Shared';
 
-type PageHeaderProps = {
+const buttonRef = createRef<HTMLDivElement>();
+
+type PageHeadProps = {
 	open : boolean;
 	handleSideBarOpen : () => void;
 }
 
-const PageHeader = ({ open, handleSideBarOpen } : PageHeaderProps) => {
+const PageHead = forwardRef<HTMLDivElement, PageHeadProps>(({
+	open, handleSideBarOpen
+}, ref) => {
 	const a = 1;
 
 	return (
-		<Grid className="page-header">
+		<Grid ref={ref} className="page-header">
 			<Grid className="main-header-con">
 				{
 					open ?
@@ -24,6 +28,7 @@ const PageHeader = ({ open, handleSideBarOpen } : PageHeaderProps) => {
 							classList={['sidebar-btn']}
 							value={<ArrowForwardIosIcon onClick={handleSideBarOpen} />}
 							tooltip="Open Sidebar"
+							ref={buttonRef}
 						/>
 				}
 			</Grid>
@@ -32,6 +37,6 @@ const PageHeader = ({ open, handleSideBarOpen } : PageHeaderProps) => {
 			</Grid>
 		</Grid>
 	);
-};
+});
 
-export default PageHeader;
+export default PageHead;
