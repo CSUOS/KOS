@@ -46,6 +46,7 @@ module.exports = {
 		'react/jsx-filename-extension': 0, // ts, tsx 파일에서도 jsx를 쓰기 위해
 		'no-restricted-syntax': ['warn', 'FunctionExpression', 'WithStatement', 'BinaryExpression'], // for in 사용
 		'react/jsx-props-no-spreading': ['warn'], // props로 받은 것 바로 props로 넘기기 허용
+		'max-len': ['warn'], // 길이 100이 넘어가도 warning 만 하기
 	},
 	'settings': {
 		'react': {
