@@ -6,8 +6,30 @@ $gray : rgb(110, 110, 110);
 $light-gray : rgb(201, 201, 201);
 $shadow-color : rgba(0, 0, 0, 0.6);
 
+/* font */
+@font-face {
+	font-family: "KopubBold";
+	src: url('../font/KoPubDotumBold.ttf');
+}
+@font-face {
+	font-family: "KopubMedium";
+	src: url('../font/KoPubDotumMedium.ttf');
+}
+@font-face {
+	font-family: "KopubLight";
+	src: url('../font/KoPubDotumLight.ttf');
+}
+
 /* btn */
 $radius : 5px;
 
 /* height of header */
 $header-height : 50px;
+
+/* bgcolor */
+$bg-white: #f5efef;
+$bg-pink: #efa9a9;
+$bg-blue: #a9caef;
+$bg-purple: #d3a9ef;
+$bg-green: #bfefa9;
+$bg-mint: #a9efdd;
