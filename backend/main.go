@@ -1,24 +1,30 @@
 package main
 
 import (
-	"github.com/CSUOS/KOS/backend/pkg/db"
-	"github.com/gin-gonic/gin"
+	"fmt"
+
+	"github.com/CSUOS/KOS/backend/Config"
+	"github.com/CSUOS/KOS/backend/Models"
+	"github.com/CSUOS/KOS/backend/Routes"
+	"github.com/jinzhu/gorm"
 )
 
-func main() {
-	router := gin.Default()
-	// Router 연결
-	db.DBInit()
-	for i := 0; i < 10; i++ {
-		db.InsertTest(i)
-	}
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	//Test용 ping api, get 요청을 보내면 pong을 반환
+var err error
 
-	router.Run(":3000")
-	// 3000번 포트로 서버 구동
+func main() {
+	Config.DB, err = gorm.Open("mysql", Config.DBURL(Config.BuildDBConfig()))
+
+	if err != nil {
+		fmt.Println("Status: ", err)
+	}
+
+	defer Config.DB.Close()
+
+	allModels := []interface{}{&Models.User{}, &Models.Project{}, &Models.Task{}, &Models.List{}, &Models.WorksIn{}}
+
+	Config.DB.AutoMigrate(allModels...)
+
+	r := Routes.SetupRouter()
+
+	r.Run()
 }
