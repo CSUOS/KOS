@@ -3,6 +3,7 @@
 	background-color: white;
 	z-index: 0;
 	.windowbackground-header{
+		display: flex;
 		width: 100%;
 		min-height: 70;
 		max-height: 8%;
@@ -17,10 +18,11 @@
 	min-width: 800px;
 	width: 70%;
 	.window-content{
-		margin: 30px 30px;
-		p{
-			margin: 10px 0px;	
-			font-size: 1.3em;
+		padding: 30px 30px;
+		.window-close-button{
+			display: flex;
+			width: 100%;
+			justify-content: flex-end;
 		}
 	}
 }

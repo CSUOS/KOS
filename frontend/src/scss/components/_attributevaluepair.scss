@@ -1,0 +1,22 @@
+.attributevaluepair{
+	display: flex;
+	width: 100%;
+	justify-content: flex-start;
+	align-items: center;
+	.attributevaluepair-attribute{
+		margin-right: 30px;
+		Button{
+			padding: 0px;
+			min-width: 180px;
+			font-size: 18px;
+			color: white;
+			background-color: $sub-color;
+		}
+
+	}
+	.attributevaluepair-value{
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+}
