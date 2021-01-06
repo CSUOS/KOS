@@ -1,28 +1,19 @@
-.windowbackground{
-	flex: 1;
-	background-color: white;
-	z-index: 0;
-	.windowbackground-header{
-		display: flex;
-		width: 100%;
-		min-height: 70;
-		max-height: 8%;
-		background-color: $main-color;
-	}
-	.windowbackground-backdrop{
-		z-index: 1;
-	}
-}
-
 .window{
-	min-width: 800px;
 	width: 70%;
-	.window-content{
-		padding: 30px 30px;
-		.window-close-button{
-			display: flex;
-			width: 100%;
-			justify-content: flex-end;
+	min-width: 700px;
+	min-height: 700px;
+	.window-closebutton{
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		margin: 10px 5px 0px 0px;
+		svg{
+			font-size: 2.0rem;
+			border-radius: $radius;
+			border: 1.4px solid $light-gray;
 		}
+	}
+	.window-content{
+		padding: 0px 60px 20px 60px;
 	}
 }

@@ -1,0 +1,33 @@
+.windowheader {
+	width: 100%;
+	.windowheader-main {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		h1 {
+			display: inline-flex;
+			margin: 0;
+			padding: 0;
+			font-weight: bold;
+			font-size: 3.5em;
+		}
+		.task-pin {
+			svg {
+				color: $gray;
+				font-size: 3.0rem;
+			}
+		}
+	}
+	.windowheader-sub {
+		margin: 15px 0px 0px 0px;
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		align-content: center;
+		p {
+		margin: 0;
+		padding: 0;
+		font-size: 1.3em;
+		}
+	}
+}
