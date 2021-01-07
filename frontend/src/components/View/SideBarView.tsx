@@ -39,6 +39,13 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 					project.map((p) => <SideProject ref={projectRef} project={p} />) : undefined
 			}
 		</Grid>
+		<Grid className="generate-project">
+			<Button
+				classList={[]}
+				value="+ 새로운 프로젝트 만들기"
+				transparent={true}
+			/>
+		</Grid>
 	</Grid>
 ));
 
