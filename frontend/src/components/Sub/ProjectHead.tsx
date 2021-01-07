@@ -7,19 +7,19 @@ import { Button } from '../Shared';
 
 const buttonRef = createRef<HTMLDivElement>();
 
-type PageHeadProps = {
+type ProjectHeadProps = {
 	open : boolean;
 	handleSideBarOpen : () => void;
 }
 
-const PageHead = forwardRef<HTMLDivElement, PageHeadProps>(({
+const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 	open, handleSideBarOpen
 }, ref) => {
 	const a = 1;
 
 	return (
-		<Grid ref={ref} className="page-header">
-			<Grid className="main-header-con">
+		<Grid ref={ref} className="project-header">
+			<Grid className="main-head-con">
 				{
 					open ?
 						undefined
@@ -28,15 +28,16 @@ const PageHead = forwardRef<HTMLDivElement, PageHeadProps>(({
 							classList={['sidebar-btn']}
 							value={<ArrowForwardIosIcon onClick={handleSideBarOpen} />}
 							tooltip="Open Sidebar"
+							transparent={true}
 							ref={buttonRef}
 						/>
 				}
 			</Grid>
-			<Grid className="sub-header-con">
+			<Grid className="sub-head-con">
 				subheader
 			</Grid>
 		</Grid>
 	);
 });
 
-export default PageHead;
+export default ProjectHead;

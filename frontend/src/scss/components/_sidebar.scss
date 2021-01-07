@@ -3,18 +3,21 @@
 	flex-direction: column;
 	width: 400px;
 	background-color: $main-color;
+    height: 100vh;
+	border-right: 3px solid white;
 	.sidebar-header{
 		display: flex;
 		height: $header-height;
 		align-items: center;
 		justify-content: space-between;
-		border-bottom: 1px solid white;
+		border-bottom: 3px solid white;
 		.sidebar-header-title{
 			display: flex;
 			align-items: center;
 			height: 100%;
 			img{
-				height: 100%;
+				height: 85%;
+				margin-right: 5px;
 			}
 			h1{
 				margin: 0;
@@ -32,6 +35,16 @@
 		display: flex;
 		flex-direction: column;
 		color: white;
+		overflow-x: hidden;
+		overflow-y: scroll;
+		width: 100%;
+		height: 90%;
+		flex: 8;
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
+		&::-webkit-scrollbar{
+			display: none; /* Chrome, Safari, Opera*/
+		}
 		.side-project{
 			display: flex;
 			flex-direction: column;
@@ -45,50 +58,35 @@
 					align-items: center;
 				}
 				.info{
-					max-width: 90%;
+					width: 65%;
+					.bg-color{
+						margin-right: 10px;
+					}
 					&>div{
-						margin-right: 5px;
-					}
-				}
-				.bg-color{
-					width: 40px;
-					height: 40px;
-					border-radius: $radius;
-					border: 2px solid white;
-					&.white{
-						background-color: $bg-white;
-					}
-					&.pink{
-						background-color: $bg-pink;
-					}
-					&.blue{
-						background-color: $bg-blue;
-					}
-					&.purple{
-						background-color: $bg-purple;
-					}
-					&.green{
-						background-color: $bg-green;
-					}
-					&.mint{
-						background-color: $bg-mint;
+						margin-right: 3px;
+						flex-shrink: 0;
 					}
 				}
 				.project-name{
-					font-size: 1.8rem;
+					font-size: 1.4rem;
+					flex-shrink: 1!important;
+					word-break: break-all;
 				}
-				.private, .book-mark{
-					svg{
-						font-size: 2rem;
+				.detail{
+					width: 20%;
+					.private, .book-mark{
+						svg{
+							font-size: 2rem;
+						}
+					}
+					.book-mark{
+						color: rgb(255, 217, 0);
 					}
 				}
-				.book-mark{
-					color: rgb(255, 217, 0);
-				}
 				.arrow{
-					width: 40px;
+					width: 15%;
 					flex-shrink: 0;
-					svg{
+					.btn svg{
 						font-size: 2.5rem;
 						color: white;
 					}
@@ -101,6 +99,7 @@
 				height: 90px;
 				background-color: $base-color;
 				padding: 0 10px;
+				color: $main-color;
 				&>div{
 					display: flex;
 					flex-direction: column;
@@ -119,9 +118,25 @@
 					p{
 						font-size: 0.8rem;
 						margin: 5px 0 0;
+						font-weight: 600;
 					}
 				}
 			}
+		}
+	}
+	.generate-project{
+		flex: 1;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border-top: 3px solid white;
+		&:hover{
+			cursor: pointer;
+			background-color: $sub-color;
+		}
+		& button{
+			color: white;
+			font-size: 1.4rem;
 		}
 	}
 }
