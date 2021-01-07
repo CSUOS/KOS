@@ -50,30 +50,6 @@
 						margin-right: 5px;
 					}
 				}
-				.bg-color{
-					width: 40px;
-					height: 40px;
-					border-radius: $radius;
-					border: 2px solid white;
-					&.white{
-						background-color: $bg-white;
-					}
-					&.pink{
-						background-color: $bg-pink;
-					}
-					&.blue{
-						background-color: $bg-blue;
-					}
-					&.purple{
-						background-color: $bg-purple;
-					}
-					&.green{
-						background-color: $bg-green;
-					}
-					&.mint{
-						background-color: $bg-mint;
-					}
-				}
 				.project-name{
 					font-size: 1.8rem;
 				}

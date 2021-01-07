@@ -1,0 +1,32 @@
+/* bgcolor */
+$bg-white: #f5efef;
+$bg-pink: #efa9a9;
+$bg-blue: #a9caef;
+$bg-purple: #d3a9ef;
+$bg-green: #bfefa9;
+$bg-mint: #a9efdd;
+
+.bg-color{
+	width: 40px;
+	height: 40px;
+	border-radius: $radius;
+	border: 2px solid white;
+	&.white{
+		background-color: $bg-white;
+	}
+	&.pink{
+		background-color: $bg-pink;
+	}
+	&.blue{
+		background-color: $bg-blue;
+	}
+	&.purple{
+		background-color: $bg-purple;
+	}
+	&.green{
+		background-color: $bg-green;
+	}
+	&.mint{
+		background-color: $bg-mint;
+	}
+}
