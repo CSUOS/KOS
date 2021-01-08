@@ -1,5 +1,6 @@
 // base
 @import './base/variable';
+@import './base/backColor.scss';
 @import './base/reset';
 
 // components
@@ -8,6 +9,8 @@
 @import './components/sidebar';
 @import './components/page';
 @import './components/windowheader';
+@import './components/projectheader';
+@import './components/pageheader';
 @import './components/window';
 @import './components/attributevaluepair';
 @import './components/datepicker';
