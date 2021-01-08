@@ -12,13 +12,14 @@ import (
 // GetAllProjects 프로젝트들의 정보를 가져온다
 func GetAllProjects(c *gin.Context) {
 	var projects []Models.Project
-	err := Models.GetAllProjects(&projects)
 
-	if err != nil {
+	if err := Models.GetAllProjects(&projects); err != nil {
+		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, projects)
+		return
 	}
+
+	c.JSON(http.StatusOK, projects)
 }
 
 // CreateProject 프로젝트를 하나 생성한다.
@@ -44,23 +45,24 @@ func CreateProject(c *gin.Context) {
 func GetProjectByID(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var project Models.Project
-	err := Models.GetProjectByID(&project, id)
 
-	if err != nil {
+	if err := Models.GetProjectByID(&project, id); err != nil {
+		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, project)
+		return
 	}
+
+	c.JSON(http.StatusOK, project)
 }
 
 // UpdateProject 아이디와 매칭되는 프로젝트를 찾고 업데이트
 func UpdateProject(c *gin.Context) {
 	var project Models.Project
 	id := c.Params.ByName("id")
-	err := Models.GetProjectByID(&project, id)
 
-	if err != nil {
-		c.JSON(http.StatusNotFound, project)
+	if err := Models.GetProjectByID(&project, id); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
@@ -70,7 +72,8 @@ func UpdateProject(c *gin.Context) {
 		return
 	}
 
-	if err = Models.UpdateProject(&project, id); err != nil {
+	if err := Models.UpdateProject(&project, id); err != nil {
+		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
@@ -82,11 +85,12 @@ func UpdateProject(c *gin.Context) {
 func DeleteProject(c *gin.Context) {
 	var project Models.Project
 	id := c.Params.ByName("id")
-	err := Models.DeleteProject(&project, id)
 
-	if err != nil {
+	if err := Models.DeleteProject(&project, id); err != nil {
+		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, gin.H{"id " + id: "is deleted"})
+		return
 	}
+
+	c.JSON(http.StatusOK, gin.H{"id " + id: "is deleted"})
 }

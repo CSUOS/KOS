@@ -12,13 +12,14 @@ import (
 // GetAllTasks 모든 태스크들의 정보를 반환
 func GetAllTasks(c *gin.Context) {
 	var tasks []Models.Task
-	err := Models.GetAllTasks(&tasks)
 
-	if err != nil {
+	if err := Models.GetAllTasks(&tasks); err != nil {
+		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, tasks)
+		return
 	}
+
+	c.JSON(http.StatusOK, tasks)
 }
 
 // CreateTask 태스크를 하나 생성한다.
@@ -44,23 +45,24 @@ func CreateTask(c *gin.Context) {
 func GetTaskByID(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var task Models.Task
-	err := Models.GetTaskByID(&task, id)
 
-	if err != nil {
+	if err := Models.GetTaskByID(&task, id); err != nil {
+		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, task)
+		return
 	}
+
+	c.JSON(http.StatusOK, task)
 }
 
 // UpdateTask 아이디와 매칭되는 태스크를 찾고 업데이트
 func UpdateTask(c *gin.Context) {
 	var task Models.Task
 	id := c.Params.ByName("id")
-	err := Models.GetTaskByID(&task, id)
 
-	if err != nil {
-		c.JSON(http.StatusNotFound, task)
+	if err := Models.GetTaskByID(&task, id); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
@@ -70,7 +72,8 @@ func UpdateTask(c *gin.Context) {
 		return
 	}
 	
-	if err = Models.UpdateTask(&task, id); err != nil {
+	if err := Models.UpdateTask(&task, id); err != nil {
+		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
@@ -82,11 +85,12 @@ func UpdateTask(c *gin.Context) {
 func DeleteTask(c *gin.Context) {
 	var task Models.Task
 	id := c.Params.ByName("id")
-	err := Models.DeleteTask(&task, id)
 
-	if err != nil {
+	if err := Models.DeleteTask(&task, id); err != nil {
+		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, gin.H{"id " + id: "is deleted"})
+		return
 	}
+
+	c.JSON(http.StatusOK, gin.H{"id " + id: "is deleted"})
 }

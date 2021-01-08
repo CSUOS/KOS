@@ -12,13 +12,14 @@ import (
 // GetAllLists 모든 리스트들의 정보를 가져온다
 func GetAllLists(c *gin.Context) {
 	var lists []Models.List
-	err := Models.GetAllLists(&lists)
-
-	if err != nil {
+	
+	if err := Models.GetAllLists(&lists); err != nil {
+		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, lists)
+		return
 	}
+
+	c.JSON(http.StatusOK, lists)
 }
 
 // CreateList 리스트를 하나 생성한다.
@@ -44,23 +45,24 @@ func CreateList(c *gin.Context) {
 func GetListByID(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var list Models.List
-	err := Models.GetListByID(&list, id)
 
-	if err != nil {
+	if err := Models.GetListByID(&list, id); err != nil {
+		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, list)
+		return
 	}
+
+	c.JSON(http.StatusOK, list)
 }
 
 // UpdateList 아이디와 매칭되는 리스트를 업데이트
 func UpdateList(c *gin.Context) {
 	var list Models.List
 	id := c.Params.ByName("id")
-	err := Models.GetListByID(&list, id)
 
-	if err != nil {
-		c.JSON(http.StatusNotFound, list)
+	if err := Models.GetListByID(&list, id); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
@@ -70,7 +72,7 @@ func UpdateList(c *gin.Context) {
 		return
 	}
 
-	if err = Models.UpdateList(&list, id); err != nil {
+	if err := Models.UpdateList(&list, id); err != nil {
 		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
 		return
@@ -83,11 +85,12 @@ func UpdateList(c *gin.Context) {
 func DeleteList(c *gin.Context) {
 	var list Models.List
 	id := c.Params.ByName("id")
-	err := Models.DeleteList(&list, id)
 
-	if err != nil {
+	if err := Models.DeleteList(&list, id); err != nil {
+		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, gin.H{"id " + id: "is deleted"})
+		return
 	}
+
+	c.JSON(http.StatusOK, gin.H{"id " + id: "is deleted"})
 }
