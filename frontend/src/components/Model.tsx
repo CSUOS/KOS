@@ -56,7 +56,7 @@ type ListObj = {
 	'tasks': Array<TaskObj>;
 }
 
-type TaskObj = {
+export type TaskObj = {
 	'taskID': number;
 	'listID': number;
 	'index': number;
