@@ -24,15 +24,20 @@ func GetAllUsers(c *gin.Context) {
 // CreateUser 유저를 하나 생성한다.
 func CreateUser(c *gin.Context) {
 	var user Models.User
-	c.BindJSON(&user)
-	err := Models.CreateUser(&user)
 
-	if err != nil {
+	if err := c.BindJSON(&user); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	if err := Models.CreateUser(&user); err != nil {
 		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, user)
+		return
 	}
+
+	c.JSON(http.StatusOK, user)
 }
 
 // GetUserByID 파라미터로 전달된 아이디와 매칭되는 유저를 하나 반환한다.
@@ -58,14 +63,18 @@ func UpdateUser(c *gin.Context) {
 		c.JSON(http.StatusNotFound, user)
 	}
 
-	c.BindJSON(&user)
-	err = Models.UpdateUser(&user, id)
-
-	if err != nil {
-		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, user)
+	if err := c.BindJSON(&user); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
 	}
+
+	if err = Models.UpdateUser(&user, id); err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
 }
 
 // DeleteUser 아이디에 매칭되는 유저를 삭제

@@ -24,15 +24,20 @@ func GetAllLists(c *gin.Context) {
 // CreateList 리스트를 하나 생성한다.
 func CreateList(c *gin.Context) {
 	var list Models.List
-	c.BindJSON(&list)
-	err := Models.CreateList(&list)
 
-	if err != nil {
+	if err := c.BindJSON(&list); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	if err := Models.CreateList(&list); err != nil {
 		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, list)
+		return
 	}
+
+	c.JSON(http.StatusOK, list)
 }
 
 // GetListByID 아이디에 매칭되는 리스트를 반환한다.
@@ -56,15 +61,22 @@ func UpdateList(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusNotFound, list)
+		return
 	}
 
-	c.BindJSON(&list)
-	err = Models.UpdateList(&list, id)
-	if err != nil {
-		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, list)
+	if err := c.BindJSON(&list); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
 	}
+
+	if err = Models.UpdateList(&list, id); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	c.JSON(http.StatusOK, list)
 }
 
 // DeleteList 아이디와 매칭되는 리스트를 삭제한다.
