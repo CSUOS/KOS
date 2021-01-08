@@ -24,7 +24,7 @@ func CreateWorksIn(worksIn *WorksIn) (err error) {
 	return nil
 }
 
-// GetWorksInByID 아이에 매칭되는 관계를 반환
+// GetWorksInByID 아이디에 매칭되는 관계를 반환
 func GetWorksInByID(worksIn *WorksIn, id string) (err error) {
 	if err = Config.DB.Where("id = ?", id).First(worksIn).Error; err != nil {
 		return err
