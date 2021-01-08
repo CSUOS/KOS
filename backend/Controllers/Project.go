@@ -24,15 +24,20 @@ func GetAllProjects(c *gin.Context) {
 // CreateProject 프로젝트를 하나 생성한다.
 func CreateProject(c *gin.Context) {
 	var project Models.Project
-	c.BindJSON(&project)
-	err := Models.CreateProject(&project)
 
-	if err != nil {
+	if err := c.BindJSON(&project); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	if err := Models.CreateProject(&project); err != nil {
 		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, project)
+		return
 	}
+
+	c.JSON(http.StatusOK, project)
 }
 
 // GetProjectByID 파라미터로 전달된 아이디와 매칭되는 프로젝트 하나 반환
@@ -56,16 +61,21 @@ func UpdateProject(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusNotFound, project)
+		return
 	}
 
-	c.BindJSON(&project)
-	err = Models.UpdateProject(&project, id)
+	if err := c.BindJSON(&project); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
 
-	if err != nil {
+	if err = Models.UpdateProject(&project, id); err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, project)
+		return
 	}
+
+	c.JSON(http.StatusOK, project)
 }
 
 // DeleteProject 아이디와 매칭되는 프로젝트를 삭제
