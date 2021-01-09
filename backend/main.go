@@ -13,9 +13,6 @@ var err error
 
 func main() {
 	Config.DB, err = gorm.Open("mysql", Config.DBURL(Config.BuildDBConfig()))
-	// 서버 실행시 kos DB가 없으면 DB 생성
-	Config.DB.Exec("Create Database if not exists kos")
-	Config.DB.Exec("Use kos")
 
 	if err != nil {
 		fmt.Println("Status: ", err)
