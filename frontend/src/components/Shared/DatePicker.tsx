@@ -4,8 +4,12 @@ import DateFnsUtils from '@date-io/date-fns';
 import { Grid } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
-const DatePicker = () => {
-	const [selectedDate, setSelectedDate] = useState(new Date());
+type DatePickerProps = {
+	value : string | number | Date;
+}
+
+const DatePicker = ({ value } : DatePickerProps) => {
+	const [selectedDate, setSelectedDate] = useState(new Date(value));
 
 	const handleDateChange = (date: any) => {
 		setSelectedDate(date);
