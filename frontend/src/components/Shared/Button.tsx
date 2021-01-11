@@ -4,14 +4,20 @@ import React, {
 import { Grid, Tooltip } from '@material-ui/core';
 
 /*
-	사용예시
-	<Button
-		classList={['hi', 'hello']} // 추가하고 싶은 class name 넘기기
-		value={<ArrowForwardIosIcon>hi</ArrowForwardIosIcon>} // 버튼 안에 표시하고 싶은 요소 넘기기
-		// tooltip="tooltip value" // tooltip으로 표시하고 싶은 string 넘기기
-		// ttside="right" // tooltip을 표시하고 싶은 위치 넘기기 (top, right, bottom, left)
-		// transparent="true" // 배경, hover 효과 없애고 싶을 때 true로 지정
-	/>
+	classList : 버튼을 감싸는 div에 주고 싶은 className들
+	value : 버튼 내에 표시될 요소
+	tooltip : 툴팁에 표시될 내용
+	ttside : 툴팁 방향
+	transparent : 투명 버튼 유무
+	onClickFun : 콜백 함수
+*/
+
+/*
+	구조는
+	<div class="btn">
+		<button></button>
+	</div>
+	입니다.
 */
 
 const tooltipRef = createRef();
