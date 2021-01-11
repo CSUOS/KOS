@@ -9,7 +9,7 @@ type childrenObj = {
 }
 
 export const OpenStateContext = createContext<boolean>(true);
-export const OpenDispatchContext = createContext<Dispatch<boolean> | undefined>(undefined);
+export const OpenDispatchContext = createContext<Dispatch<boolean>>(() => {});
 
 export const OpenContextProvider = ({ children } : childrenObj) => {
 	const [open, setOpen] = useState<boolean>(true);
@@ -34,16 +34,23 @@ export function useOpenDispatch() {
 }
 
 /* project context */
-export type ProjectObj = {
-	projectID: number;
+type UserObj = {
+	userID: number;
+	authLVL: number;
+}
+
+type Attribute = {
+	key: string;
+	value: string;
+}
+
+type TaskObj = {
+	taskID: number;
+	listID: number;
+	index: number;
 	createAt: Date;
 	modifiedAt: Date;
-	isPrivate: boolean;
-	bookMark: boolean;
-	bgColor: string;
-	name: string;
-	users : Array<UserObj>;
-	List: Array<ListObj>;
+	attribute: Array<Attribute>
 }
 
 type ListObj = {
@@ -56,27 +63,20 @@ type ListObj = {
 	tasks: Array<TaskObj>;
 }
 
-type TaskObj = {
-	taskID: number;
-	listID: number;
-	index: number;
+export type ProjectObj = {
+	projectID: number;
 	createAt: Date;
 	modifiedAt: Date;
-	attribute: Array<Attribute>
-}
-
-type UserObj = {
-	userID: number;
-	authLVL: number;
-}
-
-type Attribute = {
-	key: string;
-	value: string;
+	isPrivate: boolean;
+	bookMark: boolean;
+	bgColor: string;
+	name: string;
+	users : Array<UserObj>;
+	List: Array<ListObj>;
 }
 
 export const ProjectDataContext = createContext<Array<ProjectObj> | undefined>(undefined);
-export const ProjectDispatchContext = createContext<Dispatch<Array<ProjectObj>> | undefined>(undefined);
+export const ProjectDispatchContext = createContext<Dispatch<Array<ProjectObj>>>(() => {});
 
 export const ProjectContextProvider = ({ children } : childrenObj) => {
 	const [project, setProject] = useState<Array<ProjectObj>>([{
@@ -227,7 +227,7 @@ export function useProjectDispatch() {
 /* projectID context */
 
 export const PIDContext = createContext<number>(0);
-export const PIDDispatchContext = createContext<Dispatch<number> | undefined>(undefined);
+export const PIDDispatchContext = createContext<Dispatch<number>>(() => {});
 
 export const PIDContextProvider = ({ children } : childrenObj) => {
 	const [pid, setPID] = useState<number>(0);
