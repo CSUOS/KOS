@@ -223,7 +223,7 @@ export function useProjectDispatch() {
 
 /* projectID context */
 
-export const PIDContext = createContext<number>(2);
+export const PIDContext = createContext<number>(0);
 export const PIDDispatchContext = createContext<Dispatch<number>>(() => {});
 
 export const PIDContextProvider = ({ children } : childrenObj) => {
@@ -245,5 +245,32 @@ export function usePIDState() {
 
 export function usePIDDispatch() {
 	const context = useContext(PIDDispatchContext);
+	return context;
+}
+
+/* user context */
+
+export const userContext = createContext<number>(1);
+const userDispatchContext = createContext<Dispatch<number>>(() => {});
+
+export const UserContextProvider = ({ children } : childrenObj) => {
+	const [id, setUserID] = useState<number>(1);
+
+	return (
+		<userContext.Provider value={id}>
+			<userDispatchContext.Provider value={setUserID}>
+				{children}
+			</userDispatchContext.Provider>
+		</userContext.Provider>
+	);
+};
+
+export function useUserState() {
+	const context = useContext(userContext);
+	return context;
+}
+
+function useUserDispatch() {
+	const context = useContext(userDispatchContext);
 	return context;
 }

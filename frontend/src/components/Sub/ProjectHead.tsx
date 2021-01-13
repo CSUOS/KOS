@@ -3,13 +3,15 @@ import React, { useState, createRef, forwardRef } from 'react';
 import { Grid, Input } from '@material-ui/core';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import SearchIcon from '@material-ui/icons/Search';
+import BackupIcon from '@material-ui/icons/Backup';
 
 import {
 	Button, SubMenu, SideMenu, Member
 } from '../Shared';
-import { ProjectObj } from '../Model';
+import { ProjectObj, useUserState } from '../Model';
 
 const buttonRef = createRef<HTMLDivElement>();
+const searchInputRef = createRef<HTMLDivElement>();
 
 type ProjectHeadProps = {
 	sideBarOpen : boolean;
@@ -21,6 +23,11 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 	sideBarOpen, handleSideBarOpen, project
 }, ref) => {
 	const [open, setOpen] = useState(false);
+	const userID : number = useUserState();
+
+	const searchTask = () => {
+		console.dir(searchInputRef.current);
+	};
 
 	return (
 		<Grid ref={ref} className="project-header">
@@ -60,18 +67,32 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 					</Grid>
 					<Grid className="my-icon">
 						{
-							// model에 user 정보 저장하게 하고, 받아오기
+							project.users.map((user) => {
+								if (user.userID === userID) {
+									return (
+										Member(user)
+									);
+								}
+								return undefined;
+							})
 						}
-						내 아이콘
 					</Grid>
 				</Grid>
 			</Grid>
 			<Grid className="sub-head-con">
 				<Grid className="search-con">
-					<Input id="search-input" placeholder="검색어 입력" />
+					<Input id="search-input" placeholder="검색어 입력" inputRef={searchInputRef} />
 					<Button
 						classList={[]}
-						value={<SearchIcon />}
+						value={<SearchIcon onClick={searchTask} />}
+						tooltip="키워드로 검색하기"
+					/>
+				</Grid>
+				<Grid className="plus-menu-con">
+					<Button
+						classList={[]}
+						value={<BackupIcon onClick={searchTask} />}
+						tooltip="백업하기"
 					/>
 				</Grid>
 			</Grid>
