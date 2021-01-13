@@ -42,10 +42,10 @@ export type UserObj = {
 
 type Attribute = {
 	key: string;
-	value: string;
+	value: string | Array<string>;
 }
 
-type TaskObj = {
+export type TaskObj = {
 	taskID: number;
 	listID: number;
 	index: number;
@@ -81,6 +81,7 @@ export const ProjectDispatchContext = createContext<Dispatch<Array<ProjectObj>>>
 
 export const ProjectContextProvider = ({ children } : childrenObj) => {
 	const [project, setProject] = useState<Array<ProjectObj>>([{
+<<<<<<< HEAD
 		projectID: 1,
 		createAt: new Date('2021/01/02'),
 		modifiedAt: new Date('2021/01/02'),
@@ -113,6 +114,10 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 				attribute: [{
 					key: 'text-field',
 					value: 'hi'
+				},
+				{
+					key: 'tags',
+					value: ['우희은(hinge7)', '김정현(powergee)']
 				}]
 			}]
 		}]
