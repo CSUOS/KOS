@@ -1,6 +1,6 @@
 import React, { createRef, Dispatch } from 'react';
 import {
-	useOpenState, useOpenDispatch, useProjectState, useProjectDispatch, ProjectObj
+	useOpenState, useOpenDispatch, useProjectState, useProjectDispatch, usePIDState, usePIDDispatch, ProjectObj
 } from './Model';
 import { SideBarView, PageView } from './View';
 
@@ -13,6 +13,8 @@ const ViewModel = () => {
 	const setOpen : Dispatch<boolean> = useOpenDispatch();
 	const project : Array<ProjectObj> | undefined = useProjectState();
 	const setProject : Dispatch<Array<ProjectObj>> = useProjectDispatch();
+	const pid : number = usePIDState();
+	const setPID : Dispatch<number> = usePIDDispatch();
 
 	const handleSideBarOpen = () => {
 		setOpen(true);
@@ -35,7 +37,7 @@ const ViewModel = () => {
 			<PageView
 				handleSideBarOpen={handleSideBarOpen}
 				open={open}
-				project={project}
+				project={project !== undefined ? project[pid] : undefined}
 				ref={pageRef}
 			/>
 		</>

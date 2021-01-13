@@ -59,6 +59,11 @@
 				}
 				.info{
 					width: 65%;
+					.project-name{
+						font-size: $md-font;
+						flex-shrink: 1!important;
+						word-break: break-all;
+					}
 					.bg-color{
 						margin-right: 10px;
 					}
@@ -67,59 +72,11 @@
 						flex-shrink: 0;
 					}
 				}
-				.project-name{
-					font-size: 1.4rem;
-					flex-shrink: 1!important;
-					word-break: break-all;
-				}
 				.detail{
 					width: 20%;
-					.private, .book-mark{
-						svg{
-							font-size: 2rem;
-						}
-					}
-					.book-mark{
-						color: rgb(255, 217, 0);
-					}
 				}
 				.arrow{
 					width: 15%;
-					flex-shrink: 0;
-					.btn svg{
-						font-size: 2.5rem;
-						color: white;
-					}
-				}
-			}
-			.sub-menu{
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				height: 90px;
-				background-color: $base-color;
-				padding: 0 10px;
-				color: $main-color;
-				&>div{
-					display: flex;
-					flex-direction: column;
-					align-items: center;
-					.btn{
-						width: 40px;
-						height: 40px;
-						button{
-							width: 100%;
-							height: 100%;
-						}
-						svg{
-							color: $main-color;
-						}
-					}
-					p{
-						font-size: 0.8rem;
-						margin: 5px 0 0;
-						font-weight: 600;
-					}
 				}
 			}
 		}
@@ -136,7 +93,7 @@
 		}
 		& button{
 			color: white;
-			font-size: 1.4rem;
+			font-size: $md-font;
 		}
 	}
 }

@@ -34,9 +34,10 @@ export function useOpenDispatch() {
 }
 
 /* project context */
-type UserObj = {
+export type UserObj = {
 	userID: number;
-	authLVL: number;
+	userName: string;
+	userIcon: string;
 }
 
 type Attribute = {
@@ -89,7 +90,12 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 		name: 'KOS',
 		users: [{
 			userID: 1,
-			authLVL: 0
+			userName: 'heeeun',
+			userIcon: 'child'
+		}, {
+			userID: 2,
+			userName: 'taejin',
+			userIcon: 'beach'
 		}],
 		List: [{
 			listID: 1,
@@ -118,10 +124,7 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 		bookMark: false,
 		bgColor: 'green',
 		name: 'NERAsadddfadasfdafdsasdfasdfasdfasdf',
-		users: [{
-			userID: 1,
-			authLVL: 0
-		}],
+		users: [],
 		List: [{
 			listID: 2,
 			projectID: 2,
@@ -149,10 +152,7 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 		bookMark: true,
 		bgColor: 'mint',
 		name: '프로젝트이름이 길면 어떻게 될까요?',
-		users: [{
-			userID: 1,
-			authLVL: 0
-		}],
+		users: [],
 		List: [{
 			listID: 3,
 			projectID: 3,
@@ -180,10 +180,7 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 		bookMark: true,
 		bgColor: 'purple',
 		name: '여러 프로젝트 생성',
-		users: [{
-			userID: 1,
-			authLVL: 0
-		}],
+		users: [],
 		List: [{
 			listID: 4,
 			projectID: 4,
@@ -226,7 +223,7 @@ export function useProjectDispatch() {
 
 /* projectID context */
 
-export const PIDContext = createContext<number>(0);
+export const PIDContext = createContext<number>(2);
 export const PIDDispatchContext = createContext<Dispatch<number>>(() => {});
 
 export const PIDContextProvider = ({ children } : childrenObj) => {

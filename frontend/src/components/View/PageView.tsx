@@ -8,15 +8,19 @@ import { ProjectObj } from '../Model';
 type PageViewProps = {
 	open : boolean;
 	handleSideBarOpen : () => void;
-	project : Array<ProjectObj> | undefined;
+	project : ProjectObj | undefined;
 }
 
 const PageView = forwardRef<HTMLDivElement, PageViewProps>(({ open, handleSideBarOpen, project }, ref) => (
 	<Grid ref={ref} className="page">
-		<ProjectHead
-			open={open}
-			handleSideBarOpen={handleSideBarOpen}
-		/>
+		{
+			project !== undefined?
+				<ProjectHead
+					sideBarOpen={open}
+					handleSideBarOpen={handleSideBarOpen}
+					project={project}
+				/> : undefined
+		}
 	</Grid>
 ));
 
