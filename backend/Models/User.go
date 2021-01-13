@@ -4,8 +4,6 @@ import (
 	"fmt"
 
 	"github.com/CSUOS/KOS/backend/Config"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 // GetAllUsers 모든 유저들의 정보를 가져온다.

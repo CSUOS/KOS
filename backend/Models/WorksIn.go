@@ -4,8 +4,6 @@ import (
 	"fmt"
 
 	"github.com/CSUOS/KOS/backend/Config"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 // GetAllWorksIn 모든 유저와 프로젝트의 관계를 반환
@@ -42,5 +40,10 @@ func UpdateWorksIn(worksIn *WorksIn, id string) (err error) {
 // DeleteWorksIn 아이디에 매칭되는 유저 - 프로젝트 관계 삭제
 func DeleteWorksIn(worksIn *WorksIn, id string) (err error) {
 	Config.DB.Where("id = ?", id).Delete(worksIn)
+	return nil
+}
+
+// GetWorksInByUserAndProjectID 유저 아이디와 프로젝트 아이디와 매칭되는 관계를 가져온다.
+func GetWorksInByUserAndProjectID(worksIn *[]WorksIn, userID string, projectID string) (err error) {
 	return nil
 }

@@ -77,6 +77,6 @@ func DeleteUser(c *gin.Context) {
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
-		c.JSON(http.StatusOK, gin.H{"id " + id: "is deleted"})
+		c.JSON(http.StatusOK, gin.H{"id " + id: " user is deleted"})
 	}
 }

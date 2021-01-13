@@ -4,8 +4,6 @@ import (
 	"fmt"
 
 	"github.com/CSUOS/KOS/backend/Config"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 // GetAllTasks 모든 태스크를 반환
@@ -42,5 +40,11 @@ func UpdateTask(task *Task, id string) (err error) {
 // DeleteTask 아이디와 매칭되는 태스크를 삭제한다.
 func DeleteTask(task *Task, id string) (err error) {
 	Config.DB.Where("id = ?", id).Delete(task)
+	return nil
+}
+
+// DeleteTaskByListID 리스트 아이디와 매칭되는 태스크를 삭제
+func DeleteTaskByListID(task *Task, id uint) (err error) {
+	Config.DB.Where("list_id = ?", id).Delete(task)
 	return nil
 }
