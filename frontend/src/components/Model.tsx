@@ -56,7 +56,7 @@ type ListObj = {
 	'tasks': Array<TaskObj>;
 }
 
-type TaskObj = {
+export type TaskObj = {
 	'taskID': number;
 	'listID': number;
 	'index': number;
@@ -72,7 +72,7 @@ type UserObj = {
 
 type Attribute = {
 	'key': string;
-	'value': string;
+	'value': string | Array<string>;
 }
 
 export const ProjectDataContext = createContext<Array<ProjectObj> | undefined>(undefined);
@@ -103,10 +103,14 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 				'listID': 1,
 				'index': 0,
 				'createAt': new Date('2021/01/02'),
-				'modifiedAt': new Date('2021/01/02'),
+				'modifiedAt': new Date('2021/01/03'),
 				'attribute': [{
 					'key': 'text-field',
 					'value': 'hi'
+				},
+				{
+					'key': 'tags',
+					'value': ['우희은(hinge7)', '김정현(powergee)']
 				}]
 			}]
 		}]
