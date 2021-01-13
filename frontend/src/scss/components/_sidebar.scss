@@ -96,4 +96,26 @@
 			font-size: $md-font;
 		}
 	}
+	@keyframes slide-out {
+		0%{
+		}
+		100%{
+			width: 400px;
+			margin-left: -400px;
+		}
+	}
+	@keyframes slide-in {
+		0%{
+			margin-left: -400px;
+			width: 400px;
+		}
+		100%{
+		}
+	}
+	&.visible{
+		animation: slide-in 0.7s ease-in-out forwards;
+	}
+	&.unvisible{
+		animation: slide-out 0.7s ease-in-out forwards;
+	}
 }

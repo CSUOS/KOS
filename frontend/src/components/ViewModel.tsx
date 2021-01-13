@@ -27,12 +27,17 @@ const ViewModel = () => {
 	return (
 		<>
 			{
-				open ?
-					<SideBarView
-						handleSideBarClose={handleSideBarClose}
-						project={project}
-						ref={sidebarRef}
-					/> : undefined
+				open ? <SideBarView
+					type="visible"
+					handleSideBarClose={handleSideBarClose}
+					project={project}
+					ref={sidebarRef}
+				/> : <SideBarView
+					type="unvisible"
+					handleSideBarClose={handleSideBarClose}
+					project={project}
+					ref={sidebarRef}
+				/>
 			}
 			<PageView
 				handleSideBarOpen={handleSideBarOpen}
