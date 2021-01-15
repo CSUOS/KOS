@@ -1,0 +1,26 @@
+.textfield{
+	flex: 1;
+	width: 100%;
+	.textfield-container{
+		display: flex;
+		width: 100%;
+		min-height: 30px;
+		align-items: center;
+		font-size: inherit;
+		&:hover, &:active{
+			background-color: $light-gray;
+		}
+		&:focus{
+			outline: none;
+		}
+
+		input{
+			border: none;
+			font-size: inherit;
+			background-color: inherit;
+			&:focus{
+				outline: none;
+			}
+		}
+	}
+}
