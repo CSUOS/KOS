@@ -1,7 +1,9 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 
-import { Button, DatePicker, Tags } from '.';
+import {
+	Button, DatePicker, Tags, Select
+} from '.';
 
 type AttributeValuePairProps = {
 	type?: string | undefined;
@@ -21,10 +23,9 @@ const AttributeValuePair = ({
 			{type === 'text-field' && <div>{value}</div>}
 			{type === 'tags' && <Tags value={value} />}
 			{type === 'date-picker' && <DatePicker value={value} />}
-			{type === 'select'}
+			{(type === 'single-select' || type === 'multi-select') && <Select type={type} />}
 			{type === 'link'}
-			{type === 'single-checkbox'}
-			{type === 'multi-checkbox'}
+			{type === 'checkbox'}
 			{type === 'description'}
 		</Grid>
 	</Grid>

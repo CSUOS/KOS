@@ -18,7 +18,8 @@ const descValue = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed 
 Senectus et netus et malesuada. Nunc pulvinar sapien et ligula ullamcorper malesuada proin. Neque convallis a cras semper auctor. Libero id faucibus nisl tincidunt eget. Leo a diam sollicitudin tempor id. A lacus vestibulum sed arcu non odio euismod lacinia. In tellus integer feugiat scelerisque. Feugiat in fermentum posuere urna nec tincidunt praesent. Porttitor rhoncus dolor purus non enim praesent elementum facilisis. Nisi scelerisque eu ultrices vitae auctor eu augue ut lectus.`;
 const attributeNames1 = ['Text', 'Assign'];
 const attributeNames2 = ['Created', 'Modified', 'State', '+'];
-const types = ['date-picker', 'date-picker', 'select'];
+const types = ['date-picker', 'date-picker', 'single-select', 'multi-select'];
+const attributeNames3 = ['단일 선택', '다중 선택'];
 
 const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 	open, task, handleTaskWindowClose
@@ -47,6 +48,8 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 					<AttributeValuePair attribute={attributeNames2[1]} type={types[0]} value={modified} />
 					<AttributeValuePair attribute={attributeNames2[2]} />
 					<AttributeValuePair attribute={attributeNames2[3]} />
+					<AttributeValuePair attribute={attributeNames3[0]} type={types[2]} />
+					<AttributeValuePair attribute={attributeNames3[1]} type={types[3]} />
 				</Grid>
 				<Grid className="task-description">
 					<AttributeValuePair type={descType} attribute={descAttri} />

@@ -4,3 +4,4 @@ export { default as Window } from './Window';
 export { default as AttributeValuePair } from './AttributeValuePair';
 export { default as DatePicker } from './DatePicker';
 export { default as Tags } from './Tags';
+export { default as Select } from './Select';
