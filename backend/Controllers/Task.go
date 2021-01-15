@@ -76,6 +76,16 @@ func DeleteTask(c *gin.Context) {
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
-		c.JSON(http.StatusOK, gin.H{"id " + id: "is deleted"})
+		c.JSON(http.StatusOK, gin.H{"id " + id: " task is deleted"})
 	}
+}
+
+// MoveTask 태스크를 이동
+func MoveTask(c *gin.Context) {
+
+}
+
+// AddReaction 태스크에 리액션을 추가
+func AddReaction(c *gin.Context) {
+
 }
