@@ -5,6 +5,7 @@ $base-color: #a4b2f3;
 $gray : rgb(110, 110, 110);
 $light-gray : rgb(201, 201, 201);
 $shadow-color : rgba(0, 0, 0, 0.6);
+$star-color : rgb(255, 217, 0);
 
 /* font */
 @font-face {
@@ -19,6 +20,10 @@ $shadow-color : rgba(0, 0, 0, 0.6);
 	font-family: "KopubLight";
 	src: url('../font/KoPubDotumLight.ttf');
 }
+
+$lg-font : 2rem;
+$md-font : 1.4rem;
+$sm-font : 0.8rem;
 
 /* btn */
 $radius : 5px;

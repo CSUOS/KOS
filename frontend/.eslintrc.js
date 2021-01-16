@@ -48,7 +48,8 @@ module.exports = {
 		'react/jsx-props-no-spreading': ['warn'], // props로 받은 것 바로 props로 넘기기 허용
 		'max-len': ['warn'], // 길이 100이 넘어가도 warning 만 하기
 		'react/jsx-boolean-value': 0, // boolean 못넘기게 하는 룰 없애기
-		'react-hooks/exhaustive-deps': 'warn' // Checks effect dependencies
+		'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
+		'@typescript-eslint/no-empty-function': 0, // ()=>{} 가능하게 하기
 	},
 	'settings': {
 		'react': {
