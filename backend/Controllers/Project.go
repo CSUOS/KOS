@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/CSUOS/KOS/backend/Models"
+	"github.com/CSUOS/KOS/backend/GitHubInteraction"
 
 	"github.com/gin-gonic/gin"
 )
