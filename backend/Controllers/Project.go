@@ -173,6 +173,8 @@ func CopyProject(c *gin.Context) {
 	newProject.IsPrivate = targetProject.IsPrivate
 	newProject.BookMark = targetProject.BookMark
 	newProject.Name = targetProject.Name
+	newProject.RepoOwner = targetProject.RepoOwner
+	newProject.RepoName = targetProject.RepoName
 	newProject.Lists = newLists
 
 	c.JSON(http.StatusOK, newProject)
