@@ -48,11 +48,26 @@ func GetWorksInByID(c *gin.Context) {
 	}
 }
 
+// GetWorksInByUserAndProjectID 유저와 프로젝트 아이디로 유저-프로젝트 관계를 가져온다.
+func GetWorksInByUserAndProjectID(c *gin.Context) {
+	userID := c.Params.ByName("userID")
+	projectID := c.Params.ByName("projectID")
+	var worksIn []Models.WorksIn
+
+	err := Models.GetWorksInByUserAndProjectID(&worksIn, userID, projectID)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, worksIn)
+	}
+}
+
 // UpdateWorksIn 유저 - 프로젝트 관계를 업데이트
 func UpdateWorksIn(c *gin.Context) {
 	var worksIn Models.WorksIn
 	id := c.Params.ByName("id")
-	err := Models.UpdateWorksIn(&worksIn, id)
+	err := Models.GetWorksInByID(&worksIn, id)
 
 	if err != nil {
 		c.JSON(http.StatusNotFound, worksIn)
@@ -76,6 +91,16 @@ func DeleteWorksIn(c *gin.Context) {
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
-		c.JSON(http.StatusOK, gin.H{"id " + id: "is deleted"})
+		c.JSON(http.StatusOK, gin.H{"id " + id: " works-in is deleted"})
 	}
+}
+
+// InviteUser 유저를 프로젝트로 초대
+func InviteUser(c *gin.Context) {
+
+}
+
+// ExitUserFromProject 프로젝트에 유저 이탈
+func ExitUserFromProject(c *gin.Context) {
+
 }

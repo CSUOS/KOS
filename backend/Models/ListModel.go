@@ -1,6 +1,6 @@
 package Models
 
-import "github.com/jinzhu/gorm"
+import "gorm.io/gorm"
 
 // List 리스트에 관한 정보 스키마
 type List struct {

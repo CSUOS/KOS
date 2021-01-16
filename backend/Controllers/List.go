@@ -76,6 +76,21 @@ func DeleteList(c *gin.Context) {
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
-		c.JSON(http.StatusOK, gin.H{"id " + id: "is deleted"})
+		c.JSON(http.StatusOK, gin.H{"id " + id: " list is deleted"})
 	}
+}
+
+// MoveList 리스트를 이동시킨다.
+func MoveList(c *gin.Context) {
+
+}
+
+// CopyList 리스트를 복사한다.
+func CopyList(c *gin.Context) {
+
+}
+
+// ExportsList 리스트를 다른 프로젝트로 이동시킨다.
+func ExportsList(c *gin.Context) {
+
 }

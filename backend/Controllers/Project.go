@@ -71,12 +71,42 @@ func UpdateProject(c *gin.Context) {
 // DeleteProject 아이디와 매칭되는 프로젝트를 삭제
 func DeleteProject(c *gin.Context) {
 	var project Models.Project
+	var lists []Models.List
+	var list Models.List
+	var task Models.Task
 	id := c.Params.ByName("id")
-	err := Models.DeleteProject(&project, id)
 
+	// GORM 제약조건이 동작하지 않아 수동으로 삭제.
+	// 먼저 프로젝트 ID와 매칭되는 모든 리스트를 찾아온다.
+	Models.GetAllListID(&lists, id)
+	// 리스트들을 순환하면서 리스트 ID에 해당되는 태스크를 삭제한다.
+	for i := 0; i < len(lists); i++ {
+		Models.DeleteTaskByListID(&task, lists[i].ID)
+	}
+	// 태스크를 삭제하면 이제 프로젝트 ID와 매칭되는 리스트를 삭제한다.
+	Models.DeleteListByProjectID(&list, id)
+
+	// 마지막으로 프로젝트를 삭제.
+	err := Models.DeleteProject(&project, id)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
-		c.JSON(http.StatusOK, gin.H{"id " + id: "is deleted"})
+		c.JSON(http.StatusOK, gin.H{"id " + id: " project is deleted"})
 	}
+}
+
+// GetContributions 프로젝트의 기여도를 가져온다.
+func GetContributions(c *gin.Context) {
+	id := c.Params.ByName("id")
+	c.JSON(http.StatusOK, gin.H{"Get Project " + id: " Contributions endpoint test"})
+}
+
+// CopyProject 프로젝트를 복사한다.
+func CopyProject(c *gin.Context) {
+
+}
+
+// DeleteProjectByAuthUser 유저의 권환을 확인 후에 프로젝트를 삭제한다.
+func DeleteProjectByAuthUser(c *gin.Context) {
+
 }
