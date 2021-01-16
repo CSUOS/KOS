@@ -105,10 +105,24 @@ func DeleteProject(c *gin.Context) {
 	}
 }
 
-// GetContributions 프로젝트의 기여도를 가져온다.
+// GetBranches 프로젝트에 연결된 GitHub 리포지토리의 브랜치 목록을 가져온다.
+func GetBranches(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "Not Implemented"})
+}
+
+// GetContributionsOfID 특정 Github ID의, 프로젝트에 연결된 GitHub 리포지토리의 기여도를 가져온다.
+func GetContributionsOfID(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "Not Implemented"})
+}
+
+// GetContributions 모든 멤버의, 프로젝트에 연결된 GitHub 리포지토리의 기여도를 가져온다. (GitHub ID가 등록되지 않은 멤버는 제외)
 func GetContributions(c *gin.Context) {
-	id := c.Params.ByName("id")
-	c.JSON(http.StatusOK, gin.H{"Get Project " + id: " Contributions endpoint test"})
+	c.JSON(http.StatusOK, gin.H{"message": "Not Implemented"})
+}
+
+// CountCommits 프로젝트에 연결된 GitHub 리포지토리의 특정 브랜치에 커밋된 커밋 수를 가져온다.
+func CountCommits(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "Not Implemented"})
 }
 
 // CopyProject 프로젝트를 복사한다.
