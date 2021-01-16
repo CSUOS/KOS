@@ -103,10 +103,83 @@ func GetContributions(c *gin.Context) {
 
 // CopyProject 프로젝트를 복사한다.
 func CopyProject(c *gin.Context) {
+	// 리퀘스트 바디에서 아이디 1개를 가져온다.
+	type copy struct {
+		ProjectID string `json:"ProjectID"`
+	}
+
+	// JSON 디코드
+	var temp copy
+	c.BindJSON(&temp)
+
+	var targetProject Models.Project
+	var newProject Models.Project
+	var lists []Models.List
+	var tasks []Models.Task
+	var newTasks []Models.Task
+	var newLists []Models.List
+	var counts []int64
+
+	// 디코드된 아이디를 기준으로 하나 가져온다.
+	err := Models.GetProjectByID(&targetProject, temp.ProjectID)
+
+	Models.GetAllListID(&lists, temp.ProjectID)
+
+	// 먼저 태스크들을 새롭게 복사한다.
+	for i := 0; i < len(lists); i++ {
+		err = Models.GetTasksByListID(&tasks, lists[i].ID)
+		if err != nil {
+			c.AbortWithStatus(http.StatusNotFound)
+		} else {
+			// 태스크를 복사하고
+			newTasks = append(newTasks, tasks...)
+			var count int64
+			// 리스트안에 태스크가 몇개 들어있는지 확인하고 기록
+			Models.GetNTasksByListID(lists[i].ID, &count)
+			counts = append(counts, count)
+		}
+	}
+
+	// 그 다음 리스트를 복사한다.
+	err = Models.GetListsByProjectID(&lists, temp.ProjectID)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	newLists = append(newLists, lists...)
+
+	// 리스트 복사후에 해당 리스트에 있었던 태스크들의 수만큼 새로운 리스트안 태스크에 추가한다.
+	var index int64
+	index = 0
+	for i := 0; i < len(counts); i++ {
+		for j := 0; j < int(counts[i]); j++ {
+			newLists[i].Tasks = append(newLists[i].Tasks, newTasks[int(index)])
+			index = index + 1
+		}
+	}
+
+	newProject.BGColor = targetProject.BGColor
+	newProject.IsPrivate = targetProject.IsPrivate
+	newProject.BookMark = targetProject.BookMark
+	newProject.Name = targetProject.Name
+	newProject.Lists = newLists
+
+	c.JSON(http.StatusOK, newProject)
+
+	// 프로젝트 새로 생성
+	err = Models.CreateProject(&newProject)
+
+	if err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, newProject)
+	}
 
 }
 
 // DeleteProjectByAuthUser 유저의 권환을 확인 후에 프로젝트를 삭제한다.
 func DeleteProjectByAuthUser(c *gin.Context) {
-
+	// 유저의 권한 확인
 }

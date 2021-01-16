@@ -4,8 +4,6 @@ import (
 	"fmt"
 
 	"github.com/CSUOS/KOS/backend/Config"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 // GetAllProjects 모든 프로젝트를 반환

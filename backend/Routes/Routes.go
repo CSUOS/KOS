@@ -12,11 +12,12 @@ func SetupRouter() *gin.Engine {
 
 	userRoutes := r.Group("/v1/user-api")
 	{
-		// 사용자의 정보를 가져온다.
+		// 모든 사용자의 정보를 가져온다.
 		userRoutes.GET("users", Controllers.GetAllUsers)
 
 		userRoutes.POST("user", Controllers.CreateUser)
 
+		// 특정 사용자의 정보를 가져온다.
 		userRoutes.GET("user/:id", Controllers.GetUserByID)
 
 		// 사용자의 정보를 업데이트
@@ -104,7 +105,7 @@ func SetupRouter() *gin.Engine {
 	{
 
 		// 유저의 프로젝트 정보를 가져온다.
-		worksInRoutes.GET("/:userID/:projectID", Controllers.GetWorksInByUserAndProjectID)
+		worksInRoutes.GET("works_in/:id", Controllers.GetWorksInByUserID)
 
 		// 유저를 프로젝트에 초대
 		worksInRoutes.POST("invite", Controllers.InviteUser)
@@ -120,7 +121,7 @@ func SetupRouter() *gin.Engine {
 
 		worksInRoutes.PUT("works-in/:id", Controllers.UpdateWorksIn)
 
-		worksInRoutes.DELETE("works_in/:id", Controllers.DeleteWorksIn)
+		worksInRoutes.DELETE("works-in/:id", Controllers.DeleteWorksIn)
 	}
 
 	return r
