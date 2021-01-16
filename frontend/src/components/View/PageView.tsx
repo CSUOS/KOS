@@ -3,7 +3,7 @@ import React, { createRef, forwardRef, useState } from 'react';
 import { Grid } from '@material-ui/core';
 
 import { Button } from '../Shared';
-import { ProjectHead } from '../Sub';
+import { ProjectHead, List } from '../Sub';
 import { ProjectObj } from '../Model';
 import { TaskView } from '.';
 
@@ -46,6 +46,7 @@ const PageView = forwardRef<HTMLDivElement, PageViewProps>(({
 						onClickFun={handleTaskWindowOpen}
 					/>
 				</>}
+			<List mainTitle="제목" /* for test only */ />
 			<TaskView
 				open={openTask}
 				handleTaskWindowClose={handleTaskWindowClose}
