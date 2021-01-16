@@ -8,3 +8,4 @@ export { default as Select } from './Select';
 export { default as Checkbox } from './Checkbox';
 export { default as Checkboxes } from './Checkboxes';
 export { default as TextField } from './TextField';
+export { default as Menu } from './AttributeSelect';

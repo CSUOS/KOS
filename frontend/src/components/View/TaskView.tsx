@@ -17,8 +17,8 @@ const descAttri = '설명';
 const descValue = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl tincidunt eget nullam non. Quis hendrerit dolor magna eget est lorem ipsum dolor sit. Volutpat odio facilisis mauris sit amet massa. Commodo odio aenean sed adipiscing diam donec adipiscing tristique. Mi eget mauris pharetra et. Non tellus orci ac auctor augue. Elit at imperdiet dui accumsan sit. Ornare arcu dui vivamus arcu felis. Egestas integer eget aliquet nibh praesent. In hac habitasse platea dictumst quisque sagittis purus. Pulvinar elementum integer enim neque volutpat ac.
 Senectus et netus et malesuada. Nunc pulvinar sapien et ligula ullamcorper malesuada proin. Neque convallis a cras semper auctor. Libero id faucibus nisl tincidunt eget. Leo a diam sollicitudin tempor id. A lacus vestibulum sed arcu non odio euismod lacinia. In tellus integer feugiat scelerisque. Feugiat in fermentum posuere urna nec tincidunt praesent. Porttitor rhoncus dolor purus non enim praesent elementum facilisis. Nisi scelerisque eu ultrices vitae auctor eu augue ut lectus.`;
 const attributeNames1 = ['Text', 'Assign'];
-const attributeNames2 = ['Created', 'Modified', '단일 선택', '다중 선택', '단일 체크박스', '다중 체크박스'];
-const types = ['date-picker', 'date-picker', 'single-select', 'multi-select', 'checkbox', 'checkboxes'];
+const attributeNames2 = ['Created', 'Modified', '단일 선택', '다중 선택', '단일 체크박스', '다중 체크박스', '+'];
+const types = ['date-picker', 'date-picker', 'single-select', 'multi-select', 'checkbox', 'checkboxes', 'add-button'];
 const checkboxesValue = { '첫번째': true, '두번째': true };
 const selectValue = ['시작전', '진행중', '완료', '보류'];
 
@@ -49,8 +49,9 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 					<AttributeValuePair attribute={attributeNames2[1]} type={types[1]} value={modified} />
 					<AttributeValuePair attribute={attributeNames2[2]} type={types[2]} value={selectValue} />
 					<AttributeValuePair attribute={attributeNames2[3]} type={types[3]} value={selectValue} />
-					<AttributeValuePair attribute={attributeNames2[4]} type={types[4]} />
-					<AttributeValuePair attribute={attributeNames2[5]} type={types[5]} value={checkboxesValue} />
+					{/* <AttributeValuePair attribute={attributeNames2[4]} type={types[4]} />
+					<AttributeValuePair attribute={attributeNames2[5]} type={types[5]} value={checkboxesValue} /> */}
+					<AttributeValuePair attribute={attributeNames2[6]} type={types[6]} />
 				</Grid>
 				<Grid className="task-description">
 					<AttributeValuePair type={descType} attribute={descAttri} />
