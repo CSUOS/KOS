@@ -49,12 +49,11 @@ func GetWorksInByID(c *gin.Context) {
 }
 
 // GetWorksInByUserAndProjectID 유저와 프로젝트 아이디로 유저-프로젝트 관계를 가져온다.
-func GetWorksInByUserAndProjectID(c *gin.Context) {
+func GetWorksInByUserID(c *gin.Context) {
 	userID := c.Params.ByName("userID")
-	projectID := c.Params.ByName("projectID")
 	var worksIn []Models.WorksIn
 
-	err := Models.GetWorksInByUserAndProjectID(&worksIn, userID, projectID)
+	err := Models.GetWorksInByUserID(&worksIn, userID)
 
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)

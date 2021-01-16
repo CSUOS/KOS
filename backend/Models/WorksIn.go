@@ -22,9 +22,17 @@ func CreateWorksIn(worksIn *WorksIn) (err error) {
 	return nil
 }
 
-// GetWorksInByID 아이에 매칭되는 관계를 반환
+// GetWorksInByID 아이디에 매칭되는 관계를 반환
 func GetWorksInByID(worksIn *WorksIn, id string) (err error) {
 	if err = Config.DB.Where("id = ?", id).First(worksIn).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// GetWorksInByUserID 유저아이디가 속해있는 모든 프로젝트들을 반환한다.
+func GetWorksInByUserID(worksIn *[]WorksIn, id string) (err error) {
+	if err = Config.DB.Where("user_id = ?", id).Find(worksIn).Error; err != nil {
 		return err
 	}
 	return nil
@@ -40,10 +48,5 @@ func UpdateWorksIn(worksIn *WorksIn, id string) (err error) {
 // DeleteWorksIn 아이디에 매칭되는 유저 - 프로젝트 관계 삭제
 func DeleteWorksIn(worksIn *WorksIn, id string) (err error) {
 	Config.DB.Where("id = ?", id).Delete(worksIn)
-	return nil
-}
-
-// GetWorksInByUserAndProjectID 유저 아이디와 프로젝트 아이디와 매칭되는 관계를 가져온다.
-func GetWorksInByUserAndProjectID(worksIn *[]WorksIn, userID string, projectID string) (err error) {
 	return nil
 }

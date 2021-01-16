@@ -3,6 +3,7 @@ package Controllers
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/CSUOS/KOS/backend/Models"
 
@@ -87,6 +88,50 @@ func MoveList(c *gin.Context) {
 
 // CopyList 리스트를 복사한다.
 func CopyList(c *gin.Context) {
+	// 리퀘스트 바디
+	type copy struct {
+		ProjectID uint `json:"ProjectID"`
+		ListID    uint `json:"ListID"`
+	}
+
+	var temp copy
+
+	// JSON 디코드
+	c.BindJSON(&temp)
+
+	// 복사할 리스트와 복사된 리스트가 추가될 프로젝트
+	var targetList Models.List
+	var targetProject Models.Project
+
+	err := Models.GetProjectByID(&targetProject, strconv.FormatUint(uint64(temp.ProjectID), 10))
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	err = Models.GetListByID(&targetList, strconv.FormatUint(uint64(temp.ListID), 10))
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	// 새로운 리스트를 만든다.
+	// var newList Models.List
+
+	// newList.Index = targetList.Index
+	// newList.ProjectID = targetList.ProjectID
+	// newList.Name = targetList.Name
+
+	err = Models.CreateList(&targetList)
+
+	// 새로운 리스트를 기존에 프로젝트에 추가한다.
+	if err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		targetProject.Lists = append(targetProject.Lists, targetList)
+		c.JSON(http.StatusOK, targetProject)
+	}
 
 }
 

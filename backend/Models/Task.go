@@ -48,3 +48,19 @@ func DeleteTaskByListID(task *Task, id uint) (err error) {
 	Config.DB.Where("list_id = ?", id).Delete(task)
 	return nil
 }
+
+// GetTasksByListID 태스크들을 리스트 아이디로 조회해서 반환한다.
+func GetTasksByListID(tasks *[]Task, id uint) (err error) {
+	if err = Config.DB.Where("list_id = ?", id).Select("Name", "Attribute").Find(tasks).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// GetNTasksByListID 해당 리스트 아이디에 몇개의 태스크가 속해있는지 반환
+func GetNTasksByListID(id uint, count *int64) (err error) {
+	if err = Config.DB.Model(&Task{}).Where("list_id = ?", id).Count(count).Error; err != nil {
+		return err
+	}
+	return nil
+}
