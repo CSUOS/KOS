@@ -39,12 +39,15 @@ const ViewModel = () => {
 					ref={sidebarRef}
 				/>
 			}
-			<PageView
-				handleSideBarOpen={handleSideBarOpen}
-				open={open}
-				project={project !== undefined ? project[pid] : undefined}
-				ref={pageRef}
-			/>
+			{
+				project &&
+				<PageView
+					handleSideBarOpen={handleSideBarOpen}
+					open={open}
+					project={project[pid]}
+					ref={pageRef}
+				/>
+			}
 		</>
 	);
 };

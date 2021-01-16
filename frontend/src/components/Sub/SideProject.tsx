@@ -28,9 +28,7 @@ const SideProject = forwardRef<HTMLDivElement, SideProjectProps>(({
 					project={project}
 				/>
 			</Grid>
-			{ open ?
-				<SubMenu />
-				: undefined }
+			{ open && <SubMenu /> }
 		</Grid>
 	);
 });

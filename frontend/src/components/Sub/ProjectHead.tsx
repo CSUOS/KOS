@@ -33,9 +33,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 		<Grid ref={ref} className="project-header">
 			<Grid className="main-head-con">
 				{
-					sideBarOpen ?
-						undefined
-						:
+					!sideBarOpen &&
 						<Button
 							classList={['sidebar-btn']}
 							value={<ArrowForwardIosIcon onClick={handleSideBarOpen} />}
@@ -54,9 +52,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 								project={project}
 							/>
 						</Grid>
-						{ open ?
-							<SubMenu />
-							: undefined }
+						{ open && <SubMenu /> }
 					</Grid>
 				</Grid>
 				<Grid className="member-con">

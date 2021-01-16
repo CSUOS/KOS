@@ -81,7 +81,6 @@ export const ProjectDispatchContext = createContext<Dispatch<Array<ProjectObj>>>
 
 export const ProjectContextProvider = ({ children } : childrenObj) => {
 	const [project, setProject] = useState<Array<ProjectObj>>([{
-<<<<<<< HEAD
 		projectID: 1,
 		createAt: new Date('2021/01/02'),
 		modifiedAt: new Date('2021/01/02'),
