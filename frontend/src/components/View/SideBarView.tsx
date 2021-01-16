@@ -1,4 +1,6 @@
 import React, { createRef, forwardRef } from 'react';
+import clsx from 'clsx';
+
 import { Grid } from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
@@ -10,15 +12,16 @@ const buttonRef = createRef<HTMLDivElement>();
 const projectRef = createRef<HTMLDivElement>();
 
 type SideBarViewProps = {
+	type : string;
 	handleSideBarClose : () => void;
 	project : Array<ProjectObj> | undefined;
 }
 
 // View는 Controller의 data 및 function을 사용하여 사용자와 상호작용
 const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
-	handleSideBarClose, project
+	type, handleSideBarClose, project
 }, ref) => (
-	<Grid ref={ref} className="sidebar">
+	<Grid ref={ref} className={clsx('sidebar', type)}>
 		<header className="sidebar-header">
 			<Grid className="sidebar-header-title">
 				<img src="/logo192.png" alt="logo" />
@@ -35,8 +38,7 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 		</header>
 		<Grid className="project-con">
 			{
-				project !== undefined ?
-					project.map((p) => <SideProject ref={projectRef} project={p} />) : undefined
+				project && project.map((p) => <SideProject key={p.projectID} ref={projectRef} project={p} />)
 			}
 		</Grid>
 		<Grid className="generate-project">

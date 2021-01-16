@@ -1,0 +1,29 @@
+.member{
+    padding: 7px;
+    border-radius: 15px;
+    border: 3px solid white;
+    color: white;
+	margin-right: -10px;
+	cursor: pointer;
+	&.smile{
+		background-color: rgb(214, 149, 28);
+	}
+	&.pet{
+		background-color: rgb(46, 63, 99);
+	}
+	&.audio{
+		background-color: rgb(206, 188, 27);
+	}
+	&.beach{
+		background-color: rgb(60, 170, 165);
+	}
+	&.cake{
+		background-color: rgb(179, 77, 94);
+	}
+	&.apple{
+		background-color: gray;
+	}
+	&.child{
+		background-color: rgb(98, 69, 151);
+	}
+}

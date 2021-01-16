@@ -12,7 +12,7 @@ const taskRef = createRef<HTMLDivElement>();
 type PageViewProps = {
 	open: boolean;
 	handleSideBarOpen: () => void;
-	project: Array<ProjectObj> | undefined;
+	project: ProjectObj;
 }
 
 const PageView = forwardRef<HTMLDivElement, PageViewProps>(({
@@ -20,7 +20,7 @@ const PageView = forwardRef<HTMLDivElement, PageViewProps>(({
 }, ref) => {
 	/* ==============테스크 윈도우 열기 위한 임의의 값들============== */
 	const buttonName = '테스크 설정하기';
-	const task = project && project[0].List[0].tasks[0];
+	const task = project && project.List[0].tasks[0];
 	const [openTask, setOpenTask] = useState(false);
 
 	const handleTaskWindowOpen = () => {
@@ -33,11 +33,12 @@ const PageView = forwardRef<HTMLDivElement, PageViewProps>(({
 
 	return (
 		<Grid ref={ref} className="page">
-			{!openTask &&
+			{!openTask && project &&
 				<>
 					<ProjectHead
-						open={open}
+						sideBarOpen={open}
 						handleSideBarOpen={handleSideBarOpen}
+						project={project}
 					/>
 					<Button
 						classList={['']}
