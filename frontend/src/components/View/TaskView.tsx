@@ -19,7 +19,8 @@ Senectus et netus et malesuada. Nunc pulvinar sapien et ligula ullamcorper males
 const attributeNames1 = ['Text', 'Assign'];
 const attributeNames2 = ['Created', 'Modified', '단일 선택', '다중 선택', '단일 체크박스', '다중 체크박스'];
 const types = ['date-picker', 'date-picker', 'single-select', 'multi-select', 'checkbox', 'checkboxes'];
-const checkboxesValue = { '우희은': true, '두번째': true };
+const checkboxesValue = { '첫번째': true, '두번째': true };
+const selectValue = ['시작전', '진행중', '완료', '보류'];
 
 const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 	open, task, handleTaskWindowClose
@@ -46,8 +47,8 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 						/>))}
 					<AttributeValuePair attribute={attributeNames2[0]} type={types[0]} value={created} />
 					<AttributeValuePair attribute={attributeNames2[1]} type={types[1]} value={modified} />
-					<AttributeValuePair attribute={attributeNames2[2]} type={types[2]} />
-					<AttributeValuePair attribute={attributeNames2[3]} type={types[3]} />
+					<AttributeValuePair attribute={attributeNames2[2]} type={types[2]} value={selectValue} />
+					<AttributeValuePair attribute={attributeNames2[3]} type={types[3]} value={selectValue} />
 					<AttributeValuePair attribute={attributeNames2[4]} type={types[4]} />
 					<AttributeValuePair attribute={attributeNames2[5]} type={types[5]} value={checkboxesValue} />
 				</Grid>

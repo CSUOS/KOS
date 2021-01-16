@@ -47,15 +47,24 @@
 .tag{
 	display: inline;
 	margin-right: 10px;
-	span{
+	.label{
+		display: inline;
+		padding: 0;
+		margin: 0;
+	}
+	.item{
 		padding: 3px;
 		border-radius: $radius;
 		background-color: #ffcd77;
 	}
-	svg{
-		margin-top: 4px;
-		font-size: 1.0rem;
-		border-radius: $radius;
-		border: 1.4px solid $gray;
+	button{
+		padding: 0px 0px 0px 10px;
+		vertical-align: middle;
+		svg{
+			font-size: 1.0rem;
+			border-radius: $radius;
+			border: 1.4px solid $gray;
+		}
 	}
+
 }
