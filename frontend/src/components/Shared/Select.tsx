@@ -29,7 +29,7 @@ const Item = ({ label, type, hasCloseBtn }: ItemProps) => (
 );
 
 Item.defaultProps = {
-	hasCloseBtn: false,
+	hasCloseBtn: undefined,
 };
 
 type SelectProps = {
