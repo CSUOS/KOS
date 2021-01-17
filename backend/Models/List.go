@@ -22,6 +22,14 @@ func CreateList(list *List) (err error) {
 	return nil
 }
 
+// GetNListsByProjectID 프로젝트 아이디에 매칭되는 리스트들의 수를 반환한다.
+func GetNListsByProjectID(id uint, count *int64) (err error) {
+	if err = Config.DB.Model(&List{}).Where("project_id = ?", id).Count(count).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 // GetListByID 아이디에 매칭되는 리스트를 반환
 func GetListByID(list *List, id string) (err error) {
 	if err = Config.DB.Preload("Tasks").Where("id = ?", id).First(list).Error; err != nil {
@@ -62,6 +70,22 @@ func GetAllListID(list *[]List, id string) (err error) {
 // GetListsByProjectID 프로젝트 아이디에 매칭되는 리스트들을 반환
 func GetListsByProjectID(list *[]List, id string) (err error) {
 	if err = Config.DB.Where("project_id = ?", id).Select("Name", "Index").Find(list).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// GetListByProjectNListID 리스트 아이디와 프로젝트 아이디에 매칭되는 행 반환
+func GetListByProjectNListID(list *List, listID string, projectID string) (err error) {
+	if err = Config.DB.Where("id = ?", listID).Where("project_id = ?", projectID).First(list).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateIndex 인덱스를 새 인덱스로 바꾼다.
+func UpdateIndex(list *List, oldRank string, newRank int) (err error) {
+	if err = Config.DB.Where("rank=?", oldRank).First(list).Update(oldRank, newRank).Error; err != nil {
 		return err
 	}
 	return nil

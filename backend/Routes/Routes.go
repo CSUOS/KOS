@@ -68,10 +68,10 @@ func SetupRouter() *gin.Engine {
 		listRoutes.DELETE("delete/:id", Controllers.DeleteList)
 
 		// 리스트를 복사한다.
-		listRoutes.POST("copy", Controllers.CopyList)
+		listRoutes.PUT("copy", Controllers.CopyList)
 
 		// 리스트를 이동
-		listRoutes.POST("move", Controllers.MoveList)
+		listRoutes.PUT("move", Controllers.MoveList)
 
 		// 리스트를 다른 프로젝트로 이동
 		listRoutes.POST("exports", Controllers.ExportsList)
@@ -105,13 +105,13 @@ func SetupRouter() *gin.Engine {
 	{
 
 		// 유저의 프로젝트 정보를 가져온다.
-		worksInRoutes.GET("works_in/:id", Controllers.GetWorksInByUserID)
+		worksInRoutes.GET("works-in-user/:id", Controllers.GetWorksInByUserID)
 
 		// 유저를 프로젝트에 초대
 		worksInRoutes.POST("invite", Controllers.InviteUser)
 
 		// 프로젝트에서 나간다.
-		worksInRoutes.PUT("exit", Controllers.ExitUserFromProject)
+		worksInRoutes.DELETE("exit", Controllers.ExitUserFromProject)
 
 		worksInRoutes.GET("works-ins", Controllers.GetAllWorksIn)
 
