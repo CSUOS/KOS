@@ -90,7 +90,7 @@ const Select = ({
 
 	return (
 		<Grid className="select">
-			<button type="button" className="select-container" onClick={open ? handleDropdownClose : handleDropdownOpen}>
+			<button type="button" className="select-container" onClick={open ? handleDropdownClose : handleDropdownOpen} disabled={newOption.includes(' ')}>
 				<Grid className="selected">
 					{selected.map((value) => (
 						<Item label={value} type={type} hasCloseBtn={true} />

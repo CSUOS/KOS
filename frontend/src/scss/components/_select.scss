@@ -13,6 +13,9 @@
 		&:focus{
 			outline: none;
 		}
+		button:disabled{
+			text-decoration: none;
+		}
 
 		input{
 			flex: 1;

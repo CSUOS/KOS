@@ -5,6 +5,8 @@ export { default as SubMenu } from './SubMenu';
 export { default as SideMenu } from './SideMenu';
 export { default as Member } from './Member';
 export { default as AttributeValuePair } from './AttributeValuePair';
+export { default as AttributeButton } from './AttributeButton';
+export { default as ValueField } from './ValueField';
 export { default as DatePicker } from './DatePicker';
 export { default as Tags } from './Tags';
 export { default as Select } from './Select';
