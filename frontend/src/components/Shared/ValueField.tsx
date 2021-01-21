@@ -48,6 +48,7 @@ const ValueField = ({
 					{type === 'add-button'}
 					{(type === 'writer' || type === 'editor') && value}
 					{type === 'text-field' && <TextField value={value} handleValueChange={handleValueChange} />}
+					{type === 'url' && <TextField value={value} handleValueChange={handleValueChange} isURL={true} />}
 					{(type === 'date-picker' || type === 'deadline' || type === 'CreatedAt' || type === 'EditedAt')
 						&& <DatePicker value={value} editable={editable} handleValueChange={handleValueChange} />}
 					{type === 'checkbox' && <Checkbox value={value} handleValueChange={handleValueChange} />}

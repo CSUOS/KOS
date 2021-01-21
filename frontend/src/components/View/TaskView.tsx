@@ -19,7 +19,7 @@ Senectus et netus et malesuada. Nunc pulvinar sapien et ligula ullamcorper males
 const attributeNames1 = ['Text', 'Assign'];
 const attributeNames2 = ['Created', 'Modified', '단일 선택', '다중 선택', '단일 체크박스', '다중 체크박스', '+'];
 const types = ['text-field', 'date-picker', 'single-select', 'multi-select', 'checkbox', 'checkboxes', 'add-button'];
-const defaultTypes = ['member'];
+const defaultTypes = ['member', 'url'];
 const checkboxesValue = { '첫번째': true, '두번째': true };
 const selectValue = ['시작전', '진행중', '완료', '보류'];
 
