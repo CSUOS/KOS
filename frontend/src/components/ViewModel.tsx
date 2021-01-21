@@ -15,7 +15,6 @@ const ViewModel = () => {
 	const setProject : Dispatch<Array<ProjectObj>> = useProjectDispatch();
 	const pid : number = usePIDState();
 	const setPID : Dispatch<number> = usePIDDispatch();
-
 	const handleSideBarOpen = () => {
 		setOpen(true);
 	};

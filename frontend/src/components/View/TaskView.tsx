@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 
 import { Grid } from '@material-ui/core';
 
-import { Window, WindowHeader, AttributeValuePair } from '../Shared';
+import { Window, WindowHeader, AttributeValuePair as Pair } from '../Shared';
 import { TaskObj } from '../Model';
 
 type TaskViewProps = {
@@ -18,7 +18,7 @@ const descValue = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed 
 Senectus et netus et malesuada. Nunc pulvinar sapien et ligula ullamcorper malesuada proin. Neque convallis a cras semper auctor. Libero id faucibus nisl tincidunt eget. Leo a diam sollicitudin tempor id. A lacus vestibulum sed arcu non odio euismod lacinia. In tellus integer feugiat scelerisque. Feugiat in fermentum posuere urna nec tincidunt praesent. Porttitor rhoncus dolor purus non enim praesent elementum facilisis. Nisi scelerisque eu ultrices vitae auctor eu augue ut lectus.`;
 const attributeNames1 = ['Text', 'Assign'];
 const attributeNames2 = ['Created', 'Modified', '단일 선택', '다중 선택', '단일 체크박스', '다중 체크박스', '+'];
-const types = ['date-picker', 'date-picker', 'single-select', 'multi-select', 'checkbox', 'checkboxes', 'add-button'];
+const types = ['text-field', 'date-picker', 'single-select', 'multi-select', 'checkbox', 'checkboxes', 'add-button'];
 const checkboxesValue = { '첫번째': true, '두번째': true };
 const selectValue = ['시작전', '진행중', '완료', '보류'];
 
@@ -39,22 +39,20 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 			>
 				<WindowHeader mainTitle={mainTitle} isTask={true} />
 				<Grid className="task-attributes">
-					{attributes?.map((attribute, index) => (
-						<AttributeValuePair
+					{/* {attributes?.map((attribute, index) => (
+						<Pair
 							attribute={attributeNames1[index]}
 							type={attribute.key}
 							value={attribute.value}
-						/>))}
-					<AttributeValuePair attribute={attributeNames2[0]} type={types[0]} value={created} />
-					<AttributeValuePair attribute={attributeNames2[1]} type={types[1]} value={modified} />
-					<AttributeValuePair attribute={attributeNames2[2]} type={types[2]} value={selectValue} />
-					<AttributeValuePair attribute={attributeNames2[3]} type={types[3]} value={selectValue} />
-					{/* <AttributeValuePair attribute={attributeNames2[4]} type={types[4]} />
-					<AttributeValuePair attribute={attributeNames2[5]} type={types[5]} value={checkboxesValue} /> */}
-					<AttributeValuePair attribute={attributeNames2[6]} type={types[6]} />
+						/>))} */}
+					<Pair type={types[3]} />
+					<Pair type={types[2]} />
+					<Pair type={types[0]} />
+					<Pair type={types[1]} />
+					<Pair type={types[4]} />
 				</Grid>
 				<Grid className="task-description">
-					<AttributeValuePair type={descType} attribute={descAttri} />
+					<Pair type={descType} attribute={descAttri} />
 					{descValue}
 				</Grid>
 			</Window>

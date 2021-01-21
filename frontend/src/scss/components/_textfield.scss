@@ -1,27 +1,14 @@
 .textfield{
-	flex: 1;
+	display: flex;
 	width: 100%;
-	.textfield-container{
-		display: flex;
-		width: 100%;
-		min-height: 30px;
-		align-items: center;
+	justify-content: flex-start;
+	input{
+		flex: 1;
+		border: none;
 		font-size: inherit;
-		&:hover, &:active{
-			background-color: $light-gray;
-		}
+		background-color: inherit;
 		&:focus{
 			outline: none;
-		}
-
-		input{
-			flex: 1;
-			border: none;
-			font-size: inherit;
-			background-color: inherit;
-			&:focus{
-				outline: none;
-			}
 		}
 	}
 }

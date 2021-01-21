@@ -4,38 +4,18 @@ import { Grid } from '@material-ui/core';
 
 type TextFieldProps = {
 	value?: string | undefined;
+	handleValueChange: (arg:any) => void;
 }
 
-const TextField = ({ value }: TextFieldProps) => {
-	const [clicked, setClicked] = useState(false);
-	const [text, setText] = useState(value);
-
-	const handleButtonClick = (e : any) => {
-		console.log('handle button');
-		setClicked(!clicked);
-	};
-
-	const handleInputChange = (e : any) => {
-		setText(e.target.value);
-	};
-
-	const handleKeyPress = (e: any) => {
-		if (e.key === 'Enter') {
-			handleInputChange(e);
-			setClicked(false);
-			console.log('handlekey');
-		}
-	};
-
-	return (
-		<Grid className="textfield">
-			<button className="textfield-container" type="button" onClick={handleButtonClick} disabled={text?.includes(' ')}>
-				<input type="text" readOnly={!clicked} onChange={handleInputChange} value={text} onKeyPress={handleKeyPress} />
-			</button>
-
-		</Grid>
-	);
-};
+const TextField = ({ value, handleValueChange }: TextFieldProps) => (
+	<Grid className="textfield">
+		<input
+			type="text"
+			onChange={(e:any) => handleValueChange(e.target.value)}
+			value={value}
+		/>
+	</Grid>
+);
 
 TextField.defaultProps = {
 	value: undefined,

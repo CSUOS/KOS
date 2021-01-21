@@ -1,4 +1,4 @@
-import React, { ReactFragment, useState } from 'react';
+import React, { forwardRef, ReactFragment, useState } from 'react';
 
 import { Grid, Paper } from '@material-ui/core';
 
@@ -25,10 +25,10 @@ type AttributeSelectProps = {
 	// onOptionClick: () => void,
 };
 
-const AttributeSelect = ({
+const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 	text, handleInputChange, handleMenuClose
-}: AttributeSelectProps) => (
-	<Grid className="attriselect">
+}, ref) => (
+	<Grid ref={ref} className="attriselect">
 		<Paper className="container" elevation={5}>
 			<div>
 				<Part subject={subjects[0]}>
@@ -47,6 +47,6 @@ const AttributeSelect = ({
 			</div>
 		</Paper>
 	</Grid>
-);
+));
 
 export default AttributeSelect;

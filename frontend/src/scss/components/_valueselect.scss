@@ -1,0 +1,18 @@
+.valueselect{
+	width: 100%;
+	position: absolute;
+	z-index: 999;
+	margin-top: 10px;
+	.select{
+		button{
+			width: 100%;
+			padding: 10px;
+			text-align: start;
+			font-size: inherit;
+			&:hover, &:active, &:focus{
+				background-color: $light-gray;
+				outline: none;
+			}
+		}
+	}
+}
