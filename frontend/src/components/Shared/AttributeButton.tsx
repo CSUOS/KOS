@@ -51,6 +51,7 @@ const AttributeButton = ({
 										<Button
 											classList={['']}
 											value={<CloseSharpIcon />}
+											tooltip="속성 삭제하기"
 											transparent={true}
 										/>
 									</Grid>

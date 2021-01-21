@@ -7,10 +7,12 @@ type TextFieldProps = {
 	handleValueChange: (arg:any) => void;
 }
 
+const placeholder = '텍스트를 입력하세요';
 const TextField = ({ value, handleValueChange }: TextFieldProps) => (
 	<Grid className="textfield">
 		<input
 			type="text"
+			placeholder={placeholder}
 			onChange={(e:any) => handleValueChange(e.target.value)}
 			value={value}
 		/>

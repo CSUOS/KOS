@@ -5,33 +5,28 @@ import { Grid } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 type DatePickerProps = {
-	value : string | number | Date;
+	value: string | number | Date;
+	editable: boolean;
+	handleValueChange: (date: any) => void;
 }
 
-const DatePicker = ({ value } : DatePickerProps) => {
-	const [selectedDate, setSelectedDate] = useState(new Date(value));
-
-	const handleDateChange = (date: any) => {
-		setSelectedDate(date);
-	};
-
-	return (
-		<Grid className="datepicker">
-			<MuiPickersUtilsProvider utils={DateFnsUtils}>
-				<KeyboardDatePicker
-					disableToolbar
-					variant="inline"
-					format="yyyy-MM-dd"
-					id="date-picker-inline"
-					value={selectedDate}
-					onChange={handleDateChange}
-					KeyboardButtonProps={{
-						'aria-label': 'change date',
-					}}
-				/>
-			</MuiPickersUtilsProvider>
-		</Grid>
-	);
-};
+const DatePicker = ({ value, handleValueChange, editable }: DatePickerProps) => (
+	<Grid className="datepicker">
+		<MuiPickersUtilsProvider utils={DateFnsUtils}>
+			<KeyboardDatePicker
+				disableToolbar
+				variant="inline"
+				format="yyyy-MM-dd"
+				readOnly={!editable}
+				value={value}
+				onChange={(date) => handleValueChange(date)}
+				KeyboardButtonProps={{
+					'aria-label': 'change date',
+				}}
+				InputProps={{ readOnly: !editable }}
+			/>
+		</MuiPickersUtilsProvider>
+	</Grid>
+);
 
 export default DatePicker;

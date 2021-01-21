@@ -74,7 +74,7 @@ const AttributeValuePair = ({
 	const [newOption, setNewOption] = useState('');
 
 	// for not creatable
-	const [singleValue, setSingleValue] = useState('archive');
+	const [singleValue, setSingleValue] = useState();
 
 	const handleMenuOpen = () => {
 		setMenuOpen(true);

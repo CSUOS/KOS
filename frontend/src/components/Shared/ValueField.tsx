@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
 import { Grid } from '@material-ui/core';
 
 import {
-	DatePicker, SelectItem, Checkbox, Checkboxes, TextField,
+	DatePicker, SelectItem, Checkbox, TextField,
 } from '.';
 
 type ValueFieldProps = {
@@ -37,7 +37,6 @@ const ValueField = ({
 			handleSelectClose();
 		}
 	};
-	const example = new Date();
 	return (
 		<Grid className="valuefield">
 			{type !== 'description' &&
@@ -48,8 +47,8 @@ const ValueField = ({
 				>
 					{type === 'add-button'}
 					{type === 'text-field' && <TextField value={value} handleValueChange={handleValueChange} />}
-					{type === 'date-picker' && <DatePicker value={example} />}
-					{type === 'checkbox' && <Checkbox />}
+					{type === 'date-picker' && <DatePicker value={value} editable={editable} handleValueChange={handleValueChange} />}
+					{type === 'checkbox' && <Checkbox value={value} handleValueChange={handleValueChange} />}
 					{(type === 'single-select' || type === 'multi-select') &&
 					value.map((option:string) => <SelectItem option={option} />)}
 					{creatable &&
