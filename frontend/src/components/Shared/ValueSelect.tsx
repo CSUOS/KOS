@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
 import { Grid, Paper } from '@material-ui/core';
-import { SelectItem, Tag } from '.';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { SelectItem, Tag, Button } from '.';
 
 type ValueSelectProps = {
 	type?: string | undefined,
@@ -28,17 +29,27 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 
 	return (
 		<Grid ref={ref} className="valueselect">
-			<Paper className="select" elevation={5}>
+			<Paper elevation={5}>
 				{options && options.map((option) => (
-					<button
-						type="button"
-						onClick={onOptionClick}
-						value={option}
-					>
-						{type === 'member'
-							? <Tag value={option} hasCloseBtn={false} />
-							: <SelectItem option={option} />}
-					</button>
+					<Grid className="container">
+						<button
+							className="selectbtn"
+							type="button"
+							onClick={onOptionClick}
+							value={option}
+						>
+							{type === 'member'
+								? <Tag value={option} hasCloseBtn={false} />
+								: <SelectItem option={option} />}
+						</button>
+						{type !== 'member' &&
+							<Button
+								classList={['']}
+								value={<MoreVertIcon />}
+								transparent={true}
+								tooltip="설정하기"
+							/>}
+					</Grid>
 				))}
 				{(creatable && newOption) &&
 					(

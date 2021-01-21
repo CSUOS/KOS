@@ -15,7 +15,6 @@ const formatURL = (value: string | undefined) => {
 	if (value !== undefined && !value.includes('http://')) {
 		return 'http://'.concat(value);
 	}
-	console.log(value);
 	return value;
 };
 
@@ -28,7 +27,7 @@ const TextField = ({ value, handleValueChange, isURL }: TextFieldProps) => (
 			value={value}
 		/>
 		{
-			isURL &&
+			isURL && value &&
 			<a href={formatURL(value)} target="_sub">
 				<Button
 					classList={['']}

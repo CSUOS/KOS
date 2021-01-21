@@ -3,9 +3,13 @@
 	position: absolute;
 	z-index: 999;
 	margin-top: 10px;
-	.select{
-		button{
-			width: 100%;
+	.container{
+		display: flex;
+		width: 100%;
+		align-items: center;
+		justify-content: space-between;
+		.selectbtn{
+			flex: 1;
 			padding: 10px;
 			text-align: start;
 			font-size: inherit;
