@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { Grid } from '@material-ui/core';
 
 import {
-	DatePicker, SelectItem, Checkbox, TextField,
+	DatePicker, SelectItem, Checkbox, TextField, Tag,
 } from '.';
 
 type ValueFieldProps = {
@@ -46,11 +46,14 @@ const ValueField = ({
 					onClick={onButtonClick}
 				>
 					{type === 'add-button'}
+					{(type === 'writer' || type === 'editor') && value}
 					{type === 'text-field' && <TextField value={value} handleValueChange={handleValueChange} />}
-					{type === 'date-picker' && <DatePicker value={value} editable={editable} handleValueChange={handleValueChange} />}
+					{(type === 'date-picker' || type === 'deadline' || type === 'CreatedAt' || type === 'EditedAt')
+						&& <DatePicker value={value} editable={editable} handleValueChange={handleValueChange} />}
 					{type === 'checkbox' && <Checkbox value={value} handleValueChange={handleValueChange} />}
-					{(type === 'single-select' || type === 'multi-select') &&
-					value.map((option:string) => <SelectItem option={option} />)}
+					{(type === 'single-select' || type === 'multi-select' || type === 'state')
+						&& value.map((option:string) => <SelectItem option={option} />)}
+					{type === 'member' && value.map((option:string) => <Tag value={option} />)}
 					{creatable &&
 						<input
 							className="option-input"

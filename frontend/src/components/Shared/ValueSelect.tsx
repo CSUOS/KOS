@@ -1,8 +1,9 @@
 import React, { forwardRef } from 'react';
 import { Grid, Paper } from '@material-ui/core';
-import { SelectItem } from '.';
+import { SelectItem, Tag } from '.';
 
 type ValueSelectProps = {
+	type?: string | undefined,
 	options?: Array<string> | undefined,
 	creatable: boolean,
 	newOption?: string | undefined,
@@ -11,11 +12,11 @@ type ValueSelectProps = {
 	handleSelectClose: () => void,
 };
 
-const buttonName = ' 추가하기';
+const buttonName = '추가하기';
 const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
-	options, creatable, newOption, selectOption, addOption, handleSelectClose
+	type, options, creatable, newOption, selectOption, addOption, handleSelectClose
 }, ref) => {
-	const onOptionClick = (e:any) => {
+	const onOptionClick = (e: any) => {
 		selectOption(e.target.value);
 		handleSelectClose();
 	};
@@ -34,7 +35,9 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 						onClick={onOptionClick}
 						value={option}
 					>
-						<SelectItem option={option} />
+						{type === 'member'
+							? <Tag value={option} hasCloseBtn={false} />
+							: <SelectItem option={option} />}
 					</button>
 				))}
 				{(creatable && newOption) &&
@@ -44,7 +47,9 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 							onClick={onAddOptionClick}
 							value={newOption}
 						>
-							<SelectItem option={newOption} />
+							{type === 'member'
+								? <Tag value={newOption} hasCloseBtn={false} />
+								: <SelectItem option={newOption} />}
 							{buttonName}
 						</button>
 					)}
@@ -54,6 +59,7 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 });
 
 ValueSelect.defaultProps = {
+	type: undefined,
 	options: undefined,
 	newOption: undefined,
 };

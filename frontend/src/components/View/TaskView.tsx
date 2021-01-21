@@ -19,6 +19,7 @@ Senectus et netus et malesuada. Nunc pulvinar sapien et ligula ullamcorper males
 const attributeNames1 = ['Text', 'Assign'];
 const attributeNames2 = ['Created', 'Modified', '단일 선택', '다중 선택', '단일 체크박스', '다중 체크박스', '+'];
 const types = ['text-field', 'date-picker', 'single-select', 'multi-select', 'checkbox', 'checkboxes', 'add-button'];
+const defaultTypes = ['member'];
 const checkboxesValue = { '첫번째': true, '두번째': true };
 const selectValue = ['시작전', '진행중', '완료', '보류'];
 
@@ -31,7 +32,7 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 	const modified = task?.modifiedAt;
 
 	return (
-		<Grid ref={ref} className="task">
+		<Grid ref={ref} className="taskview">
 			<Window
 				open={open}
 				hasCloseBtn={true}
@@ -49,7 +50,8 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 					<Pair type={types[2]} />
 					<Pair type={types[0]} />
 					<Pair type={types[1]} />
-					<Pair type={types[4]} />
+					<Pair />
+					{defaultTypes.map((type) => <Pair type={type} />)}
 				</Grid>
 				<Grid className="task-description">
 					<Pair type={descType} attribute={descAttri} />

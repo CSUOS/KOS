@@ -131,7 +131,6 @@ const AttributeValuePair = ({
 	) => {
 		if (refObject.current && !refObject.current.contains(e.target)) {
 			callback();
-			console.log('handleOutsideClick 실행');
 		}
 	};
 
@@ -181,6 +180,7 @@ const AttributeValuePair = ({
 					{selectable && selectOpen &&
 						<Select
 							ref={selectRef}
+							type={type}
 							options={options}
 							creatable={creatable}
 							newOption={newOption}

@@ -9,11 +9,6 @@ type CheckboxProps = {
 }
 const Checkbox = ({ value, handleValueChange }: CheckboxProps) => (
 	<Grid className="checkboxs">
-		{/* <input
-			type="checkbox"
-			defaultChecked={value}
-			onChange={(e) => handleValueChange(!e.target.checked)}
-		/> */}
 		<FormGroup row>
 			<FormControlLabel
 				control={

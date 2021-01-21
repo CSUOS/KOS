@@ -25,18 +25,20 @@ const Window = ({
 				<Grid className="window-background-header" />
 				<Backdrop className="window-backdrop" open={open}>
 					<Paper className="window">
-						{hasCloseBtn &&
-							<Grid className="window-closebutton">
-								<Button
-									classList={['']}
-									value={<CloseIcon />}
-									transparent={true}
-									onClickFun={handleWindowClose}
-								/>
-							</Grid>}
-						<Grid className="window-content">
-							{children}
-						</Grid>
+						<div className="window-container">
+							{hasCloseBtn &&
+								<Grid className="window-closebutton">
+									<Button
+										classList={['']}
+										value={<CloseIcon />}
+										transparent={true}
+										onClickFun={handleWindowClose}
+									/>
+								</Grid>}
+							<Grid className="window-content">
+								{children}
+							</Grid>
+						</div>
 					</Paper>
 				</Backdrop>
 			</Grid>}
