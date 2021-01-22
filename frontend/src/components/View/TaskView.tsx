@@ -1,8 +1,10 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState, useEffect } from 'react';
 
 import { Grid } from '@material-ui/core';
 
-import { Window, WindowHeader, AttributeValuePair as Pair } from '../Shared';
+import {
+	Window, TaskTitle, AttributeValuePair as Pair, EmojiPicker
+} from '../Shared';
 import { TaskObj } from '../Model';
 
 type TaskViewProps = {
@@ -11,6 +13,7 @@ type TaskViewProps = {
 	handleTaskWindowClose: () => void;
 }
 
+const userName = '사용자';
 const descType = 'description';
 const descAttri = '설명';
 /* ==========[ 임시 값들 ]========== */
@@ -22,14 +25,53 @@ const types = ['text-field', 'date-picker', 'single-select', 'multi-select', 'ch
 const defaultTypes = ['member', 'url'];
 const checkboxesValue = { '첫번째': true, '두번째': true };
 const selectValue = ['시작전', '진행중', '완료', '보류'];
-
+const emojisTempData = [
+	{ id: 'woman-gesturing-ok', users: ['사용자'] },
+	{ id: 'heart_eyes', users: ['김철수'] }];
 const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 	open, task, handleTaskWindowClose
 }, ref) => {
+	const [emojis, setEmojis] = useState(emojisTempData);
 	const mainTitle = `TASK #${task?.taskID}`;
 	const attributes = task?.attribute;
 	const created = task?.createAt;
 	const modified = task?.modifiedAt;
+
+	const getClickedEmojiIndex = (emojiId: string) => {
+		let clickedIndex = -1;
+		emojis.forEach((emoji, index) => {
+			if (emoji.id === emojiId) {
+				clickedIndex = index;
+			}
+		});
+		return clickedIndex;
+	};
+
+	const handleEmojis = (id: string) => {
+		const index = getClickedEmojiIndex(id);
+		if (index !== -1) {
+			const emojisData = emojis.slice();
+			const clickedEmojiData = emojisData[index];
+			if (clickedEmojiData.users.includes(userName)) {
+				if (clickedEmojiData.users.length === 1) {
+					const editedEmojisData =
+						emojisData.filter((emojiData: any) => emojiData !== clickedEmojiData);
+					setEmojis(editedEmojisData);
+				} else {
+					const editedUserData =
+						clickedEmojiData.users.filter((user: string) => user !== userName);
+					const editedEmojiData = { ...clickedEmojiData, users: editedUserData };
+					emojisData[index] = editedEmojiData;
+					setEmojis(emojisData);
+				}
+			} else {
+				clickedEmojiData.users.push(userName);
+				setEmojis(emojisData);
+			}
+		} else {
+			setEmojis([...emojis, { id, users: [userName] }]);
+		}
+	};
 
 	return (
 		<Grid ref={ref} className="taskview">
@@ -38,7 +80,12 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 				hasCloseBtn={true}
 				handleWindowClose={handleTaskWindowClose}
 			>
-				<WindowHeader mainTitle={mainTitle} isTask={true} />
+				<TaskTitle
+					taskTitle={mainTitle}
+					handleTitleChange={() => { }}
+					emojis={emojis}
+					handleEmojis={handleEmojis}
+				/>
 				<Grid className="task-attributes">
 					{/* {attributes?.map((attribute, index) => (
 						<Pair
@@ -46,12 +93,12 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 							type={attribute.key}
 							value={attribute.value}
 						/>))} */}
-					<Pair type={types[3]} />
+					{/* <Pair type={types[3]} />
 					<Pair type={types[2]} />
 					<Pair type={types[0]} />
 					<Pair type={types[1]} />
 					<Pair />
-					{defaultTypes.map((type) => <Pair type={type} />)}
+					{defaultTypes.map((type) => <Pair type={type} />)} */}
 				</Grid>
 				<Grid className="task-description">
 					<Pair type={descType} name={descAttri} />
