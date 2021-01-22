@@ -12,7 +12,8 @@ const getEditable = (type: string | undefined) => {
 	if (type === 'creator' ||
 		type === 'created' ||
 		type === 'modified' ||
-		type === 'editor') {
+		type === 'editor' ||
+		type === 'add-button') {
 		return false;
 	}
 	return true;
@@ -43,7 +44,7 @@ const getSelectable = (classIndex: number, type: string | undefined) => {
 
 type AttributeValuePairProps = {
 	type?: string | undefined;
-	attribute?: string | undefined;
+	name?: string | undefined;
 	value?: any | undefined;
 }
 
@@ -55,7 +56,7 @@ const optionValues = ['agnes obel', 'archive', 'lana del rey', 'kodaline'];
 const defaultValue = ['archive'];
 
 const AttributeValuePair = ({
-	type, attribute, value
+	type, name, value
 }: AttributeValuePairProps) => {
 	const editable = getEditable(type);
 	const creatable = getCreatable(type);
@@ -157,7 +158,7 @@ const AttributeValuePair = ({
 			<Grid className="attributevaluepair">
 				<Attribute
 					type={type}
-					name={attribute}
+					name={name}
 					menuOpen={menuOpen}
 					handleMenuOpen={handleMenuOpen}
 					handleMenuClose={handleMenuClose}
@@ -203,7 +204,7 @@ const AttributeValuePair = ({
 
 AttributeValuePair.defaultProps = {
 	type: 'add-button',
-	attribute: '속성 이름',
+	name: '속성 이름',
 	value: undefined,
 };
 

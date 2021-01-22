@@ -54,7 +54,7 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 					{defaultTypes.map((type) => <Pair type={type} />)}
 				</Grid>
 				<Grid className="task-description">
-					<Pair type={descType} attribute={descAttri} />
+					<Pair type={descType} name={descAttri} />
 					{descValue}
 				</Grid>
 			</Window>

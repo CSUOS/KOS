@@ -14,6 +14,7 @@ type ValueSelectProps = {
 };
 
 const buttonName = '추가하기';
+const tooltip = '옵션 설정하기';
 const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 	type, options, creatable, newOption, selectOption, addOption, handleSelectClose
 }, ref) => {
@@ -47,7 +48,7 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 								classList={['']}
 								value={<MoreVertIcon />}
 								transparent={true}
-								tooltip="설정하기"
+								tooltip={tooltip}
 							/>}
 					</Grid>
 				))}
