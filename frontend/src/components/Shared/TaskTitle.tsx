@@ -41,6 +41,7 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 			<Grid ref={ref} className="windowheader">
 				<Grid className="windowheader-main" container>
 					<h1>{taskTitle}</h1>
+					{/* <input type="text" /> */}
 					<Grid className="windowheader-task">
 						<Button
 							classList={['task-pin']}
@@ -60,9 +61,12 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 				</Grid>
 			</Grid>
 			{openEmojiPicker
-				&& <EmojiPicker
-					onEmojiSelect={onEmojiSelect}
-				/>}
+				&&
+				<Grid className="picker">
+					<EmojiPicker
+						onEmojiSelect={onEmojiSelect}
+					/>
+				</Grid>}
 		</>
 	);
 });

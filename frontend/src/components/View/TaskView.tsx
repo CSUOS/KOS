@@ -6,6 +6,7 @@ import {
 	Window, TaskTitle, AttributeValuePair as Pair, EmojiPicker
 } from '../Shared';
 import { TaskObj } from '../Model';
+import { getClickedEmojiIndex } from '../Shared/EmojiList';
 
 type TaskViewProps = {
 	open: boolean;
@@ -26,7 +27,7 @@ const defaultTypes = ['member', 'url'];
 const checkboxesValue = { '첫번째': true, '두번째': true };
 const selectValue = ['시작전', '진행중', '완료', '보류'];
 const emojisTempData = [
-	{ id: 'woman-gesturing-ok', users: ['사용자'] },
+	{ id: 'woman-gesturing-ok', users: [userName] },
 	{ id: 'heart_eyes', users: ['김철수'] }];
 const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 	open, task, handleTaskWindowClose
@@ -37,18 +38,8 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 	const created = task?.createAt;
 	const modified = task?.modifiedAt;
 
-	const getClickedEmojiIndex = (emojiId: string) => {
-		let clickedIndex = -1;
-		emojis.forEach((emoji, index) => {
-			if (emoji.id === emojiId) {
-				clickedIndex = index;
-			}
-		});
-		return clickedIndex;
-	};
-
 	const handleEmojis = (id: string) => {
-		const index = getClickedEmojiIndex(id);
+		const index = getClickedEmojiIndex(emojis, id);
 		if (index !== -1) {
 			const emojisData = emojis.slice();
 			const clickedEmojiData = emojisData[index];

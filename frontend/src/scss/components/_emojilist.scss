@@ -23,18 +23,24 @@
 		align-items: center;
 		text-align: end;
 		border: 1px solid $light-gray;
-		border-radius: 10px;
+		border-radius: 15px;
 		span{
 			flex: 1;
 			vertical-align: middle;
 			font-weight: 700;
 		}
 
-		&:hover, &:active, &.checked{
+		&:hover, &:active{
 			border: 1.5px solid $sub-color;
-			border-radius: 10px;
+			border-radius: 15px;
 			background-color: $base-color;
-			color: white;
+		}
+	}
+	&.clicked{
+		button{
+			border: 1.5px solid $sub-color;
+			border-radius: 15px;
+			background-color: $base-color;
 		}
 	}
 }

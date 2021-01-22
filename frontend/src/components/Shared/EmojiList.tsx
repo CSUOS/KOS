@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 
 import { Grid } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
@@ -16,10 +17,21 @@ type EmojiItemProps = {
 	onClickEmoji: () => void;
 }
 
+export const getClickedEmojiIndex = (emojis: Array<EmojiItemObject>, emojiId: string) => {
+	let clickedIndex = -1;
+	emojis.forEach((emoji, index) => {
+		if (emoji.id === emojiId) {
+			clickedIndex = index;
+		}
+	});
+	return clickedIndex;
+};
+
 const EmojiItem = ({ emoji, onClickEmoji }: EmojiItemProps) => {
 	const tooltip = emoji.users.reduce((acc, cur) => acc.concat(', ', cur)).concat(' reacted');
+	const clicked = emoji.users.includes('사용자');
 	return (
-		<Grid className="emojiitem">
+		<Grid className={clsx('emojiitem', clicked && 'clicked')}>
 			<Button
 				classList={[]}
 				value={
