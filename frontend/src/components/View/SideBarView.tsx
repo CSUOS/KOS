@@ -39,7 +39,7 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 			</header>
 			<Grid className="project-con">
 				{
-					project && Object.keys(project).map((id) => <SideProject pid={Number(id)} />)
+					project && Object.keys(project).map((id) => <SideProject key={id} pid={Number(id)} />)
 				}
 			</Grid>
 			<Grid className="generate-project">
