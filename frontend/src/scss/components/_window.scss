@@ -13,10 +13,9 @@
 		align-items: flex-start;
 		padding-top: $header-height + 40px;
 		.window{
-			width: 70%;
-			min-width: 700px;
-			min-height: 45.0rem;
-			.window-container{
+			&.task{
+				width: 70%;
+				min-width: 700px;
 				min-height: 45.0rem;
 				max-height: 45.0rem;
 				overflow: auto;

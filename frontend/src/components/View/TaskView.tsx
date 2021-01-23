@@ -14,6 +14,7 @@ type TaskViewProps = {
 	handleTaskWindowClose: () => void;
 }
 
+const windowType = 'task';
 const userName = '사용자';
 const descType = 'description';
 const descAttri = '설명';
@@ -94,6 +95,7 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 	return (
 		<Grid ref={ref} className="taskview">
 			<Window
+				type={windowType}
 				open={open}
 				hasCloseBtn={true}
 				handleWindowClose={handleTaskWindowClose}
