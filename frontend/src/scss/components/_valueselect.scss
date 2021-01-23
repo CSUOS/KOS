@@ -4,18 +4,23 @@
 	z-index: 999;
 	margin-top: 10px;
 	.container{
-		display: flex;
 		width: 100%;
-		align-items: center;
-		justify-content: space-between;
-		.selectbtn{
-			flex: 1;
-			padding: 10px;
-			text-align: start;
-			font-size: inherit;
-			&:hover, &:active, &:focus{
-				background-color: $light-gray;
-				outline: none;
+		max-height: 20.0rem;
+		overflow: auto;
+		.item{
+			display: flex;
+			width: 100%;
+			align-items: center;
+			justify-content: space-between;
+			.selectbtn{
+				flex: 1;
+				padding: 10px;
+				text-align: start;
+				font-size: inherit;
+				&:hover, &:active, &:focus{
+					background-color: $light-gray;
+					outline: none;
+				}
 			}
 		}
 	}

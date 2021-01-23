@@ -30,9 +30,9 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 
 	return (
 		<Grid ref={ref} className="valueselect">
-			<Paper elevation={5}>
+			<Paper className="container" elevation={5}>
 				{options && options.map((option) => (
-					<Grid className="container">
+					<Grid className="item">
 						<button
 							className="selectbtn"
 							type="button"
@@ -58,21 +58,17 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 				))}
 				{(creatable && newOption) &&
 					(
-						<button
-							type="button"
-							onClick={onAddOptionClick}
-							value={newOption}
-						>
-							{type === 'member'
-								? (
-									<Tag
-										value={newOption}
-										hasCloseBtn={false}
-									/>
-								)
-								: <SelectItem value={newOption} />}
-							{buttonName}
-						</button>
+						<Grid className="item">
+							<button
+								className="selectbtn"
+								type="button"
+								onClick={onAddOptionClick}
+								value={newOption}
+							>
+								<SelectItem value={newOption} />
+								{buttonName}
+							</button>
+						</Grid>
 					)}
 			</Paper>
 		</Grid>
