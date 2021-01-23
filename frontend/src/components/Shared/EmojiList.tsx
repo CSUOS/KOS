@@ -18,12 +18,7 @@ type EmojiItemProps = {
 }
 
 export const getClickedEmojiIndex = (emojis: Array<EmojiItemObject>, emojiId: string) => {
-	let clickedIndex = -1;
-	emojis.forEach((emoji, index) => {
-		if (emoji.id === emojiId) {
-			clickedIndex = index;
-		}
-	});
+	const clickedIndex = emojis.findIndex((emoji) => emoji.id === emojiId);
 	return clickedIndex;
 };
 

@@ -15,8 +15,9 @@
 		.window{
 			width: 70%;
 			min-width: 700px;
-			min-height: 650px;
+			min-height: 45.0rem;
 			.window-container{
+				min-height: 45.0rem;
 				max-height: 45.0rem;
 				overflow: auto;
 			}
