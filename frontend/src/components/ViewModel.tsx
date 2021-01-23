@@ -1,6 +1,6 @@
 import React, { createRef, Dispatch } from 'react';
 import {
-	useOpenState, useOpenDispatch //, putUser
+	useOpenState, useOpenDispatch // , putUser
 } from './Model';
 import { SideBarView, PageView } from './View';
 
