@@ -58,6 +58,7 @@ export type UserObj = {
 	userID : number;
 	userName: string;
 	userIcon: string;
+	gitID: string;
 }
 
 type Attribute = {
@@ -135,12 +136,14 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			{
 				userID: 1,
 				userIcon: 'pet',
-				userName: 'heeeun'
+				userName: 'heeeun',
+				gitID: 'gmldms784@naver.com'
 			},
 			{
 				userID: 2,
 				userIcon: 'apple',
-				userName: 'taejin'
+				userName: 'taejin',
+				gitID: 'thereisnotruth12@gmail.com'
 			}
 		]
 	});
