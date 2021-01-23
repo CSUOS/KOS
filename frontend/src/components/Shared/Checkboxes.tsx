@@ -25,7 +25,6 @@ const Checkboxes = ({ values }: CheckboxesProps) => {
 									checked={state[value]}
 									onChange={handleChange}
 									name={value}
-									color="primary"
 								/>
 							}
 							label={value}

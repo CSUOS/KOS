@@ -172,7 +172,7 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 					value: 'hi'
 				},
 				{
-					key: 'tags',
+					key: 'people',
 					value: ['우희은(hinge7)', '김정현(powergee)']
 				}]
 			}

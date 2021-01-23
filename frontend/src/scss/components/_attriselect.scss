@@ -1,0 +1,46 @@
+.attriselect{
+	position: absolute;
+	z-index: 1;
+	.container{
+		padding: 1.0rem 0.0rem 1.0rem 0.7rem;
+		width: 14.0rem;
+
+		div{
+			max-height: 20.0rem;
+			overflow: auto;
+		}
+	}
+}
+.part{
+	margin-right: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid $light-gray;
+	.subject{
+		margin: 7px 0px;
+	}
+	.children{
+		button{
+			width: 100%;
+			display: block;
+			font-size: inherit;
+			text-align: start;
+			padding: 5px 10px;
+			&:hover, &:active{
+				background-color: $light-gray;
+			}
+
+			&:focus{
+				outline: none;
+			}
+		}
+	}
+	input{
+		padding: 7px;
+		font-size: inherit;
+		border: 1.5px solid $light-gray;
+		border-radius: 3px;
+		&:focus{
+			outline: none;
+		}
+	}
+}
