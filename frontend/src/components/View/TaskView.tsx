@@ -31,11 +31,16 @@ const emojisTempData = [
 const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 	open, task, handleTaskWindowClose
 }, ref) => {
+	const [pin, setPin] = useState(false);
 	const [emojis, setEmojis] = useState(emojisTempData);
 	const mainTitle = `TASK #${task?.taskID}`;
 	const attributes = task?.attribute;
 	const created = task?.createAt;
 	const modified = task?.modifiedAt;
+
+	const handlePin = () => {
+		setPin(!pin);
+	};
 
 	const handleEmojis = (id: string) => {
 		const index = getClickedEmojiIndex(emojis, id);
@@ -73,6 +78,8 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 				<TaskTitle
 					taskTitle={mainTitle}
 					handleTitleChange={() => { }}
+					pin={pin}
+					handlePin={handlePin}
 					emojis={emojis}
 					handleEmojis={handleEmojis}
 				/>

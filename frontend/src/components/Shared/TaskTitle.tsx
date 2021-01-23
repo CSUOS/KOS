@@ -1,6 +1,7 @@
 import React, { ReactFragment, forwardRef, useState } from 'react';
 
 import { Grid } from '@material-ui/core';
+import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 
 import { Picker, Emoji } from 'emoji-mart';
@@ -10,12 +11,14 @@ import { Button, EmojiPicker, EmojiList } from '.';
 type TaskTitleProps = {
 	taskTitle: string | undefined;
 	handleTitleChange: (arg: any) => void;
+	pin: boolean;
+	handlePin: () => void;
 	emojis?: any | undefined;
 	handleEmojis: (emojiId: string) => void;
 }
 
 const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
-	taskTitle, handleTitleChange, emojis, handleEmojis,
+	taskTitle, handleTitleChange, pin, handlePin, emojis, handleEmojis,
 }, ref) => {
 	const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
 
@@ -45,10 +48,11 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 					<Grid className="windowheader-task">
 						<Button
 							classList={['task-pin']}
-							value={<StarBorderIcon />}
-							// tooltip="상단에 고정시키기"
-							// ttside="right"
+							value={pin ? <StarIcon /> : <StarBorderIcon />}
+							tooltip="상단에 고정시키기"
+							ttside="right"
 							transparent={true}
+							onClickFun={handlePin}
 						/>
 						<EmojiList
 							emojis={emojis}
