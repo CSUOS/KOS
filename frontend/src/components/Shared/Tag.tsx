@@ -7,9 +7,10 @@ import { Button } from '.';
 type TagProps = {
 	value: string;
 	hasCloseBtn?: boolean | undefined;
+	handleTagDelete?: (tagValue:string) => void | undefined;
 }
 
-const Tag = ({ value, hasCloseBtn }: TagProps) => (
+const Tag = ({ value, hasCloseBtn, handleTagDelete }: TagProps) => (
 	<Grid className="tag">
 		{value}
 		{hasCloseBtn &&
@@ -17,6 +18,7 @@ const Tag = ({ value, hasCloseBtn }: TagProps) => (
 				classList={['']}
 				value={<CloseSharpIcon />}
 				transparent={true}
+				onClickFun={handleTagDelete && (() => handleTagDelete(value))}
 			/>}
 
 	</Grid>
@@ -24,6 +26,7 @@ const Tag = ({ value, hasCloseBtn }: TagProps) => (
 
 Tag.defaultProps = {
 	hasCloseBtn: true,
+	handleTagDelete: undefined,
 };
 
 export default Tag;

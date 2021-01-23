@@ -40,8 +40,12 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 							value={option}
 						>
 							{type === 'member'
-								? <Tag value={option} hasCloseBtn={false} />
-								: <SelectItem option={option} />}
+								? (
+									<Tag
+										value={option}
+										hasCloseBtn={false}
+									/>)
+								: <SelectItem value={option} />}
 						</button>
 						{type !== 'member' &&
 							<Button
@@ -60,8 +64,13 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 							value={newOption}
 						>
 							{type === 'member'
-								? <Tag value={newOption} hasCloseBtn={false} />
-								: <SelectItem option={newOption} />}
+								? (
+									<Tag
+										value={newOption}
+										hasCloseBtn={false}
+									/>
+								)
+								: <SelectItem value={newOption} />}
 							{buttonName}
 						</button>
 					)}

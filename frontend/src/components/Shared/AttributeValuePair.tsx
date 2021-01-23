@@ -106,6 +106,11 @@ const AttributeValuePair = ({
 		setNewOption('');
 	};
 
+	const deleteSelectedOption = (optionToDelete: string) => {
+		const edited = selectedOptions.filter((selectedOption) => selectedOption !== optionToDelete);
+		setSelectedOptions(edited);
+	};
+
 	const selectOption = (selectedValue: string) => {
 		if (!selectedOptions.includes(selectedValue)) {
 			if (type === 'single-select') {
@@ -172,6 +177,7 @@ const AttributeValuePair = ({
 						selectable={selectable}
 						selectOpen={selectOpen}
 						addOption={addOption}
+						deleteSelectedOption={deleteSelectedOption}
 						newOption={newOption}
 						handleValueChange={handleValueChange}
 						handleInputChange={handleInputChange}

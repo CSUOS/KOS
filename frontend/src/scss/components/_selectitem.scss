@@ -1,6 +1,21 @@
 .selectitem{
+	display: inline-flex;
+	align-items: center;
 	padding: 3px;
 	margin-right: 10px;
 	border-radius: $radius;
 	background-color: #ffcd77;
+	button{
+		max-height: 1.0rem;
+		padding: 0;
+		margin-left: 5px;
+		&:focus{
+			outline: none;
+		}
+	}
+	svg{
+		border-radius: $radius;
+		border: 1.4px solid $gray;
+		font-size: 1.0rem;
+	}
 }

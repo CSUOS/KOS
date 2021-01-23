@@ -16,6 +16,7 @@ type ValueFieldProps = {
 	selectOpen: boolean;
 	newOption: string;
 	addOption: () => void;
+	deleteSelectedOption: (optionToDelete: string) => void;
 	handleValueChange: (arg:any) => void;
 	handleInputChange: (arg: string) => void;
 	handleSelectOpen: () => void;
@@ -23,7 +24,7 @@ type ValueFieldProps = {
 }
 
 const ValueField = ({
-	type, value, creatable, selectable, editable, selectOpen, newOption, addOption, handleValueChange, handleInputChange, handleSelectOpen, handleSelectClose
+	type, value, creatable, selectable, editable, selectOpen, newOption, addOption, deleteSelectedOption, handleValueChange, handleInputChange, handleSelectOpen, handleSelectClose
 }: ValueFieldProps) => {
 	const onButtonClick = () => {
 		if (!selectOpen) {
@@ -53,8 +54,9 @@ const ValueField = ({
 						&& <DatePicker value={value} editable={editable} handleValueChange={handleValueChange} />}
 					{type === 'checkbox' && <Checkbox value={value} handleValueChange={handleValueChange} />}
 					{(type === 'single-select' || type === 'multi-select' || type === 'state')
-						&& value.map((option:string) => <SelectItem option={option} />)}
-					{type === 'member' && value.map((option:string) => <Tag value={option} />)}
+						&& value.map((option:string) => (
+							<SelectItem value={option} hasCloseBtn={true} handleSelectedDelete={deleteSelectedOption} />))}
+					{type === 'member' && value.map((option:string) => <Tag value={option} handleTagDelete={deleteSelectedOption} />)}
 					{creatable &&
 						<input
 							className="option-input"
