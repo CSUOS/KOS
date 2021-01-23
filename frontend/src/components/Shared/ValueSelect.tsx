@@ -31,6 +31,9 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 	return (
 		<Grid ref={ref} className="valueselect">
 			<Paper className="container" elevation={5}>
+				<Grid className="tooltip">
+					입력하여 옵션 생성 또는 클릭하여 옵션 추가
+				</Grid>
 				{options && options.map((option) => (
 					<Grid className="item">
 						<button

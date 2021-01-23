@@ -17,7 +17,7 @@ type ValueFieldProps = {
 	newOption: string;
 	addOption: () => void;
 	deleteSelectedOption: (optionToDelete: string) => void;
-	handleValueChange: (arg:any) => void;
+	handleValueChange: (arg: any) => void;
 	handleInputChange: (arg: string) => void;
 	handleSelectOpen: () => void;
 	handleSelectClose: () => void;
@@ -40,27 +40,28 @@ const ValueField = ({
 	};
 	return (
 		<Grid className="valuefield">
-			{type !== 'description' &&
+			{type !== 'description' && value !== undefined &&
 				<button
 					type="button"
 					className={clsx('value', editable && (selectable ? !selectOpen : true) && 'editable')}
 					onClick={onButtonClick}
 				>
 					{type === 'add-button'}
-					{(type === 'writer' || type === 'editor') && value}
+					{(type === 'creator' || type === 'editor') && value}
 					{type === 'text-field' && <TextField value={value} handleValueChange={handleValueChange} />}
 					{type === 'url' && <TextField value={value} handleValueChange={handleValueChange} isURL={true} />}
-					{(type === 'date-picker' || type === 'deadline' || type === 'CreatedAt' || type === 'EditedAt')
+					{(type === 'date-picker' || type === 'deadline' || type === 'createdAt' || type === 'editedAt')
 						&& <DatePicker value={value} editable={editable} handleValueChange={handleValueChange} />}
 					{type === 'checkbox' && <Checkbox value={value} handleValueChange={handleValueChange} />}
 					{(type === 'single-select' || type === 'multi-select' || type === 'state')
-						&& value.map((option:string) => (
+						&& value.map((option: string) => (
 							<SelectItem value={option} hasCloseBtn={true} handleSelectedDelete={deleteSelectedOption} />))}
-					{type === 'member' && value.map((option:string) => <Tag value={option} handleTagDelete={deleteSelectedOption} />)}
-					{creatable &&
+					{type === 'member' && value.map((option: string) => <Tag value={option} handleTagDelete={deleteSelectedOption} />)}
+					{selectable &&
 						<input
 							className="option-input"
 							type="text"
+							placeholder={value.length === 0 ? '옵션을 선택하세요' : ''}
 							readOnly={!selectOpen}
 							onKeyPress={handleKeyPress}
 							onChange={(e: any) => handleInputChange(e.target.value)}

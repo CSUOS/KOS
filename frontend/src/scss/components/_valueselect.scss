@@ -5,8 +5,13 @@
 	margin-top: 10px;
 	.container{
 		width: 100%;
+		min-height: 4.0rem;
 		max-height: 20.0rem;
 		overflow: auto;
+		.tooltip{
+			display: flex;
+			padding: 0.5rem 1.0rem;
+		}
 		.item{
 			display: flex;
 			width: 100%;

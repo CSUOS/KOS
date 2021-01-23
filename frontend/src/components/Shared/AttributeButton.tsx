@@ -8,15 +8,17 @@ import {
 } from '.';
 
 type AttributeButtonProps = {
+	index: number;
 	type?: string | undefined;
 	name?: string | undefined;
 	menuOpen: boolean;
 	handleMenuOpen: () => void;
 	handleMenuClose: () => void;
+	handlePairDelete?: (indexToDelete:number) => void | undefined;
 }
 
 const AttributeButton = ({
-	type, name, menuOpen, handleMenuOpen, handleMenuClose
+	index, type, name, menuOpen, handleMenuOpen, handleMenuClose, handlePairDelete
 }: AttributeButtonProps) => {
 	const [show, setShow] = useState(false);
 
@@ -53,6 +55,7 @@ const AttributeButton = ({
 											value={<CloseSharpIcon />}
 											tooltip="속성 삭제하기"
 											transparent={true}
+											onClickFun={handlePairDelete && (() => handlePairDelete(index))}
 										/>
 									</Grid>
 								)}
@@ -66,6 +69,7 @@ const AttributeButton = ({
 AttributeButton.defaultProps = {
 	type: 'add-button',
 	name: undefined,
+	handlePairDelete: undefined,
 };
 
 export default AttributeButton;

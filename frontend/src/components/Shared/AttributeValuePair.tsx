@@ -22,7 +22,6 @@ const getEditable = (type: string | undefined) => {
 const getCreatable = (type: string | undefined) => {
 	if (type === 'single-select' ||
 		type === 'multi-select' ||
-		type === 'multi-checkbox' ||
 		type === 'state') {
 		return true;
 	}
@@ -43,39 +42,38 @@ const getSelectable = (classIndex: number, type: string | undefined) => {
 };
 
 type AttributeValuePairProps = {
+	index: number;
 	type?: string | undefined;
 	name?: string | undefined;
 	value?: any | undefined;
+	handlePairAdd?: (pairToAdd:any) => void | undefined;
+	handlePairDelete?: (indexToDelete:number) => void | undefined;
 }
 
 const selectRef = createRef<HTMLDivElement>();
 const menuRef = createRef<HTMLDivElement>();
 
-// ======== [ 임시 값들 ] ====================
-const optionValues = ['agnes obel', 'archive', 'lana del rey', 'kodaline'];
-const defaultValue = ['archive'];
-
 const AttributeValuePair = ({
-	type, name, value
+	index, type, name, value, handlePairAdd, handlePairDelete
 }: AttributeValuePairProps) => {
 	const editable = getEditable(type);
 	const creatable = getCreatable(type);
 	const classIndex = getClass(creatable, editable);
 	const selectable = getSelectable(classIndex, type);
 
+	const [selectOpen, setSelectOpen] = useState(false);
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [newName, setNewName] = useState('속성 이름');
 
 	// for selectable
-	const [options, setOptions] = useState(optionValues);
-	const [selectOpen, setSelectOpen] = useState(false);
+	const [options, setOptions] = useState(selectable && value.options);
+	const [selectedOptions, setSelectedOptions] = useState(selectable && value.selectedOptions);
 
 	// for creatable
-	const [selectedOptions, setSelectedOptions] = useState(defaultValue);
 	const [newOption, setNewOption] = useState('');
 
 	// for not creatable
-	const [singleValue, setSingleValue] = useState();
+	const [singleValue, setSingleValue] = useState(!selectable && value);
 
 	const handleMenuOpen = () => {
 		setMenuOpen(true);
@@ -83,6 +81,7 @@ const AttributeValuePair = ({
 
 	const handleMenuClose = () => {
 		setMenuOpen(false);
+		setNewName('속성 이름');
 	};
 
 	const handleNameChange = (e: any) => {
@@ -107,13 +106,14 @@ const AttributeValuePair = ({
 	};
 
 	const deleteSelectedOption = (optionToDelete: string) => {
-		const edited = selectedOptions.filter((selectedOption) => selectedOption !== optionToDelete);
+		const edited =
+			selectedOptions.filter((selectedOption: string) => selectedOption !== optionToDelete);
 		setSelectedOptions(edited);
 	};
 
 	const selectOption = (selectedValue: string) => {
 		if (!selectedOptions.includes(selectedValue)) {
-			if (type === 'single-select') {
+			if (type === 'single-select' || type === 'state') {
 				setSelectedOptions([selectedValue]);
 			} else {
 				setSelectedOptions([...selectedOptions, selectedValue]);
@@ -123,7 +123,7 @@ const AttributeValuePair = ({
 
 	const addOption = () => {
 		if (!options.includes(newOption)) {
-			if (type === 'single-select') {
+			if (type === 'single-select' || type === 'state') {
 				setSelectedOptions([newOption]);
 			} else {
 				setSelectedOptions([...selectedOptions, newOption]);
@@ -162,11 +162,13 @@ const AttributeValuePair = ({
 		<>
 			<Grid className="attributevaluepair">
 				<Attribute
+					index={index}
 					type={type}
 					name={name}
 					menuOpen={menuOpen}
 					handleMenuOpen={handleMenuOpen}
 					handleMenuClose={handleMenuClose}
+					handlePairDelete={handlePairDelete}
 				/>
 				<Grid className="value">
 					<Value
@@ -203,6 +205,7 @@ const AttributeValuePair = ({
 					text={newName}
 					handleInputChange={handleNameChange}
 					handleMenuClose={handleMenuClose}
+					handlePairAdd={handlePairAdd}
 				/>}
 		</>
 	);
@@ -212,6 +215,8 @@ AttributeValuePair.defaultProps = {
 	type: 'add-button',
 	name: '속성 이름',
 	value: undefined,
+	handlePairAdd: undefined,
+	handlePairDelete: undefined,
 };
 
 export default AttributeValuePair;
