@@ -1,6 +1,6 @@
 import React, { createRef, Dispatch } from 'react';
 import {
-	useOpenState, useOpenDispatch, useProjectState, useProjectDispatch, usePIDState, usePIDDispatch, ProjectObj
+	useOpenState, useOpenDispatch // , putUser
 } from './Model';
 import { SideBarView, PageView } from './View';
 
@@ -11,10 +11,6 @@ const pageRef = createRef<HTMLDivElement>();
 const ViewModel = () => {
 	const open : boolean = useOpenState();
 	const setOpen : Dispatch<boolean> = useOpenDispatch();
-	const project : Array<ProjectObj> | undefined = useProjectState();
-	const setProject : Dispatch<Array<ProjectObj>> = useProjectDispatch();
-	const pid : number = usePIDState();
-	const setPID : Dispatch<number> = usePIDDispatch();
 
 	const handleSideBarOpen = () => {
 		setOpen(true);
@@ -24,30 +20,26 @@ const ViewModel = () => {
 		setOpen(false);
 	};
 
+	// putUser();
+
 	return (
 		<>
 			{
 				open ? <SideBarView
 					type="visible"
 					handleSideBarClose={handleSideBarClose}
-					project={project}
 					ref={sidebarRef}
 				/> : <SideBarView
 					type="unvisible"
 					handleSideBarClose={handleSideBarClose}
-					project={project}
 					ref={sidebarRef}
 				/>
 			}
-			{
-				project &&
-				<PageView
-					handleSideBarOpen={handleSideBarOpen}
-					open={open}
-					project={project[pid]}
-					ref={pageRef}
-				/>
-			}
+			<PageView
+				handleSideBarOpen={handleSideBarOpen}
+				open={open}
+				ref={pageRef}
+			/>
 		</>
 	);
 };

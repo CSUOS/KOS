@@ -1,6 +1,26 @@
 import React, {
 	useState, createContext, useContext, Dispatch
 } from 'react';
+import axios from 'axios';
+
+/* test user put */
+/*
+export const putUser = async () => {
+	const headers = {
+		'Content-Type': 'application/json;charset=utf-8',
+		'Access-Control-Allow-Origin': '*'
+	};
+
+	axios
+		.get('http://localhost:8080/v1/user-api/users', { headers })
+		.then(({ data }) => {
+			console.log(data);
+		})
+		.catch((e) => {
+			console.error(e);
+		});
+};
+*/
 
 /* open context */
 // create context to use open
@@ -35,9 +55,10 @@ export function useOpenDispatch() {
 
 /* project context */
 export type UserObj = {
-	userID: number;
+	userID : number;
 	userName: string;
 	userIcon: string;
+	gitID: string;
 }
 
 type Attribute = {
@@ -47,69 +68,105 @@ type Attribute = {
 
 export type TaskObj = {
 	taskID: number;
-	listID: number;
-	index: number;
+	attribute: Array<Attribute>;
 	createAt: Date;
 	modifiedAt: Date;
-	attribute: Array<Attribute>
 }
 
 type ListObj = {
 	listID: number;
-	projectID: number;
-	index: number;
-	createAt: Date;
-	modifiedAt: Date;
+	// index는 배열 순서대로 다시 집어넣기
 	name: string;
-	tasks: Array<TaskObj>;
 }
 
 export type ProjectObj = {
-	projectID: number;
-	createAt: Date;
-	modifiedAt: Date;
-	isPrivate: boolean;
-	bookMark: boolean;
-	bgColor: string;
-	name: string;
-	users : Array<UserObj>;
-	List: Array<ListObj>;
+	[projectID : number] : {
+		isPrivate: boolean;
+		bookMark: boolean;
+		bgColor: string;
+		name: string;
+	}
 }
 
-export const ProjectDataContext = createContext<Array<ProjectObj> | undefined>(undefined);
-export const ProjectDispatchContext = createContext<Dispatch<Array<ProjectObj>>>(() => {});
+export type ProjectTeamObj = {
+	[projectID : number] : Array<UserObj>;
+}
+
+type ProjectListObj = {
+	[projectID : number] : Array<ListObj>;
+}
+
+export type ProjectTaskObj = {
+	[listID : number] : Array<TaskObj>;
+}
+
+const ProjectDataContext = createContext<ProjectObj | undefined>(undefined);
+const ProjectDispatchContext = createContext<Dispatch<ProjectObj>>(() => {});
+const TeamContext = createContext<ProjectTeamObj | undefined>(undefined);
+const TeamDispatchContext = createContext<Dispatch<ProjectTeamObj>>(() => {});
+const ListContext = createContext<ProjectListObj | undefined>(undefined);
+const ListDispatchContext = createContext<Dispatch<ProjectListObj>>(() => {});
+const TaskContext = createContext<ProjectTaskObj | undefined>(undefined);
+const TaskDispatchContext = createContext<Dispatch<ProjectTaskObj>>(() => {});
 
 export const ProjectContextProvider = ({ children } : childrenObj) => {
-	const [project, setProject] = useState<Array<ProjectObj>>([{
-		projectID: 1,
-		createAt: new Date('2021/01/02'),
-		modifiedAt: new Date('2021/01/02'),
-		isPrivate: false,
-		bookMark: true,
-		bgColor: 'pink',
-		name: 'KOS',
-		users: [{
-			userID: 1,
-			userName: 'heeeun',
-			userIcon: 'child'
-		}, {
-			userID: 2,
-			userName: 'taejin',
-			userIcon: 'beach'
-		}],
-		List: [{
-			listID: 1,
-			projectID: 1,
-			index: 0,
-			createAt: new Date('2021/01/02'),
-			modifiedAt: new Date('2021/01/02'),
-			name: 'ToDo',
-			tasks: [{
-				taskID: 1,
+	const [project, setProject] = useState<ProjectObj>({
+		1: {
+			isPrivate: false,
+			bookMark: true,
+			bgColor: 'pink',
+			name: 'KOS'
+		},
+		2: {
+			isPrivate: false,
+			bookMark: true,
+			bgColor: 'green',
+			name: 'NERA'
+		},
+		3: {
+			isPrivate: false,
+			bookMark: true,
+			bgColor: 'purple',
+			name: 'HHsadfasdfasdfasdfsdafsadf'
+		}
+	});
+
+	const [team, setTeam] = useState<ProjectTeamObj>({
+		1: [
+			{
+				userID: 1,
+				userIcon: 'pet',
+				userName: 'heeeun',
+				gitID: 'gmldms784@naver.com'
+			},
+			{
+				userID: 2,
+				userIcon: 'apple',
+				userName: 'taejin',
+				gitID: 'thereisnotruth12@gmail.com'
+			}
+		]
+	});
+
+	const [list, setList] = useState<ProjectListObj>({
+		1: [
+			{
 				listID: 1,
-				index: 0,
-				createAt: new Date('2021/01/02'),
-				modifiedAt: new Date('2021/01/02'),
+				name: '할 일'
+			},
+			{
+				listID: 2,
+				name: '끝난 일'
+			}
+		]
+	});
+
+	const [task, setTask] = useState<ProjectTaskObj>({
+		1: [
+			{
+				taskID: 1,
+				createAt: new Date(),
+				modifiedAt: new Date(),
 				attribute: [{
 					key: 'text-field',
 					value: 'hi'
@@ -118,98 +175,26 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 					key: 'people',
 					value: ['우희은(hinge7)', '김정현(powergee)']
 				}]
-			}]
-		}]
-	}, {
-		projectID: 2,
-		createAt: new Date('2021/01/02'),
-		modifiedAt: new Date('2021/01/02'),
-		isPrivate: true,
-		bookMark: false,
-		bgColor: 'green',
-		name: 'NERAsadddfadasfdafdsasdfasdfasdfasdf',
-		users: [],
-		List: [{
-			listID: 2,
-			projectID: 2,
-			index: 0,
-			createAt: new Date('2021/01/02'),
-			modifiedAt: new Date('2021/01/02'),
-			name: 'ToDo',
-			tasks: [{
-				taskID: 2,
-				listID: 2,
-				index: 0,
-				createAt: new Date('2021/01/02'),
-				modifiedAt: new Date('2021/01/02'),
-				attribute: [{
-					key: 'text-field',
-					value: 'hi'
-				}]
-			}]
-		}]
-	}, {
-		projectID: 3,
-		createAt: new Date('2021/01/07'),
-		modifiedAt: new Date('2021/01/07'),
-		isPrivate: true,
-		bookMark: true,
-		bgColor: 'mint',
-		name: '프로젝트이름이 길면 어떻게 될까요?',
-		users: [],
-		List: [{
-			listID: 3,
-			projectID: 3,
-			index: 0,
-			createAt: new Date('2021/01/07'),
-			modifiedAt: new Date('2021/01/07'),
-			name: 'ToDo',
-			tasks: [{
-				taskID: 3,
-				listID: 3,
-				index: 0,
-				createAt: new Date('2021/01/07'),
-				modifiedAt: new Date('2021/01/07'),
-				attribute: [{
-					key: 'text-field',
-					value: 'hi'
-				}]
-			}]
-		}]
-	}, {
-		projectID: 4,
-		createAt: new Date('2021/01/07'),
-		modifiedAt: new Date('2021/01/07'),
-		isPrivate: false,
-		bookMark: true,
-		bgColor: 'purple',
-		name: '여러 프로젝트 생성',
-		users: [],
-		List: [{
-			listID: 4,
-			projectID: 4,
-			index: 0,
-			createAt: new Date('2021/01/07'),
-			modifiedAt: new Date('2021/01/07'),
-			name: 'ToDo',
-			tasks: [{
-				taskID: 4,
-				listID: 4,
-				index: 0,
-				createAt: new Date('2021/01/07'),
-				modifiedAt: new Date('2021/01/07'),
-				attribute: [{
-					key: 'text-field',
-					value: 'hi'
-				}]
-			}]
-		}]
-	}]);
+			}
+		]
+	});
 
 	return (
 		<ProjectDataContext.Provider value={project}>
 			<ProjectDispatchContext.Provider value={setProject}>
-				{children}
+				<TeamContext.Provider value={team}>
+					<TeamDispatchContext.Provider value={setTeam}>
+						<ListContext.Provider value={list}>
+							<ListDispatchContext.Provider value={setList}>
+								<TaskContext.Provider value={task}>
+									<TaskDispatchContext.Provider value={setTask}>
+										{children}
+									</TaskDispatchContext.Provider>
+								</TaskContext.Provider>
+							</ListDispatchContext.Provider>
+						</ListContext.Provider>
+					</TeamDispatchContext.Provider>
+				</TeamContext.Provider>
 			</ProjectDispatchContext.Provider>
 		</ProjectDataContext.Provider>
 	);
@@ -219,19 +204,42 @@ export function useProjectState() {
 	const context = useContext(ProjectDataContext);
 	return context;
 }
-
 export function useProjectDispatch() {
 	const context = useContext(ProjectDispatchContext);
+	return context;
+}
+export function useTeamState() {
+	const context = useContext(TeamContext);
+	return context;
+}
+export function useTeamDispatch() {
+	const context = useContext(TeamDispatchContext);
+	return context;
+}
+export function useListState() {
+	const context = useContext(ListContext);
+	return context;
+}
+export function useListDispatch() {
+	const context = useContext(ListDispatchContext);
+	return context;
+}
+export function useTaskState() {
+	const context = useContext(TaskContext);
+	return context;
+}
+export function useTaskDispatch() {
+	const context = useContext(TaskDispatchContext);
 	return context;
 }
 
 /* projectID context */
 
-export const PIDContext = createContext<number>(0);
+export const PIDContext = createContext<number>(1);
 export const PIDDispatchContext = createContext<Dispatch<number>>(() => {});
 
 export const PIDContextProvider = ({ children } : childrenObj) => {
-	const [pid, setPID] = useState<number>(0);
+	const [pid, setPID] = useState<number>(1);
 
 	return (
 		<PIDContext.Provider value={pid}>

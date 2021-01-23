@@ -1,44 +1,72 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useState } from 'react';
 
 import { Grid } from '@material-ui/core';
 
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import StarIcon from '@material-ui/icons/Star';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-import { ProjectObj } from '../Model';
+import { ProjectObj, useProjectState, useProjectDispatch } from '../Model';
 import { Button } from '.';
 
 type SideMenuProps = {
 	open : boolean;
 	setOpen : Dispatch<boolean>;
-	project : ProjectObj;
+	pid : number;
 }
 
-const SideMenu = ({ open, setOpen, project } : SideMenuProps) => {
-	const a = 1;
+const SideMenu = ({ open, setOpen, pid } : SideMenuProps) => {
+	const project : ProjectObj | undefined = useProjectState();
+	const setProject : Dispatch<ProjectObj> = useProjectDispatch();
+	const [update, forceUpdate] = useState(true);
+
+	const togglePrivate = () => {
+		if (project === undefined || pid === undefined) {
+			return;
+		}
+		const tmp = project;
+		tmp[pid].isPrivate = !tmp[pid].isPrivate;
+		console.log(`toogle ${pid} to ${!tmp[pid].isPrivate}`);
+		setProject(tmp);
+		forceUpdate(!update);
+	};
+	const toggleMark = () => {
+		if (project === undefined || pid === undefined) {
+			return;
+		}
+		const tmp = project;
+		tmp[pid].bookMark = !tmp[pid].bookMark;
+		console.log(`toogle ${pid} to ${!tmp[pid].bookMark}`);
+		setProject(tmp);
+		forceUpdate(!update);
+	};
+
 	return (
 		<>
-			<Grid className="detail">
-				<Grid className="private">
-					<Button
-						classList={[]}
-						value={project.isPrivate ? <LockIcon /> : <LockOpenIcon />}
-						transparent={true}
-						// onClickFun={() => togglePrivate(project.projectID)}
-					/>
+			{
+				project && pid &&
+				<Grid className="detail">
+					<Grid className="private">
+						<Button
+							classList={[]}
+							value={project[pid].isPrivate ? <LockIcon /> : <LockOpenIcon />}
+							transparent={true}
+							onClickFun={() => togglePrivate()}
+						/>
+					</Grid>
+					<Grid className="book-mark">
+						<Button
+							classList={[]}
+							value={project[pid].bookMark ? <StarIcon /> : <StarBorderIcon />}
+							transparent={true}
+							onClickFun={() => toggleMark()}
+						/>
+					</Grid>
 				</Grid>
-				<Grid className="book-mark">
-					<Button
-						classList={[]}
-						value={project.bookMark ? <StarIcon /> : <></>}
-						transparent={true}
-						// onClickFun={() => setOpen(!open)}
-					/>
-				</Grid>
-			</Grid>
+			}
 			<Grid className="arrow">
 				<Button
 					classList={[]}
