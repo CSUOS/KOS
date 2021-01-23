@@ -1,7 +1,6 @@
-import React, { forwardRef, ReactFragment, useState } from 'react';
+import React, { forwardRef, ReactFragment } from 'react';
 
 import { Grid, Paper } from '@material-ui/core';
-import { getClickedEmojiIndex } from './EmojiList';
 
 type PartProps = {
 	subject: string,
@@ -57,7 +56,12 @@ const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 			<Paper className="container" elevation={5}>
 				<div>
 					<Part subject={subjects[0]}>
-						<input type="text" className="attri-input" onChange={handleInputChange} value={text} />
+						<input
+							type="text"
+							className="attri-input"
+							onChange={handleInputChange}
+							value={text}
+						/>
 					</Part>
 					<Part subject={subjects[1]}>
 						{defaultMenus.map((menu, index) => (

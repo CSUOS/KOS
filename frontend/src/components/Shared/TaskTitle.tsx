@@ -1,10 +1,8 @@
-import React, { ReactFragment, forwardRef, useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 
 import { Grid } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-
-import { Picker, Emoji } from 'emoji-mart';
 
 import { Button, EmojiPicker, EmojiList } from '.';
 
