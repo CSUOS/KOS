@@ -3,12 +3,16 @@ package Routes
 import (
 	"github.com/CSUOS/KOS/backend/Controllers"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 // SetupRouter 경로를 정의
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000"}
+	r.Use(cors.New(config))
 
 	userRoutes := r.Group("/v1/user-api")
 	{
