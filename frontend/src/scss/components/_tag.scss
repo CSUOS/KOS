@@ -1,0 +1,11 @@
+.tag{
+	display: inline-flex;		
+	align-items: center;
+	margin-right: 10px;
+	svg{
+		margin-top: 4px;
+		font-size: 1.0rem;
+		border-radius: $radius;
+		border: 1.4px solid $gray;
+	}
+}

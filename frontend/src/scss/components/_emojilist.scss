@@ -1,0 +1,56 @@
+.emojilist{
+	display: flex;
+	width: 100%;
+	height: 100%;
+	margin-bottom: 15px;
+	justify-content: flex-end;
+	align-items: flex-end;
+	.emojilist-continer{
+		display: flex;
+		width: 100%;
+		height: 100%;
+	}
+}
+
+.emojiitem{
+	display: inline;
+	margin-left: 5px;
+	button{
+		display: flex;
+		width: 100%;
+		min-width: 50px;
+		padding: 3px 8px;
+		align-items: center;
+		text-align: end;
+		border: 1px solid $light-gray;
+		border-radius: 15px;
+		span{
+			flex: 1;
+			vertical-align: middle;
+			font-weight: 700;
+		}
+
+		&:hover, &:active{
+			border: 2px solid $base-color;
+			border-radius: 15px;
+		}
+	}
+	&.clicked{
+		button{
+			border: 2px solid $base-color;
+			border-radius: 15px;
+		}
+	}
+}
+
+.add-button{
+	display: inline;
+	align-items: flex-end;
+	button{
+		margin: 0;
+		padding: 0;
+	}
+	svg{
+		font-size: 1.5rem;
+	}
+}

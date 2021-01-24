@@ -4,11 +4,17 @@
 		display: flex;
 		width: 100%;
 		justify-content: space-between;
-		h1 {
+		h1, input {
 			margin: 0;
 			padding: 0;
 			font-weight: bold;
 			font-size: 3.5em;
+		}
+		input{
+			border: none;
+			&:focus{
+				outline: none;
+			}
 		}
 		.windowheader-task{
 			flex: 1;
@@ -38,4 +44,10 @@
 		font-size: 1.3em;
 		}
 	}
+}
+
+.picker{
+	display: flex;
+	width: 100%;
+	justify-content: flex-end;
 }

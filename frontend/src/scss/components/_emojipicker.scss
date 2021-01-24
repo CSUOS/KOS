@@ -1,0 +1,9 @@
+.emojipicker{
+	position: absolute;
+	z-index: 1;
+	button{
+		&:active, &:focus{
+			outline: none;
+		}
+	}
+}

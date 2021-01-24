@@ -1,0 +1,32 @@
+.valueselect{
+	width: 100%;
+	position: absolute;
+	z-index: 999;
+	margin-top: 10px;
+	.container{
+		width: 100%;
+		min-height: 4.0rem;
+		max-height: 20.0rem;
+		overflow: auto;
+		.tooltip{
+			display: flex;
+			padding: 0.5rem 1.0rem;
+		}
+		.item{
+			display: flex;
+			width: 100%;
+			align-items: center;
+			justify-content: space-between;
+			.selectbtn{
+				flex: 1;
+				padding: 10px;
+				text-align: start;
+				font-size: inherit;
+				&:hover, &:active, &:focus{
+					background-color: $light-gray;
+					outline: none;
+				}
+			}
+		}
+	}
+}

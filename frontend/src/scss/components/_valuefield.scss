@@ -1,0 +1,29 @@
+.valuefield{
+	display: flex;
+	width: 100%;
+	.value{
+		display: flex;
+		width: 100%;
+		min-height: 2.0rem;
+		justify-content: flex-start;
+		align-items: center;
+		font-size: inherit;
+		&.editable {
+			&:hover, &:active{
+				background-color: $light-gray;
+			}
+		}
+		&:focus{
+			outline: none;
+		}
+		.option-input{
+			flex: 1;
+			border: none;
+			font-size: inherit;
+			background-color: inherit;
+			&:focus{
+				outline: none;
+			}
+		}
+	}
+}
