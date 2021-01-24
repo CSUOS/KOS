@@ -9,7 +9,6 @@ import AudiotrackIcon from '@material-ui/icons/Audiotrack';
 import BeachAccessIcon from '@material-ui/icons/BeachAccess';
 import CakeIcon from '@material-ui/icons/Cake';
 import ChildCareIcon from '@material-ui/icons/ChildCare';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
 
 import { UserObj } from '../Model';
 
@@ -36,9 +35,6 @@ const returnIcon = (text : string) => {
 		break;
 	case 'child':
 		icon = <ChildCareIcon />;
-		break;
-	case 'plus':
-		icon = <GroupAddIcon />;
 		break;
 	default:
 		icon = <MoodIcon />;

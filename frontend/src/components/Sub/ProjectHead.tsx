@@ -6,6 +6,7 @@ import {
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import SearchIcon from '@material-ui/icons/Search';
 import BackupIcon from '@material-ui/icons/Backup';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 
 import {
 	Button, SubMenu, SideMenu, Member
@@ -76,7 +77,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 								<Grid className="plus-member">
 									<Tooltip placement="bottom" title="Add Member">
 										<Avatar className="member add-member">
-											+
+											<GroupAddIcon />
 										</Avatar>
 									</Tooltip>
 								</Grid>
