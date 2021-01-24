@@ -50,3 +50,16 @@ func DeleteWorksIn(worksIn *WorksIn, id string) (err error) {
 	Config.DB.Where("id = ?", id).Delete(worksIn)
 	return nil
 }
+
+func DeleteWorksInByUserNProjectID(worksIn *WorksIn, userID string, projectID string) (err error) {
+	Config.DB.Where("user_id = ?", userID).Where("project_id = ?", projectID).Delete(worksIn)
+	return nil
+}
+
+// GetWorksInByUserNProjectID 유저 아이디와 프로젝트 아이디를 조회해서 관계를 찾아온다.
+func GetWorksInByUserNProjectID(worksIn *WorksIn, userID string, projectID string) (err error) {
+	if err = Config.DB.Where("user_id = ?", userID).Where("project_id = ?", projectID).First(worksIn).Error; err != nil {
+		return err
+	}
+	return nil
+}

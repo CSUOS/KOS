@@ -8,5 +8,5 @@ type List struct {
 	Tasks      []Task `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 하나의 리스트에는 여러 태스크가 존재 Gorm has many (one to many)
 	ProjectID  uint
 	Name       string // 리스트 이름
-	Index      int    // 리스트 인덱스
+	Rank       int    // 리스트 인덱스
 }

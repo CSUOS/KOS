@@ -48,12 +48,12 @@ func GetWorksInByID(c *gin.Context) {
 	}
 }
 
-// GetWorksInByUserAndProjectID 유저와 프로젝트 아이디로 유저-프로젝트 관계를 가져온다.
+// GetWorksInByUserID 유저와 프로젝트 아이디로 유저-프로젝트 관계를 가져온다.
 func GetWorksInByUserID(c *gin.Context) {
-	userID := c.Params.ByName("userID")
+	id := c.Params.ByName("id")
 	var worksIn []Models.WorksIn
 
-	err := Models.GetWorksInByUserID(&worksIn, userID)
+	err := Models.GetWorksInByUserID(&worksIn, id)
 
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
@@ -96,10 +96,71 @@ func DeleteWorksIn(c *gin.Context) {
 
 // InviteUser 유저를 프로젝트로 초대
 func InviteUser(c *gin.Context) {
+	type reqBody struct {
+		UserID    string `json:"UserID"`
+		ProjectID string `json:"ProjectID"`
+	}
 
+	var req reqBody
+
+	c.BindJSON(&req)
+
+	var User Models.User
+	err := Models.GetUserByID(&User, req.UserID)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	var Project Models.Project
+	err = Models.GetProjectByID(&Project, req.ProjectID)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	var worksIn Models.WorksIn
+
+	worksIn.AuthLVL = 1
+	worksIn.ProjectID = Project.ID
+	worksIn.UserID = User.ID
+	worksIn.User = User
+	worksIn.Project = Project
+
+	err = Models.CreateWorksIn(&worksIn)
+
+	if err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, worksIn)
+	}
 }
 
 // ExitUserFromProject 프로젝트에 유저 이탈
 func ExitUserFromProject(c *gin.Context) {
+	type reqBody struct {
+		UserID    string `json:"userID"`
+		ProjectID string `json:"ProjectID"`
+	}
 
+	var req reqBody
+
+	c.BindJSON(&req)
+
+	var worksIn Models.WorksIn
+
+	err := Models.GetWorksInByUserNProjectID(&worksIn, req.UserID, req.ProjectID)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	err = Models.DeleteWorksInByUserNProjectID(&worksIn, req.UserID, req.ProjectID)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, gin.H{"id " + fmt.Sprint(worksIn.ID): " works-in is deleted"})
+	}
 }

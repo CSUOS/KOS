@@ -10,4 +10,5 @@ type Task struct {
 	Name       string
 	ListID     uint   // ListModel의 아이디를 가리킨다.
 	Attribute  string // 태스크 속성
+	Reactions  string // 리액션
 }

@@ -57,6 +57,14 @@ func GetTasksByListID(tasks *[]Task, id uint) (err error) {
 	return nil
 }
 
+// GetTaskByListID 태스크 ID와 리스트 ID에 매칭되는 태스크를 반환한다.
+func GetTaskByListID(task *Task, taskID string, listID string) (err error) {
+	if err = Config.DB.Where("id = ?", taskID).Where("list_id = ?", listID).First(task).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 // GetNTasksByListID 해당 리스트 아이디에 몇개의 태스크가 속해있는지 반환
 func GetNTasksByListID(id uint, count *int64) (err error) {
 	if err = Config.DB.Model(&Task{}).Where("list_id = ?", id).Count(count).Error; err != nil {
