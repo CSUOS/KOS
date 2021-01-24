@@ -46,7 +46,7 @@ const returnIcon = (text : string) => {
 const Member = (user : UserObj) => {
 	const a = 1;
 	return (
-		<Tooltip placement="bottom" title={user.userName}>
+		<Tooltip placement="bottom" title={user.userName} arrow>
 			<Avatar className={clsx('member', user.userIcon)}>
 				{returnIcon(user.userIcon)}
 			</Avatar>

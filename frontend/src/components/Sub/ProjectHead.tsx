@@ -75,7 +75,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 									}
 								</Grid>
 								<Grid className="plus-member">
-									<Tooltip placement="bottom" title="Add Member">
+									<Tooltip placement="bottom" title="Add Member" arrow>
 										<Avatar className="member add-member">
 											<GroupAddIcon />
 										</Avatar>

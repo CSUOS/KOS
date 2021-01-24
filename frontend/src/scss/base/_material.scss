@@ -1,0 +1,9 @@
+.MuiTooltip-popper{
+	&>div{
+		background-color: $base-color;
+		padding : 5px 15px;
+	}
+	.MuiTooltip-arrow{
+		color: $base-color;
+	}
+}
