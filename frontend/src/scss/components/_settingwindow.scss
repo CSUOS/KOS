@@ -1,0 +1,99 @@
+.settingwindowbackground{
+	flex: 1;
+	z-index: 0;
+	.settingbackground-backdrop{
+		z-index: 1;
+	}
+}
+.settingwindow{
+	min-width: 800px;
+	width: 65%;
+	.settingwindow-content{
+		padding: 0 20px 20px 20px;
+		height: 600px;
+		.settingwindow-header{
+			font-size: 22px;
+		}
+		.settingwindow-subheader{
+			padding: 0 0 20px 0;
+		}
+		.settingwindow-item{
+			.settingwindow-itemname{
+				display: flex;
+				align-items: center;
+				.settingwindow-icon{
+					color: $base-color;
+				}
+				.settingwindow-rabumslink{
+					margin: 0 20px;
+					background: $base-color;
+					height: 30px;
+					width: 130px;
+					text-align: center;
+					padding: 5px 0;
+					color: white;
+					border-radius: 5px;
+        }
+      }
+      .settingwindow-kosicon{
+        display: flex;
+        height: 64px;
+        width: 64px;
+        border: 1px solid;
+        align-items: center;
+        .icon{
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 64px;
+        }
+      }
+			.settingwindow-rabumsinfo{
+				background: $light-gray;
+				border: 1px solid;
+				font-size: 20px;
+			}
+			.settingwindow-rabumsinfo:focus{
+				outline: none;
+			}
+			.settingwindow-rabumsdescription{
+				color: $light-gray;
+				font-size: 14px;
+			}
+			.settingwindow-kosinfo{
+				border: 1px solid;
+				font-size: 20px;
+				font-family: Times;
+				&:focus{
+					outline: none;
+			}
+			}
+		}
+	}
+	.settingwindowsidebar{
+		background-color: $main-color;
+		border-radius: 4px 0 0 4px;
+		.settingwindowsidebar-header{
+			padding: 0 20px;
+			justify-content: space-between;
+			margin: 5px 5px;
+			.settingwindowsidebar-header-title{
+				display: flex;
+				align-items: center;
+				height: 100%;
+				color: white;
+			}
+		}
+		.settingwindowsidebar-content{
+			color: white;
+			.settingwindowsidebar-item{
+				padding: 0 20px;
+				display: flex;
+				align-items: center;
+			}
+			.settingwindowsidebar-item:hover{
+				background: $sub-color;
+				cursor: pointer;
+			}
+		}
+	}
+}

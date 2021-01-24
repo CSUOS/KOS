@@ -8,7 +8,9 @@ import BackupIcon from '@material-ui/icons/Backup';
 import {
 	Button, SubMenu, SideMenu, Member
 } from '../Shared';
-import { ProjectObj, useUserState } from '../Model';
+import {
+	ProjectObj, ProjectTeamObj, useUserState, useProjectState, usePIDState, useTeamState
+} from '../Model';
 
 const buttonRef = createRef<HTMLDivElement>();
 const searchInputRef = createRef<HTMLDivElement>();
@@ -16,14 +18,17 @@ const searchInputRef = createRef<HTMLDivElement>();
 type ProjectHeadProps = {
 	sideBarOpen : boolean;
 	handleSideBarOpen : () => void;
-	project : ProjectObj
 }
 
 const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
-	sideBarOpen, handleSideBarOpen, project
+	sideBarOpen, handleSideBarOpen
 }, ref) => {
-	const [open, setOpen] = useState(false);
+	const project : ProjectObj | undefined = useProjectState();
+	const team : ProjectTeamObj | undefined = useTeamState();
+	const pid : number = usePIDState();
 	const userID : number = useUserState();
+
+	const [open, setOpen] = useState(false);
 
 	const searchTask = () => {
 		console.dir(searchInputRef.current);
@@ -42,38 +47,46 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 							ref={buttonRef}
 						/>
 				}
-				<Grid className="info-con">
-					<Grid className="border-con">
-						<Grid className="info">
-							<Grid className="project-name">{project.name}</Grid>
-							<SideMenu
-								open={open}
-								setOpen={setOpen}
-								project={project}
-							/>
+				{
+					project && pid &&
+					<>
+						<Grid className="info-con">
+							<Grid className="border-con">
+								<Grid className="info">
+									<Grid className="project-name">{project[pid].name}</Grid>
+									<SideMenu
+										open={open}
+										setOpen={setOpen}
+										pid={pid}
+									/>
+								</Grid>
+								{ open && <SubMenu /> }
+							</Grid>
 						</Grid>
-						{ open && <SubMenu /> }
-					</Grid>
-				</Grid>
-				<Grid className="member-con">
-					<Grid className="all-member">
 						{
-							project.users.map((user) => Member(user))
+							team &&
+							<Grid className="member-con">
+								<Grid className="all-member">
+									{
+										team[pid].map((member) => Member(member))
+									}
+								</Grid>
+								<Grid className="my-icon">
+									{
+										team[pid].map((member) => {
+											if (member.userID === userID) {
+												return (
+													Member(member)
+												);
+											}
+											return undefined;
+										})
+									}
+								</Grid>
+							</Grid>
 						}
-					</Grid>
-					<Grid className="my-icon">
-						{
-							project.users.map((user) => {
-								if (user.userID === userID) {
-									return (
-										Member(user)
-									);
-								}
-								return undefined;
-							})
-						}
-					</Grid>
-				</Grid>
+					</>
+				}
 			</Grid>
 			<Grid className="sub-head-con">
 				<Grid className="search-con">

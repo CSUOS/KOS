@@ -1,6 +1,6 @@
 import React, { createRef, Dispatch } from 'react';
 import {
-	useOpenState, useOpenDispatch, useProjectState, useProjectDispatch, usePIDState, usePIDDispatch, ProjectObj
+	useOpenState, useOpenDispatch // , putUser
 } from './Model';
 import { SideBarView, PageView } from './View';
 
@@ -23,30 +23,26 @@ const ViewModel = () => {
 		setOpen(false);
 	};
 
+	// putUser();
+
 	return (
 		<>
 			{
 				open ? <SideBarView
 					type="visible"
 					handleSideBarClose={handleSideBarClose}
-					project={project}
 					ref={sidebarRef}
 				/> : <SideBarView
 					type="unvisible"
 					handleSideBarClose={handleSideBarClose}
-					project={project}
 					ref={sidebarRef}
 				/>
 			}
-			{
-				project &&
-				<PageView
-					handleSideBarOpen={handleSideBarOpen}
-					open={open}
-					project={project[pid]}
-					ref={pageRef}
-				/>
-			}
+			<PageView
+				handleSideBarOpen={handleSideBarOpen}
+				open={open}
+				ref={pageRef}
+			/>
 		</>
 	);
 };
