@@ -1,6 +1,6 @@
 import React, { createRef, Dispatch } from 'react';
 import {
-	useOpenState, useOpenDispatch // , putUser
+	useOpenState, useOpenDispatch
 } from './Model';
 import { SideBarView, PageView } from './View';
 
@@ -18,8 +18,6 @@ const ViewModel = () => {
 	const handleSideBarClose = () => {
 		setOpen(false);
 	};
-
-	// putUser();
 
 	return (
 		<>

@@ -1,7 +1,5 @@
 .member{
     padding: 7px;
-    border-radius: 15px;
-    border: 3px solid white;
     color: white;
 	margin-right: -10px;
 	cursor: pointer;
@@ -25,5 +23,9 @@
 	}
 	&.child{
 		background-color: rgb(98, 69, 151);
+	}
+	&.add-member{
+		background-color: $sub-color;
+		border: 3px solid white;
 	}
 }

@@ -1,26 +1,6 @@
 import React, {
 	useState, createContext, useContext, Dispatch
 } from 'react';
-import axios from 'axios';
-
-/* test user put */
-/*
-export const putUser = async () => {
-	const headers = {
-		'Content-Type': 'application/json;charset=utf-8',
-		'Access-Control-Allow-Origin': '*'
-	};
-
-	axios
-		.get('http://localhost:8080/v1/user-api/users', { headers })
-		.then(({ data }) => {
-			console.log(data);
-		})
-		.catch((e) => {
-			console.error(e);
-		});
-};
-*/
 
 /* open context */
 // create context to use open

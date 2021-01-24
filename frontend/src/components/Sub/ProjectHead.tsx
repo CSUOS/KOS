@@ -1,6 +1,8 @@
 import React, { useState, createRef, forwardRef } from 'react';
 
-import { Grid, Input } from '@material-ui/core';
+import {
+	Grid, Input, Tooltip, Avatar
+} from '@material-ui/core';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import SearchIcon from '@material-ui/icons/Search';
 import BackupIcon from '@material-ui/icons/Backup';
@@ -70,6 +72,13 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 									{
 										team[pid].map((member) => Member(member))
 									}
+								</Grid>
+								<Grid className="plus-member">
+									<Tooltip placement="bottom" title="Add Member">
+										<Avatar className="member add-member">
+											+
+										</Avatar>
+									</Tooltip>
 								</Grid>
 								<Grid className="my-icon">
 									{
