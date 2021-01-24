@@ -11,10 +11,6 @@ const pageRef = createRef<HTMLDivElement>();
 const ViewModel = () => {
 	const open : boolean = useOpenState();
 	const setOpen : Dispatch<boolean> = useOpenDispatch();
-	const project : Array<ProjectObj> | undefined = useProjectState();
-	const setProject : Dispatch<Array<ProjectObj>> = useProjectDispatch();
-	const pid : number = usePIDState();
-	const setPID : Dispatch<number> = usePIDDispatch();
 	const handleSideBarOpen = () => {
 		setOpen(true);
 	};

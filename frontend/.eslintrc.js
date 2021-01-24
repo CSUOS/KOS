@@ -55,6 +55,8 @@ module.exports = {
 		'react': {
 			'version': 'detect',
 		},
+		"import/no-unresolved": 0, // Turn off "Unable to resolve path to module ..." error
+		"import/extensions": 0, // Turn off "Missing file extension for ..." error
 		'import/resolver': {
 			'node': {
 				'extensions': ['.js', '.jsx', '.ts', '.tsx']
