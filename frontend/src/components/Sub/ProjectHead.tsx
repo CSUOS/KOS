@@ -63,7 +63,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 										pid={pid}
 									/>
 								</Grid>
-								{ open && <SubMenu /> }
+								{ open && <SubMenu pid={pid} /> }
 							</Grid>
 						</Grid>
 						{
