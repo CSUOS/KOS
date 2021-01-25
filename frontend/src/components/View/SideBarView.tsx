@@ -1,10 +1,12 @@
-import React, { createRef, forwardRef } from 'react';
+import React, { createRef, forwardRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { Grid } from '@material-ui/core';
+import { Grid, Input } from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import LockIcon from '@material-ui/icons/Lock';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
 
-import { Button } from '../Shared';
+import { Button, Window, WindowHeader } from '../Shared';
 import { SideProject } from '../Sub';
 import { useProjectState, ProjectObj } from '../Model';
 
@@ -20,9 +22,48 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 	type, handleSideBarClose
 }, ref) => {
 	const project : ProjectObj | undefined = useProjectState();
+	const [modalOpen, setModalOpen] = useState(false);
+	const [pri, setPrivate] = useState(true);
 
 	return (
 		<Grid ref={ref} className={clsx('sidebar', type)}>
+			<Window
+				type="project-modal-con"
+				open={modalOpen}
+				hasCloseBtn={true}
+				handleWindowClose={() => setModalOpen(false)}
+			>
+				<WindowHeader
+					mainTitle="Start Project"
+					subTitle="Enter the name of the project and select whether it is public or private."
+				/>
+				<Grid container className="p-contents-con">
+					<Grid container>
+						<Grid className="p-key-con">Project Name</Grid>
+						<Input className="p-value-con" defaultValue="프로젝트 이름" />
+					</Grid>
+					<Grid container justify="space-between">
+						<Grid container className="pm-btn-con">
+							<Button
+								classList={['pm-private-btn', pri ? '' : 'selected']}
+								value={<LockOpenIcon />}
+								tooltip="public"
+								onClickFun={() => { setPrivate(false); }}
+							/>
+							<Button
+								classList={['pm-private-btn', pri ? 'selected' : '']}
+								value={<LockIcon />}
+								tooltip="private"
+								onClickFun={() => { setPrivate(true); }}
+							/>
+						</Grid>
+						<Button
+							classList={['project-add-btn']}
+							value="프로젝트 생성"
+						/>
+					</Grid>
+				</Grid>
+			</Window>
 			<header className="sidebar-header">
 				<Grid className="sidebar-header-title">
 					<img src="/logo192.png" alt="logo" />
@@ -47,6 +88,7 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 					classList={[]}
 					value="+ 새로운 프로젝트 만들기"
 					transparent={true}
+					onClickFun={() => setModalOpen(true)}
 				/>
 			</Grid>
 		</Grid>

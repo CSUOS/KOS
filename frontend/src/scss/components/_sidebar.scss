@@ -119,3 +119,55 @@
 		animation: slide-out 0.7s ease-in-out forwards;
 	}
 }
+
+/*project-modal-con*/
+.project-modal-con{
+	.p-contents-con{
+		margin-top: 2rem;
+		&>div{
+			flex-wrap: nowrap;
+			margin-bottom: 20px;
+		}
+	}
+	.p-key-con{
+		width: 130px;
+		text-align: center;
+		background-color: $sub-color;
+		color: white;
+		border-radius: $radius;
+		display: flex;
+		align-items: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-right: 1rem;
+		flex-shrink: 0;
+	}
+	.p-value-con{
+		width: 100%;
+	}
+	.pm-btn-con{
+		width: auto;
+		.pm-private-btn{
+			background-color: $base-color;
+			width: 35px;
+			height: 35px;
+			margin-right: 10px;
+			&.selected{
+				background-color: $sub-color;
+			}
+			&:hover{
+				box-shadow: 0 0 1px $shadow-color;
+			}
+			button{
+				&:hover{
+					box-shadow: none;
+				}
+				color: white;
+			}
+		}
+	}
+	.project-add-btn{
+		border: 1px solid $light-gray;
+	}
+}
