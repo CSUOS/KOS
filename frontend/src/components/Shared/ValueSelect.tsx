@@ -9,14 +9,14 @@ type ValueSelectProps = {
 	creatable: boolean,
 	newOption?: string | undefined,
 	selectOption: (arg: string) => void,
-	addOption: () => void,
+	createOption: () => void,
 	handleSelectClose: () => void,
 };
 
 const buttonName = '추가하기';
 const tooltip = '옵션 설정하기';
 const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
-	type, options, creatable, newOption, selectOption, addOption, handleSelectClose
+	type, options, creatable, newOption, selectOption, createOption, handleSelectClose
 }, ref) => {
 	const onOptionClick = (e: any) => {
 		selectOption(e.target.value);
@@ -24,7 +24,7 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 	};
 
 	const onAddOptionClick = () => {
-		addOption();
+		createOption();
 		handleSelectClose();
 	};
 
@@ -32,7 +32,7 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 		<Grid ref={ref} className="valueselect">
 			<Paper className="container" elevation={5}>
 				<Grid className="tooltip">
-					입력하여 옵션 생성 또는 클릭하여 옵션 추가
+					{type === 'member' ? '클릭하여 멤버 추가' : '입력하여 옵션 생성 또는 클릭하여 옵션 추가'}
 				</Grid>
 				{options && options.map((option) => (
 					<Grid className="item">

@@ -7,7 +7,9 @@ import {
 	DatePicker, SelectItem, Checkbox, TextField, Tag,
 } from '.';
 
-const getWhetherItHasHoverEvent = (editable : boolean, selectable: boolean, selectOpen:boolean, type: string | undefined) => {
+const getWhetherItHasHoverEvent = (
+	editable : boolean, selectable: boolean, selectOpen:boolean, type: string | undefined
+) => {
 	if (editable && type !== 'checkbox') {
 		if ((selectable && !selectOpen) || !selectable) return true;
 	}
@@ -22,7 +24,7 @@ type ValueFieldProps = {
 	selectable: boolean;
 	selectOpen: boolean;
 	newOption: string;
-	addOption: () => void;
+	createOption: () => void;
 	deleteSelectedOption: (optionToDelete: string) => void;
 	handleValueChange: (arg: any) => void;
 	handleInputChange: (arg: string) => void;
@@ -31,7 +33,7 @@ type ValueFieldProps = {
 }
 
 const ValueField = ({
-	type, value, creatable, selectable, editable, selectOpen, newOption, addOption, deleteSelectedOption, handleValueChange, handleInputChange, handleSelectOpen, handleSelectClose
+	type, value, creatable, selectable, editable, selectOpen, newOption, createOption, deleteSelectedOption, handleValueChange, handleInputChange, handleSelectOpen, handleSelectClose
 }: ValueFieldProps) => {
 	const hasHoverEvent = getWhetherItHasHoverEvent(editable, selectable, selectOpen, type);
 
@@ -43,7 +45,7 @@ const ValueField = ({
 
 	const handleKeyPress = (e: any) => {
 		if (e.key === 'Enter') {
-			addOption();
+			createOption();
 			handleSelectClose();
 		}
 	};
@@ -72,7 +74,7 @@ const ValueField = ({
 							type="text"
 							placeholder={value.length === 0 ? '옵션을 선택하세요' : ''}
 							readOnly={!selectOpen}
-							onKeyPress={handleKeyPress}
+							onKeyPress={creatable ? handleKeyPress : undefined}
 							onChange={(e: any) => handleInputChange(e.target.value)}
 							value={newOption}
 						/>}

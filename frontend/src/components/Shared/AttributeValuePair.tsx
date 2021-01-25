@@ -122,7 +122,7 @@ const AttributeValuePair = ({
 		}
 	};
 
-	const addOption = () => {
+	const createOption = () => {
 		if (!options.includes(newOption)) {
 			if (type === 'single-select' || type === 'state') {
 				setSelectedOptions([newOption]);
@@ -171,7 +171,7 @@ const AttributeValuePair = ({
 						creatable={creatable}
 						selectable={selectable}
 						selectOpen={selectOpen}
-						addOption={addOption}
+						createOption={createOption}
 						deleteSelectedOption={deleteSelectedOption}
 						newOption={newOption}
 						handleValueChange={handleValueChange}
@@ -187,7 +187,7 @@ const AttributeValuePair = ({
 							creatable={creatable}
 							newOption={newOption}
 							selectOption={selectOption}
-							addOption={addOption}
+							createOption={createOption}
 							handleSelectClose={handleSelectClose}
 						/>}
 				</Grid>
