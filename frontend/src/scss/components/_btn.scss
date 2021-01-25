@@ -2,19 +2,20 @@
 	border-radius: $radius;
     display: inline-block;
 	background-color: white;
+	cursor : pointer;
 	button{
 		cursor : pointer;
 		&:hover, &:active, &:focus{
 			outline: none;
-			box-shadow: 0 0 1px $shadow-color;
 		}
+	}
+	&:hover, &:active, &:focus{
+		box-shadow: 0 0 2px $shadow-color;
 	}
 	&.trans{
 		background-color: transparent;
-		button{
-			&:hover, &:active, &:focus{
-				box-shadow: none;
-			}
+		&:hover, &:active, &:focus{
+			box-shadow: none;
 		}
 	}
 }

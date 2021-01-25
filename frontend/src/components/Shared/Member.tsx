@@ -1,7 +1,7 @@
-import React, { createRef } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
-import { Grid, Tooltip } from '@material-ui/core';
+import { Grid, Tooltip, Avatar } from '@material-ui/core';
 import MoodIcon from '@material-ui/icons/Mood';
 import PetsIcon from '@material-ui/icons/Pets';
 import AppleIcon from '@material-ui/icons/Apple';
@@ -46,10 +46,10 @@ const returnIcon = (text : string) => {
 const Member = (user : UserObj) => {
 	const a = 1;
 	return (
-		<Tooltip placement="bottom" title={user.userName}>
-			<Grid className={clsx('member', user.userIcon)}>
+		<Tooltip placement="bottom" title={user.userName} arrow>
+			<Avatar className={clsx('member', user.userIcon)}>
 				{returnIcon(user.userIcon)}
-			</Grid>
+			</Avatar>
 		</Tooltip>
 	);
 };

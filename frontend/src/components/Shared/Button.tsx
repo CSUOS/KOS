@@ -55,7 +55,7 @@ const Button = forwardRef<HTMLDivElement, ButtonProps>(({
 			{tooltip === undefined ?
 				<button type="button" onClick={onClickFun}>{value}</button>
 				:
-				<Tooltip ref={ref} placement={ttside} title={tooltip}>
+				<Tooltip ref={ref} placement={ttside} title={tooltip} arrow>
 					<button type="button" onClick={onClickFun}>{value}</button>
 				</Tooltip>}
 		</Grid>

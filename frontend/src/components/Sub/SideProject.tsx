@@ -30,7 +30,7 @@ const SideProject = forwardRef<HTMLDivElement, SideProjectProps>(({ pid }, ref) 
 					/>
 				</Grid>
 			}
-			{ open && <SubMenu /> }
+			{ open && <SubMenu pid={pid} /> }
 		</Grid>
 	);
 });
