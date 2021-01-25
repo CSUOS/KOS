@@ -10,7 +10,7 @@ import {
 
 const getEditable = (type: string | undefined) => {
 	if (type === 'creator' ||
-		type === 'created' ||
+		type === 'createdAt' ||
 		type === 'modifiedAt' ||
 		type === 'editor' ||
 		type === 'add-button') {
