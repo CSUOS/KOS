@@ -50,7 +50,7 @@ const ValueField = ({
 					{(type === 'creator' || type === 'editor') && value}
 					{type === 'text-field' && <TextField value={value} handleValueChange={handleValueChange} />}
 					{type === 'url' && <TextField value={value} handleValueChange={handleValueChange} isURL={true} />}
-					{(type === 'date-picker' || type === 'deadline' || type === 'createdAt' || type === 'editedAt')
+					{(type === 'date-picker' || type === 'deadline' || type === 'createdAt' || type === 'modifiedAt')
 						&& <DatePicker value={value} editable={editable} handleValueChange={handleValueChange} />}
 					{type === 'checkbox' && <Checkbox value={value} handleValueChange={handleValueChange} />}
 					{(type === 'single-select' || type === 'multi-select' || type === 'state')
