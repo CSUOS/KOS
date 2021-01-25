@@ -30,14 +30,14 @@ const AttributeButton = ({
 		<Grid className="attributebutton">
 			<div className="attribute">
 				{type === 'add-button' && (
-					<Grid className="add">
+					<div className="add">
 						<Button
 							classList={['']}
 							value="+"
 							transparent={true}
 							onClickFun={menuOpen ? handleMenuClose : handleMenuOpen}
 						/>
-					</Grid>
+					</div>
 				)}
 				{type === 'description' && '설명'}
 				{(type !== 'description' && type !== 'add-button') &&

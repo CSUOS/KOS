@@ -2,9 +2,9 @@
 	margin: 8px 30px 8px 0px;
 	.attribute{
 		padding: 3px 0px;
-		min-width: 180px;
+		width: 11.25rem;
 		text-align: center;
-		font-size: 18px;
+		font-size: 1.125rem;
 		color: white;
 		background-color: $sub-color;
 		border-radius: $radius;
@@ -22,6 +22,7 @@
 		}
 		.add{
 			button{
+				width: 11.25rem;
 				font-size: 15px;
 				color: white;
 			}
