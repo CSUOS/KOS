@@ -7,6 +7,13 @@ import {
 	DatePicker, SelectItem, Checkbox, TextField, Tag,
 } from '.';
 
+const getWhetherItHasHoverEvent = (editable : boolean, selectable: boolean, selectOpen:boolean, type: string | undefined) => {
+	if (editable && type !== 'checkbox') {
+		if ((selectable && !selectOpen) || !selectable) return true;
+	}
+	return false;
+};
+
 type ValueFieldProps = {
 	type?: string | undefined;
 	value?: any | undefined;
@@ -26,6 +33,8 @@ type ValueFieldProps = {
 const ValueField = ({
 	type, value, creatable, selectable, editable, selectOpen, newOption, addOption, deleteSelectedOption, handleValueChange, handleInputChange, handleSelectOpen, handleSelectClose
 }: ValueFieldProps) => {
+	const hasHoverEvent = getWhetherItHasHoverEvent(editable, selectable, selectOpen, type);
+
 	const onButtonClick = () => {
 		if (!selectOpen) {
 			handleSelectOpen();
@@ -43,7 +52,7 @@ const ValueField = ({
 			{type !== 'description' && value !== undefined &&
 				<button
 					type="button"
-					className={clsx('value', editable && (selectable ? !selectOpen : true) && 'editable')}
+					className={clsx('value', hasHoverEvent && 'editable')}
 					onClick={onButtonClick}
 				>
 					{type === 'add-button'}
