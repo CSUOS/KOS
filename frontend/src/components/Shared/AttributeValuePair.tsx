@@ -7,6 +7,7 @@ import { Grid } from '@material-ui/core';
 import {
 	AttributeSelect as Menu, AttributeButton as Attribute, ValueField as Value, ValueSelect as Select
 } from '.';
+import { handleOutsideClick } from '../../function/FunctionManager';
 
 const getEditable = (type: string | undefined) => {
 	if (type === 'creator' ||
@@ -129,14 +130,6 @@ const AttributeValuePair = ({
 				setSelectedOptions([...selectedOptions, newOption]);
 			}
 			setOptions([...options, newOption]);
-		}
-	};
-
-	const handleOutsideClick = (
-		e: any, refObject: RefObject<HTMLElement>, callback: () => void
-	) => {
-		if (refObject.current && !refObject.current.contains(e.target)) {
-			callback();
 		}
 	};
 

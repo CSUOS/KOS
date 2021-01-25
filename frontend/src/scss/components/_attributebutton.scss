@@ -9,14 +9,13 @@
 		background-color: $sub-color;
 		border-radius: $radius;
 		.delete{
-			float: right;
+			position: absolute;
 			button{
-				align-items: center;
 				svg{
-					font-size: 1.0rem;
-					border-radius: $radius;
-					border: 1.4px solid white;
-					color: white;
+						font-size: 1.0rem;						
+						border-radius: $radius;
+						border: 1.4px solid white;
+						color: white;
 				}
 			}
 		}
