@@ -150,6 +150,9 @@
 		width: auto;
 		.pm-private-btn{
 			background-color: $base-color;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			width: 35px;
 			height: 35px;
 			margin-right: 10px;
@@ -168,6 +171,9 @@
 		}
 	}
 	.project-add-btn{
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		border: 1px solid $light-gray;
 	}
 }

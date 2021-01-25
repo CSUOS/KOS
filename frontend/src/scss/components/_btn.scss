@@ -1,8 +1,6 @@
 .btn{
 	border-radius: $radius;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-block;
 	background-color: white;
 	cursor : pointer;
 	button{
