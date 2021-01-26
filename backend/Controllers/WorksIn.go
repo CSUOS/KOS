@@ -62,6 +62,20 @@ func GetWorksInByUserID(c *gin.Context) {
 	}
 }
 
+// 특정 프로젝트에 속해있는 유저 받아오기
+func GetWorksInByProjectID(c *gin.Context) {
+	id := c.Params.ByName("id")
+	var worksIn []Models.WorksIn
+
+	err := Models.GetWorksInByProjectID(&worksIn, id)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, worksIn)
+	}
+}
+
 // UpdateWorksIn 유저 - 프로젝트 관계를 업데이트
 func UpdateWorksIn(c *gin.Context) {
 	var worksIn Models.WorksIn
