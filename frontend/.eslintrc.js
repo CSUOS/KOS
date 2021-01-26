@@ -1,6 +1,12 @@
 module.exports = {
 	'parser': '@typescript-eslint/parser',
-	'plugins': ['@typescript-eslint'],
+	'plugins': [
+		'@typescript-eslint',
+		'eslint-plugin-jsx-a11y',
+		'eslint-plugin-react',
+		'eslint-plugin-react-hooks'
+	],
+	'root': true,
 	'env': {
 		'commonjs': true,
 		'browser': true,
