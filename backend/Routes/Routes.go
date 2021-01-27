@@ -3,12 +3,17 @@ package Routes
 import (
 	"github.com/CSUOS/KOS/backend/Controllers"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 // SetupRouter 경로를 정의
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000", "http://127.0.0.1:3000"}
+	r.Use(cors.New(config))
+
 
 	userRoutes := r.Group("/v1/user-api")
 	{
@@ -39,7 +44,7 @@ func SetupRouter() *gin.Engine {
 		// 프로젝트를 카피한다.
 		projectRoutes.POST("copy", Controllers.CopyProject)
 
-		// 유저의 권한을 확인 후에 프로젝트를 삭제
+		// 유저의 권한을 확인 후에 프로젝트 다루기
 		projectRoutes.DELETE("delete", Controllers.DeleteProjectByAuthUser)
 
 		projectRoutes.GET("projects", Controllers.GetAllProjects)
@@ -118,6 +123,8 @@ func SetupRouter() *gin.Engine {
 		worksInRoutes.POST("works-in", Controllers.CreateWorksIn)
 
 		worksInRoutes.GET("works-in/:id", Controllers.GetWorksInByID)
+
+		worksInRoutes.GET("works-in-project/:id", Controllers.GetWorksInByProjectID)
 
 		worksInRoutes.PUT("works-in/:id", Controllers.UpdateWorksIn)
 
