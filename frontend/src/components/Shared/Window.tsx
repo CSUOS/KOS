@@ -53,6 +53,7 @@ const Window = ({
 						open={open}
 						fullWidth={true}
 						maxWidth={maxWidth}
+						onClose={handleWindowClose}
 					>
 						<div className={clsx('window', type)}>
 							{hasCloseBtn &&
