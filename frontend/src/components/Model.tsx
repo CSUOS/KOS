@@ -55,7 +55,7 @@ export type TaskObj = {
 	taskID: number;
 	attribute: TypeAttribute;
 	createdAt: Date;
-	modifiedAt: Date;
+	updatedAt: Date;
 	index: number;
 }
 
@@ -189,7 +189,7 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 									attribute: taskData.Attribute,
 									index: taskData.Rank,
 									createdAt: new Date(taskData.CreatedAt),
-									modifiedAt: new Date(taskData.UpdatedAt)
+									updatedAt: new Date(taskData.UpdatedAt)
 								});
 							});
 						});
