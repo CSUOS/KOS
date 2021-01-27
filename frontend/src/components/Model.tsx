@@ -52,7 +52,8 @@ type TypeAttribute = {
 }
 
 type ReactionObj = {
-	[emoji : string] : Array<string>
+	reaction : string,
+	users : Array<string>
 }
 
 export type TaskObj = {
