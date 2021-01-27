@@ -7,3 +7,8 @@ export const handleOutsideClick = (
 		callback();
 	}
 };
+
+export const checkIsStringEmpty = (str:string | undefined | null) => {
+	if (!str || !str.trim()) return true;
+	return false;
+};

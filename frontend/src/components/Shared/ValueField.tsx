@@ -26,14 +26,14 @@ type ValueFieldProps = {
 	newOption: string;
 	createOption: () => void;
 	deleteSelectedOption: (optionToDelete: string) => void;
-	handleValueChange: (arg: any) => void;
-	handleInputChange: (arg: string) => void;
+	handleSingleValueChange: (arg: any) => void;
+	handleOptionInputChange: (arg: string) => void;
 	handleSelectOpen: () => void;
 	handleSelectClose: () => void;
 }
 
 const ValueField = ({
-	type, value, creatable, selectable, editable, selectOpen, newOption, createOption, deleteSelectedOption, handleValueChange, handleInputChange, handleSelectOpen, handleSelectClose
+	type, value, creatable, selectable, editable, selectOpen, newOption, createOption, deleteSelectedOption, handleSingleValueChange, handleOptionInputChange, handleSelectOpen, handleSelectClose
 }: ValueFieldProps) => {
 	const hasHoverEvent = getWhetherItHasHoverEvent(editable, selectable, selectOpen, type);
 
@@ -43,7 +43,7 @@ const ValueField = ({
 		}
 	};
 
-	const handleKeyPress = (e: any) => {
+	const handleInputKeyPress = (e: any) => {
 		if (e.key === 'Enter') {
 			createOption();
 			handleSelectClose();
@@ -59,11 +59,11 @@ const ValueField = ({
 				>
 					{type === 'add-button'}
 					{(type === 'creator' || type === 'editor') && value}
-					{type === 'text-field' && <TextField value={value} handleValueChange={handleValueChange} />}
-					{type === 'url' && <TextField value={value} handleValueChange={handleValueChange} isURL={true} />}
+					{type === 'text-field' && <TextField value={value} handleValueChange={handleSingleValueChange} />}
+					{type === 'url' && <TextField value={value} handleValueChange={handleSingleValueChange} isURL={true} />}
 					{(type === 'date-picker' || type === 'deadline' || type === 'createdAt' || type === 'updatedAt')
-						&& <DatePicker value={value} editable={editable} handleValueChange={handleValueChange} />}
-					{type === 'checkbox' && <Checkbox value={value} handleValueChange={handleValueChange} />}
+						&& <DatePicker value={value} editable={editable} handleValueChange={handleSingleValueChange} />}
+					{type === 'checkbox' && <Checkbox value={value} handleValueChange={handleSingleValueChange} />}
 					{(type === 'single-select' || type === 'multi-select' || type === 'state')
 						&& value.map((option: string) => (
 							<SelectItem value={option} hasCloseBtn={true} handleSelectedDelete={deleteSelectedOption} />))}
@@ -74,8 +74,8 @@ const ValueField = ({
 							type="text"
 							placeholder={value.length === 0 ? '옵션을 선택하세요' : ''}
 							readOnly={!selectOpen}
-							onKeyPress={creatable ? handleKeyPress : undefined}
-							onChange={(e: any) => handleInputChange(e.target.value)}
+							onKeyPress={creatable ? handleInputKeyPress : undefined}
+							onChange={(e: any) => handleOptionInputChange(e.target.value)}
 							value={newOption}
 						/>}
 				</button>}

@@ -1,6 +1,8 @@
-import React, { forwardRef, ReactFragment } from 'react';
+import React, { useState, forwardRef, ReactFragment } from 'react';
 
 import { Grid, Paper } from '@material-ui/core';
+
+import { checkIsStringEmpty } from '../../function/FunctionManager';
 
 type PartProps = {
 	subject: string,
@@ -22,7 +24,7 @@ const defaultPairs = [
 	{ type: 'editor', name: 'Editor', value: '김철수(kim)' },
 	{ type: 'member', name: 'Assign', value: { options: ['김철수(kim)', '우희은(hinge7)', '김정현(powergee)'], selectedOptions: ['김철수(kim)'] } },
 	{ type: 'createdAt', name: 'CreatedAt', value: new Date() },
-	{ type: 'modifiedAt', name: 'ModifiedAt', value: new Date() },
+	{ type: 'updatedAt', name: 'UpdatedAt', value: new Date() },
 	{ type: 'deadline', name: 'Deadline', value: new Date('2021-01-30') },
 	{ type: 'state', name: 'State', value: { options: ['시작전', '진행중', '완료'], selectedOptions: ['시작전'] } },
 ];
@@ -35,20 +37,24 @@ const createPairs = [
 	{ type: 'checkbox', name: '체크박스', value: false },
 ];
 
+const namePlaceholder = '속성 이름';
 type AttributeSelectProps = {
-	text: string,
-	handleInputChange: (e: any) => void,
+	text: string | undefined,
+	handleNameInputChange: (e: any) => void,
 	handleMenuClose: () => void,
 	handlePairAdd?: (pairToAdd: any) => void | undefined;
 };
 
 const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
-	text, handleInputChange, handleMenuClose, handlePairAdd
+	text, handleNameInputChange, handleMenuClose, handlePairAdd
 }, ref) => {
 	const onOptionClick = (isDefault: boolean, pairToAdd: any) => {
-		const newPair = isDefault ? pairToAdd : { ...pairToAdd, name: text };
-		if (handlePairAdd) handlePairAdd(newPair);
-		handleMenuClose();
+		const isNameEmpty = checkIsStringEmpty(text);
+		if (!isNameEmpty) {
+			const newPair = isDefault ? pairToAdd : { ...pairToAdd, name: text };
+			if (handlePairAdd) handlePairAdd(newPair);
+			handleMenuClose();
+		}
 	};
 
 	return (
@@ -59,7 +65,8 @@ const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 						<input
 							type="text"
 							className="attri-input"
-							onChange={handleInputChange}
+							placeholder={namePlaceholder}
+							onChange={handleNameInputChange}
 							value={text}
 						/>
 					</Part>

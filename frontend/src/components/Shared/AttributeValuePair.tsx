@@ -7,7 +7,7 @@ import { Grid } from '@material-ui/core';
 import {
 	AttributeSelect as Menu, AttributeButton as Attribute, ValueField as Value, ValueSelect as Select
 } from '.';
-import { handleOutsideClick } from '../../function/FunctionManager';
+import { handleOutsideClick, checkIsStringEmpty } from '../../function/FunctionManager';
 
 const getEditable = (type: string | undefined) => {
 	if (type === 'creator' ||
@@ -28,6 +28,14 @@ const getSelectable = (type: string | undefined) => {
 		return true;
 	}
 	return false;
+};
+
+const getMultiSelectable = (type: string | undefined, selectable: boolean) => {
+	if (selectable) {
+		if (type === 'multi-select' || type === 'member') return true;
+		return false;
+	}
+	return undefined;
 };
 
 const getCreatable = (type:string | undefined, selectable: boolean) => {
@@ -63,11 +71,12 @@ const AttributeValuePair = ({
 }: AttributeValuePairProps) => {
 	const editable = getEditable(type);
 	const selectable = getSelectable(type);
+	const multiSelectable = getMultiSelectable(type, selectable);
 	const creatable = getCreatable(type, selectable);
 
 	const [selectOpen, setSelectOpen] = useState(false);
 	const [menuOpen, setMenuOpen] = useState(false);
-	const [newName, setNewName] = useState('속성 이름');
+	const [newName, setNewName] = useState(undefined);
 
 	// for selectable
 	const [options, setOptions] = useState(selectable && value.options);
@@ -85,18 +94,18 @@ const AttributeValuePair = ({
 
 	const handleMenuClose = () => {
 		setMenuOpen(false);
-		setNewName('속성 이름');
+		setNewName(undefined);
 	};
 
-	const handleNameChange = (e: any) => {
+	const handleNameInputChange = (e: any) => {
 		setNewName(e.target.value);
 	};
 
-	const handleValueChange = (arg: any) => {
+	const handleSingleValueChange = (arg: any) => {
 		setSingleValue(arg);
 	};
 
-	const handleInputChange = (input: string) => {
+	const handleOptionInputChange = (input: string) => {
 		setNewOption(input);
 	};
 
@@ -117,22 +126,19 @@ const AttributeValuePair = ({
 
 	const selectOption = (selectedValue: string) => {
 		if (!selectedOptions.includes(selectedValue)) {
-			if (type === 'single-select' || type === 'state') {
-				setSelectedOptions([selectedValue]);
-			} else {
-				setSelectedOptions([...selectedOptions, selectedValue]);
-			}
+			if (multiSelectable) setSelectedOptions([...selectedOptions, selectedValue]);
+			else setSelectedOptions([selectedValue]);
 		}
 	};
 
 	const createOption = () => {
-		if (!options.includes(newOption)) {
-			if (type === 'single-select' || type === 'state') {
-				setSelectedOptions([newOption]);
-			} else {
-				setSelectedOptions([...selectedOptions, newOption]);
+		const isNewOptionTextEmpty = checkIsStringEmpty(newOption);
+		if (!isNewOptionTextEmpty) {
+			if (!options.includes(newOption)) {
+				if (multiSelectable) setSelectedOptions([...selectedOptions, newOption]);
+				else setSelectedOptions([newOption]);
+				setOptions([...options, newOption]);
 			}
-			setOptions([...options, newOption]);
 		}
 	};
 
@@ -173,12 +179,12 @@ const AttributeValuePair = ({
 						editable={editable}
 						selectable={selectable}
 						creatable={creatable}
+						newOption={newOption}
 						selectOpen={selectOpen}
 						createOption={createOption}
 						deleteSelectedOption={deleteSelectedOption}
-						newOption={newOption}
-						handleValueChange={handleValueChange}
-						handleInputChange={handleInputChange}
+						handleSingleValueChange={handleSingleValueChange}
+						handleOptionInputChange={handleOptionInputChange}
 						handleSelectOpen={handleSelectOpen}
 						handleSelectClose={handleSelectClose}
 					/>
@@ -199,7 +205,7 @@ const AttributeValuePair = ({
 				<Menu
 					ref={menuRef}
 					text={newName}
-					handleInputChange={handleNameChange}
+					handleNameInputChange={handleNameInputChange}
 					handleMenuClose={handleMenuClose}
 					handlePairAdd={handlePairAdd}
 				/>}
@@ -209,7 +215,7 @@ const AttributeValuePair = ({
 
 AttributeValuePair.defaultProps = {
 	type: 'add-button',
-	name: '속성 이름',
+	name: undefined,
 	value: undefined,
 	handlePairAdd: undefined,
 	handlePairDelete: undefined,
