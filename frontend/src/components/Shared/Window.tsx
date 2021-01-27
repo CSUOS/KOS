@@ -1,6 +1,10 @@
-import React, { ReactFragment, createRef, useEffect } from 'react';
+import React, {
+	ReactFragment, createRef, useEffect, useState
+} from 'react';
 import clsx from 'clsx';
-import { Backdrop, Paper, Grid } from '@material-ui/core';
+import {
+	Backdrop, Paper, Grid, Dialog
+} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { Button } from '.';
 import { handleOutsideClick } from '../../function/FunctionManager';
@@ -8,40 +12,49 @@ import { handleOutsideClick } from '../../function/FunctionManager';
 /* ====[Window 사용 예시]========
 type: 전달할 className
 open: window가 열려있는가
+maxWidth : xs | sm | md | lg | xl 중 선택 (전달 안 하면 기본은 md)
 hasCloseBtn: window 닫는 버튼을 가지고 있는가
 handleWindowClose: window를 닫는 함수
 children: window 안에 들어갈 내용
 ================================
 */
 
-const windowRef = createRef<HTMLDivElement>();
+// const windowRef = createRef<HTMLDivElement>();
+
 type WindowProps = {
 	type: string;
 	open: boolean;
+	maxWidth?: false | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined;
 	hasCloseBtn?: boolean | undefined;
 	handleWindowClose: () => void | undefined;
 	children: ReactFragment;
 }
 
 const Window = ({
-	type, open, hasCloseBtn, handleWindowClose, children
+	type, open, maxWidth, hasCloseBtn, handleWindowClose, children
 }: WindowProps) => {
-	useEffect(() => {
-		document.addEventListener('mousedown',
-			(e: any) => handleOutsideClick(e, windowRef, handleWindowClose), true);
-		return () => {
-			document.removeEventListener('mousedown',
-				(e: any) => handleOutsideClick(e, windowRef, handleWindowClose), true);
-		};
-	});
+	const a = 1;
+	// useEffect(() => {
+	// 	document.addEventListener('mousedown',
+	// 		(e: any) => handleOutsideClick(e, windowRef, handleWindowClose), true);
+	// 	return () => {
+	// 		document.removeEventListener('mousedown',
+	// 			(e: any) => handleOutsideClick(e, windowRef, handleWindowClose), true);
+	// 	};
+	// });
 
 	return (
 		<>
 			{ open &&
 				<Grid className="window-background">
 					<Grid className="window-background-header" />
-					<Backdrop className="window-backdrop" open={open}>
-						<Paper ref={windowRef} className={clsx('window', type)}>
+					<Dialog
+						className="dialog"
+						open={open}
+						fullWidth={true}
+						maxWidth={maxWidth}
+					>
+						<div className={clsx('window', type)}>
 							{hasCloseBtn &&
 								<Grid className="window-closebutton">
 									<Button
@@ -54,8 +67,8 @@ const Window = ({
 							<Grid className="window-content">
 								{children}
 							</Grid>
-						</Paper>
-					</Backdrop>
+						</div>
+					</Dialog>
 				</Grid>}
 		</>
 	);
@@ -63,6 +76,7 @@ const Window = ({
 
 Window.defaultProps = {
 	hasCloseBtn: undefined,
+	maxWidth: undefined,
 };
 
 export default Window;

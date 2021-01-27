@@ -96,6 +96,7 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 				type={windowType}
 				open={open}
 				hasCloseBtn={true}
+				maxWidth="lg"
 				handleWindowClose={handleTaskWindowClose}
 			>
 				<TaskTitle

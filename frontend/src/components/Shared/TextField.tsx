@@ -28,7 +28,7 @@ const TextField = ({ value, handleValueChange, isURL }: TextFieldProps) => (
 		/>
 		{
 			isURL && value &&
-			<a href={formatURL(value)} target="_sub">
+			<a href={value} target="_sub">
 				<Button
 					classList={['']}
 					value={<LinkIcon />}
