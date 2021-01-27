@@ -51,7 +51,7 @@ const ValueField = ({
 	};
 	return (
 		<Grid className="valuefield">
-			{type !== 'description' && value !== undefined &&
+			{type !== 'description' &&
 				<button
 					type="button"
 					className={clsx('value', hasHoverEvent && 'editable')}
@@ -61,7 +61,7 @@ const ValueField = ({
 					{(type === 'creator' || type === 'editor') && value}
 					{type === 'text-field' && <TextField value={value} handleValueChange={handleValueChange} />}
 					{type === 'url' && <TextField value={value} handleValueChange={handleValueChange} isURL={true} />}
-					{(type === 'date-picker' || type === 'deadline' || type === 'createdAt' || type === 'modifiedAt')
+					{(type === 'date-picker' || type === 'deadline' || type === 'createdAt' || type === 'updatedAt')
 						&& <DatePicker value={value} editable={editable} handleValueChange={handleValueChange} />}
 					{type === 'checkbox' && <Checkbox value={value} handleValueChange={handleValueChange} />}
 					{(type === 'single-select' || type === 'multi-select' || type === 'state')
@@ -79,10 +79,6 @@ const ValueField = ({
 							value={newOption}
 						/>}
 				</button>}
-			{/*
-			{type === 'link'}
-			{type === 'checkbox' && <Checkbox />}
-			*/}
 			{type === 'description'}
 		</Grid>
 	);
