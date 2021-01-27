@@ -1,6 +1,7 @@
 import React, {
-	useState, createContext, useContext, Dispatch
+	useState, createContext, useContext, Dispatch, useEffect
 } from 'react';
+import axios from 'axios';
 
 /* open context */
 // create context to use open
@@ -46,17 +47,27 @@ type Attribute = {
 	value: string | Array<string>;
 }
 
+type TypeAttribute = {
+	[type : string] : Array<Attribute>
+}
+
+type ReactionObj = {
+	[emoji : string] : Array<string>
+}
+
 export type TaskObj = {
 	taskID: number;
-	attribute: Array<Attribute>;
-	createAt: Date;
-	modifiedAt: Date;
+	attribute: TypeAttribute;
+	reactions: Array<ReactionObj>;
+	createdAt: Date;
+	updatedAt: Date;
+	index: number;
 }
 
 type ListObj = {
 	listID: number;
-	// index는 배열 순서대로 다시 집어넣기
 	name: string;
+	index: number;
 }
 
 export type ProjectObj = {
@@ -68,16 +79,50 @@ export type ProjectObj = {
 	}
 }
 
-export type ProjectTeamObj = {
-	[projectID : number] : Array<UserObj>;
-}
+/* 선택된 project에 대한 team, list, task */
 
-type ProjectListObj = {
-	[projectID : number] : Array<ListObj>;
-}
+export type ProjectTeamObj = Array<UserObj>;
+
+type ProjectListObj = Array<ListObj>;
 
 export type ProjectTaskObj = {
 	[listID : number] : Array<TaskObj>;
+}
+
+/* DB에서 넘어오는 data type */
+type ImportTaskObj = {
+	Attribute: TypeAttribute;
+	ID: number;
+	Rank: number;
+	ListID: number;
+	Name: string;
+	Reactions: Array<ReactionObj>;
+	CreatedAt: string;
+	DeletedAt: null;
+	UpdatedAt: string;
+}
+
+type ImportListObj = {
+	ID: number;
+	Name: string;
+	ProjectID: number;
+	Rank: number;
+	Tasks: Array<ImportTaskObj>;
+	CreatedAt: string;
+	DeletedAt: null;
+	UpdatedAt: string | null;
+}
+
+type ImportProjectObj = {
+	BGColor: string;
+	BookMark: boolean;
+	ID: number;
+	IsPrivate: boolean;
+	Lists: Array<ImportListObj>;
+	Name: string;
+	CreatedAt: string;
+	DeletedAt: null;
+	UpdatedAt: string | null;
 }
 
 const ProjectDataContext = createContext<ProjectObj | undefined>(undefined);
@@ -90,29 +135,10 @@ const TaskContext = createContext<ProjectTaskObj | undefined>(undefined);
 const TaskDispatchContext = createContext<Dispatch<ProjectTaskObj>>(() => {});
 
 export const ProjectContextProvider = ({ children } : childrenObj) => {
-	const [project, setProject] = useState<ProjectObj>({
-		1: {
-			isPrivate: false,
-			bookMark: true,
-			bgColor: 'pink',
-			name: 'KOS'
-		},
-		2: {
-			isPrivate: false,
-			bookMark: true,
-			bgColor: 'green',
-			name: 'NERA'
-		},
-		3: {
-			isPrivate: false,
-			bookMark: true,
-			bgColor: 'purple',
-			name: 'HHsadfasdfasdfasdfsdafsadf'
-		}
-	});
+	const [project, setProject] = useState<ProjectObj>();
 
-	const [team, setTeam] = useState<ProjectTeamObj>({
-		1: [
+	const [team, setTeam] = useState<ProjectTeamObj>(
+		[
 			{
 				userID: 1,
 				userIcon: 'pet',
@@ -126,38 +152,78 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 				gitID: 'thereisnotruth12@gmail.com'
 			}
 		]
-	});
+	);
 
-	const [list, setList] = useState<ProjectListObj>({
-		1: [
-			{
-				listID: 1,
-				name: '할 일'
-			},
-			{
-				listID: 2,
-				name: '끝난 일'
-			}
-		]
-	});
+	const [list, setList] = useState<ProjectListObj>();
 
-	const [task, setTask] = useState<ProjectTaskObj>({
-		1: [
-			{
-				taskID: 1,
-				createAt: new Date(),
-				modifiedAt: new Date(),
-				attribute: [{
-					key: 'text-field',
-					value: 'hi'
-				},
-				{
-					key: 'people',
-					value: ['우희은(hinge7)', '김정현(powergee)']
-				}]
-			}
-		]
-	});
+	const [task, setTask] = useState<ProjectTaskObj>();
+
+	const a = 1;
+	const pid = usePIDState();
+
+	useEffect(() => {
+		axios.get('http://localhost:8080/v1/project-api/projects')
+			.then(async (res) => {
+				console.log(res);
+				const tmpProject : ProjectObj = {};
+				const tmpList : ProjectListObj = [];
+				const tmpTask : ProjectTaskObj = {};
+				res.data.forEach((data : ImportProjectObj) => {
+					tmpProject[data.ID] = {
+						isPrivate: data.IsPrivate,
+						bookMark: data.BookMark,
+						bgColor: data.BGColor,
+						name: data.Name
+					};
+
+					if (data.ID === pid) {
+						// 현재 선택된 project의 list와 task, team 받아오기
+						data.Lists.sort((x : ImportListObj, y: ImportListObj) => {
+							// index 순으로 list 정렬
+							if (x.Rank > y.Rank) {
+								return -1;
+							}
+							return 0;
+						}).forEach((listData: ImportListObj) => {
+							tmpList.push({
+								listID: listData.ID,
+								name: listData.Name,
+								index: listData.Rank
+							});
+							listData.Tasks.sort((x : ImportTaskObj, y: ImportTaskObj) => {
+								// index 순으로 task 정렬
+								if (x.Rank > y.Rank) {
+									return -1;
+								}
+								return 0;
+							}).forEach((taskData : ImportTaskObj) => {
+								if (listData.ID !== taskData.ListID) {
+									throw new Error('task가 할당된 list의 id와 다릅니다.');
+								}
+								tmpTask[taskData.ListID] = [];
+								tmpTask[taskData.ListID].push({
+									taskID: taskData.ID,
+									attribute: taskData.Attribute,
+									reactions: taskData.Reactions,
+									index: taskData.Rank,
+									createdAt: new Date(taskData.CreatedAt),
+									updatedAt: new Date(taskData.UpdatedAt)
+								});
+							});
+						});
+
+						// team은 따로 api로 받아와야 함 => api 수정 후
+					}
+				});
+
+				setProject(tmpProject);
+				setList(tmpList);
+				setTask(tmpTask);
+			})
+			.catch((e) => {
+				console.dir(e);
+			});
+	}, [a, pid]); // 나중에는 a를 대체하여 쿠키/세션 정보가 바뀌면 다시 받아오도록 하기
 
 	return (
 		<ProjectDataContext.Provider value={project}>

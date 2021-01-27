@@ -71,7 +71,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 							<Grid className="member-con">
 								<Grid className="all-member">
 									{
-										team[pid].map((member) => Member(member))
+										team.map((member) => Member(member))
 									}
 								</Grid>
 								<Grid className="plus-member">
@@ -83,7 +83,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 								</Grid>
 								<Grid className="my-icon">
 									{
-										team[pid].map((member) => {
+										team.map((member) => {
 											if (member.userID === userID) {
 												return (
 													Member(member)
