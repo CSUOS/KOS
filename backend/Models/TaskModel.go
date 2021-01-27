@@ -25,8 +25,12 @@ type Task struct {
 	*/
 	Reactions  datatypes.JSON // 리액션
 	/* 아래가 기본 틀
-	[{
-		"emojiname" : ["user1", "user2"] 
-    }]
+	// 순서를 유지시키기 위해 array 형태로 저장
+	[
+		{
+			"reaction" : "emoji1",
+			"users" : ["user1", "user2"]
+		}
+	]
 	*/
 }
