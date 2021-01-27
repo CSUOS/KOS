@@ -12,7 +12,7 @@ import { handleOutsideClick } from '../../function/FunctionManager';
 const getEditable = (type: string | undefined) => {
 	if (type === 'creator' ||
 		type === 'createdAt' ||
-		type === 'modifiedAt' ||
+		type === 'updatedAt' ||
 		type === 'editor' ||
 		type === 'add-button') {
 		return false;

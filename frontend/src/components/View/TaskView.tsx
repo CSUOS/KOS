@@ -38,8 +38,8 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 	// parsed data
 	const mainTitle = `TASK #${task?.taskID}`;
 	const attributes = task?.attribute;
-	const created = task?.createAt;
-	const modified = task?.modifiedAt;
+	const created = task?.createdAt;
+	const updated = task?.updatedAt;
 
 	const handlePin = () => {
 		setPin(!pin);

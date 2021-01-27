@@ -26,7 +26,8 @@ const PageView = forwardRef<HTMLDivElement, PageViewProps>(({
 
 	/* ==============테스크 윈도우 열기 위한 임의의 값들============== */
 	const buttonName = '테스크 설정하기';
-	const task = tasks && tasks[1][0];
+	const task = tasks && tasks[Number(Object.keys(tasks)[0])][0];
+	// 지금은 가장 처음 task를 받아오게 설정되어있음
 	const [openTask, setOpenTask] = useState(false);
 
 	const handleTaskWindowOpen = () => {
