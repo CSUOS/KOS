@@ -1,10 +1,15 @@
-import React, { forwardRef, useState } from 'react';
+import React, {
+	forwardRef, createRef, useState, useEffect
+} from 'react';
 
 import { Grid } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 
 import { Button, EmojiPicker, EmojiList } from '.';
+import { handleOutsideClick } from '../../function/FunctionManager';
+
+const emojiPickerRef = createRef<HTMLDivElement>();
 
 type TaskTitleProps = {
 	taskTitle: string | undefined;
@@ -37,6 +42,15 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 		handleEmojis(emojiId);
 	};
 
+	useEffect(() => {
+		document.addEventListener('mousedown',
+			(e: any) => handleOutsideClick(e, emojiPickerRef, handleEmojiPickerClose), true);
+		return () => {
+			document.removeEventListener('mousedown',
+				(e: any) => handleOutsideClick(e, emojiPickerRef, handleEmojiPickerClose), true);
+		};
+	});
+
 	return (
 		<>
 			<Grid ref={ref} className="windowheader">
@@ -64,7 +78,10 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 			</Grid>
 			{openEmojiPicker
 				&&
-				<Grid className="picker">
+				<Grid
+					ref={emojiPickerRef}
+					className="picker"
+				>
 					<EmojiPicker
 						onEmojiSelect={onEmojiSelect}
 					/>

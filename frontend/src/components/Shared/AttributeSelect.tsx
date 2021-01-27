@@ -21,8 +21,8 @@ const defaultPairs = [
 	{ type: 'creator', name: 'Creator', value: '김철수(kim)' },
 	{ type: 'editor', name: 'Editor', value: '김철수(kim)' },
 	{ type: 'member', name: 'Assign', value: { options: ['김철수(kim)', '우희은(hinge7)', '김정현(powergee)'], selectedOptions: ['김철수(kim)'] } },
-	{ type: 'createdAt', name: 'CreateAt', value: new Date() },
-	{ type: 'editedAt', name: 'EditedAt', value: new Date() },
+	{ type: 'createdAt', name: 'CreatedAt', value: new Date() },
+	{ type: 'modifiedAt', name: 'ModifiedAt', value: new Date() },
 	{ type: 'deadline', name: 'Deadline', value: new Date('2021-01-30') },
 	{ type: 'state', name: 'State', value: { options: ['시작전', '진행중', '완료'], selectedOptions: ['시작전'] } },
 ];

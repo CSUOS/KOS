@@ -7,11 +7,12 @@ import { Grid } from '@material-ui/core';
 import {
 	AttributeSelect as Menu, AttributeButton as Attribute, ValueField as Value, ValueSelect as Select
 } from '.';
+import { handleOutsideClick } from '../../function/FunctionManager';
 
 const getEditable = (type: string | undefined) => {
 	if (type === 'creator' ||
-		type === 'created' ||
-		type === 'modified' ||
+		type === 'createdAt' ||
+		type === 'modifiedAt' ||
 		type === 'editor' ||
 		type === 'add-button') {
 		return false;
@@ -121,7 +122,7 @@ const AttributeValuePair = ({
 		}
 	};
 
-	const addOption = () => {
+	const createOption = () => {
 		if (!options.includes(newOption)) {
 			if (type === 'single-select' || type === 'state') {
 				setSelectedOptions([newOption]);
@@ -129,14 +130,6 @@ const AttributeValuePair = ({
 				setSelectedOptions([...selectedOptions, newOption]);
 			}
 			setOptions([...options, newOption]);
-		}
-	};
-
-	const handleOutsideClick = (
-		e: any, refObject: RefObject<HTMLElement>, callback: () => void
-	) => {
-		if (refObject.current && !refObject.current.contains(e.target)) {
-			callback();
 		}
 	};
 
@@ -178,7 +171,7 @@ const AttributeValuePair = ({
 						creatable={creatable}
 						selectable={selectable}
 						selectOpen={selectOpen}
-						addOption={addOption}
+						createOption={createOption}
 						deleteSelectedOption={deleteSelectedOption}
 						newOption={newOption}
 						handleValueChange={handleValueChange}
@@ -194,7 +187,7 @@ const AttributeValuePair = ({
 							creatable={creatable}
 							newOption={newOption}
 							selectOption={selectOption}
-							addOption={addOption}
+							createOption={createOption}
 							handleSelectClose={handleSelectClose}
 						/>}
 				</Grid>

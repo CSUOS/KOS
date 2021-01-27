@@ -10,8 +10,7 @@
 	}
 	.window-backdrop{
 		z-index: 1;
-		align-items: flex-start;
-		padding-top: $header-height + 40px;
+		align-items: center;
 		.window{
 			&.task{
 				width: 70%;
