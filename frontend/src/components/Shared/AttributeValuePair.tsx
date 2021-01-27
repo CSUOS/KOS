@@ -20,26 +20,30 @@ const getEditable = (type: string | undefined) => {
 	return true;
 };
 
-const getCreatable = (type: string | undefined) => {
+const getSelectable = (type: string | undefined) => {
 	if (type === 'single-select' ||
 		type === 'multi-select' ||
-		type === 'state') {
+		type === 'state' ||
+		type === 'member') {
 		return true;
 	}
 	return false;
 };
 
-const getClass = (creatable: boolean, editable: boolean) => {
-	if (editable) {
-		if (creatable) return 1;	// [1] 수정 가능하고 옵션 추가 가능함
-		return 2;					// [2] 수정 가능하나 옵션 추가 불가능
+const getCreatable = (type:string | undefined, selectable: boolean) => {
+	if (selectable) {
+		if (type === 'member') return false;
+		return true;
 	}
-	return 3;						// [3] 수정 불가능하고 옵션 추가 불가능
+	return false;
 };
 
-const getSelectable = (classIndex: number, type: string | undefined) => {
-	if (classIndex === 1 || type === 'member') return true;
-	return false;
+const getClass = (editable: boolean, creatable: boolean) => {
+	if (editable) {
+		if (creatable) return 1;	// [1] 수정 가능, 옵션 선택 가능, 옵션 추가 가능
+		return 2;					// [2] 수정 가능, 옵션 선택 가능, 옵션 추가 불가능
+	}
+	return 3;						// [3] 수정 불가능
 };
 
 type AttributeValuePairProps = {
@@ -47,8 +51,8 @@ type AttributeValuePairProps = {
 	type?: string | undefined;
 	name?: string | undefined;
 	value?: any | undefined;
-	handlePairAdd?: (pairToAdd:any) => void | undefined;
-	handlePairDelete?: (indexToDelete:number) => void | undefined;
+	handlePairAdd?: (pairToAdd: any) => void | undefined;
+	handlePairDelete?: (indexToDelete: number) => void | undefined;
 }
 
 const selectRef = createRef<HTMLDivElement>();
@@ -58,9 +62,8 @@ const AttributeValuePair = ({
 	index, type, name, value, handlePairAdd, handlePairDelete
 }: AttributeValuePairProps) => {
 	const editable = getEditable(type);
-	const creatable = getCreatable(type);
-	const classIndex = getClass(creatable, editable);
-	const selectable = getSelectable(classIndex, type);
+	const selectable = getSelectable(type);
+	const creatable = getCreatable(type, selectable);
 
 	const [selectOpen, setSelectOpen] = useState(false);
 	const [menuOpen, setMenuOpen] = useState(false);
@@ -168,8 +171,8 @@ const AttributeValuePair = ({
 						type={type}
 						value={selectable ? selectedOptions : singleValue}
 						editable={editable}
-						creatable={creatable}
 						selectable={selectable}
+						creatable={creatable}
 						selectOpen={selectOpen}
 						createOption={createOption}
 						deleteSelectedOption={deleteSelectedOption}
