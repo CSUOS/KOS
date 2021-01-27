@@ -51,9 +51,14 @@ type TypeAttribute = {
 	[type : string] : Array<Attribute>
 }
 
+type ReactionObj = {
+	[emoji : string] : Array<string>
+}
+
 export type TaskObj = {
 	taskID: number;
 	attribute: TypeAttribute;
+	reactions: Array<ReactionObj>;
 	createdAt: Date;
 	updatedAt: Date;
 	index: number;
@@ -91,7 +96,7 @@ type ImportTaskObj = {
 	Rank: number;
 	ListID: number;
 	Name: string;
-	Reactions: {[emoji : string] : Array<string>};
+	Reactions: Array<ReactionObj>;
 	CreatedAt: string;
 	DeletedAt: null;
 	UpdatedAt: string;
@@ -173,13 +178,25 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 
 					if (data.ID === pid) {
 						// 현재 선택된 project의 list와 task, team 받아오기
-						data.Lists.forEach((listData: ImportListObj) => {
+						data.Lists.sort((x : ImportListObj, y: ImportListObj) => {
+							// index 순으로 list 정렬
+							if (x.Rank > y.Rank) {
+								return -1;
+							}
+							return 0;
+						}).forEach((listData: ImportListObj) => {
 							tmpList.push({
 								listID: listData.ID,
 								name: listData.Name,
 								index: listData.Rank
 							});
-							listData.Tasks.forEach((taskData : ImportTaskObj) => {
+							listData.Tasks.sort((x : ImportTaskObj, y: ImportTaskObj) => {
+								// index 순으로 task 정렬
+								if (x.Rank > y.Rank) {
+									return -1;
+								}
+								return 0;
+							}).forEach((taskData : ImportTaskObj) => {
 								if (listData.ID !== taskData.ListID) {
 									throw new Error('task가 할당된 list의 id와 다릅니다.');
 								}
@@ -187,6 +204,7 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 								tmpTask[taskData.ListID].push({
 									taskID: taskData.ID,
 									attribute: taskData.Attribute,
+									reactions: taskData.Reactions,
 									index: taskData.Rank,
 									createdAt: new Date(taskData.CreatedAt),
 									updatedAt: new Date(taskData.UpdatedAt)
@@ -197,16 +215,10 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 						// team은 따로 api로 받아와야 함 => api 수정 후
 					}
 				});
-				// list를 index 순으로 정렬
-				await tmpList.sort((x : ListObj, y: ListObj) => {
-					if (x.index > y.index) {
-						return -1;
-					}
-					return 0;
-				});
 
 				setProject(tmpProject);
 				setList(tmpList);
+				setTask(tmpTask);
 			})
 			.catch((e) => {
 				console.dir(e);
