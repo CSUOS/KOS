@@ -48,12 +48,18 @@ type AttributeSelectProps = {
 const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 	text, handleNameInputChange, handleMenuClose, handlePairAdd
 }, ref) => {
+	// TODO : 함수 개선하기
 	const onOptionClick = (isDefault: boolean, pairToAdd: any) => {
-		const isNameEmpty = checkIsStringEmpty(text);
-		if (!isNameEmpty) {
-			const newPair = isDefault ? pairToAdd : { ...pairToAdd, name: text };
-			if (handlePairAdd) handlePairAdd(newPair);
+		if (isDefault) {
+			if (handlePairAdd) handlePairAdd(pairToAdd);
 			handleMenuClose();
+		} else {
+			const isNameEmpty = checkIsStringEmpty(text);
+			if (!isNameEmpty) {
+				const newPair = { ...pairToAdd, name: text };
+				if (handlePairAdd) handlePairAdd(newPair);
+				handleMenuClose();
+			}
 		}
 	};
 
