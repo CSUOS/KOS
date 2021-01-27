@@ -40,7 +40,7 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 				<Grid container className="p-contents-con">
 					<Grid container>
 						<Grid className="p-key-con">Project Name</Grid>
-						<Input className="p-value-con" defaultValue="프로젝트 이름" />
+						<Input className="p-value-con" placeholder="프로젝트 이름" />
 					</Grid>
 					<Grid container justify="space-between">
 						<Grid container className="pm-btn-con">
