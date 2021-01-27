@@ -10,7 +10,7 @@ type Task struct {
 	gorm.Model // 모델에는 아이디랑 생성, 수정, 삭제 날짜가 기본적으로 포함.
 	Name       string
 	ListID     uint // ListModel의 아이디를 가리킨다.
-	Rank	   uint	// list 내의 index
+	Rank	   uint	`gorm:"unique"`// list 내의 task index
 	Attribute  datatypes.JSON // 태스크 속성
 	/* 아래가 기본 틀
 	{
