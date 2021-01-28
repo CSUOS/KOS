@@ -14,6 +14,7 @@ export { default as DatePicker } from './DatePicker';
 export { default as EmojiPicker } from './EmojiPicker';
 export { default as EmojiList } from './EmojiList';
 export { default as Tag } from './Tag';
+export { default as URL } from './URL';
 export { default as Checkbox } from './Checkbox';
 export { default as TextField } from './TextField';
 export { default as AttributeSelect } from './AttributeSelect';

@@ -105,7 +105,7 @@ const AttributeValuePair = ({
 		setSingleValue(arg);
 	};
 
-	const handleOptionInputChange = (input: string) => {
+	const handleSelectInputChange = (input: string) => {
 		setNewOption(input);
 	};
 
@@ -184,7 +184,7 @@ const AttributeValuePair = ({
 						createOption={createOption}
 						deleteSelectedOption={deleteSelectedOption}
 						handleSingleValueChange={handleSingleValueChange}
-						handleOptionInputChange={handleOptionInputChange}
+						handleSelectInputChange={handleSelectInputChange}
 						handleSelectOpen={handleSelectOpen}
 						handleSelectClose={handleSelectClose}
 					/>
