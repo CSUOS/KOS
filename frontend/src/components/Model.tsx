@@ -3,6 +3,10 @@ import React, {
 } from 'react';
 import axios from 'axios';
 
+/*
+	todo : user 정보를 쿠키에서 받아와서 model에 저장, 바꿀 수 있는 함수는 x
+*/
+
 /* open context */
 // create context to use open
 type childrenObj = {
@@ -52,7 +56,8 @@ type TypeAttribute = {
 }
 
 type ReactionObj = {
-	[emoji : string] : Array<string>
+	reaction : string,
+	users : Array<string>
 }
 
 export type TaskObj = {
@@ -126,7 +131,7 @@ type ImportProjectObj = {
 }
 
 const ProjectDataContext = createContext<ProjectObj | undefined>(undefined);
-const ProjectDispatchContext = createContext<Dispatch<ProjectObj>>(() => {});
+const ProjectDispatchContext = createContext<(id: number, p: ProjectObj) => void>(() => {});
 const TeamContext = createContext<ProjectTeamObj | undefined>(undefined);
 const TeamDispatchContext = createContext<Dispatch<ProjectTeamObj>>(() => {});
 const ListContext = createContext<ProjectListObj | undefined>(undefined);
@@ -225,9 +230,22 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			});
 	}, [a, pid]); // 나중에는 a를 대체하여 쿠키/세션 정보가 바뀌면 다시 받아오도록 하기
 
+	const changeProject = (id : number, p : ProjectObj) => {
+		if (p === undefined) return;
+
+		setProject(p);
+		axios.put(`http://localhost:8080/v1/project-api/project/${id}`, p[id])
+			.then((res) => {
+				console.dir(res);
+			})
+			.catch((e) => {
+				console.dir(e);
+			});
+	};
+
 	return (
 		<ProjectDataContext.Provider value={project}>
-			<ProjectDispatchContext.Provider value={setProject}>
+			<ProjectDispatchContext.Provider value={changeProject}>
 				<TeamContext.Provider value={team}>
 					<TeamDispatchContext.Provider value={setTeam}>
 						<ListContext.Provider value={list}>

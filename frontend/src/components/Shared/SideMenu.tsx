@@ -20,7 +20,7 @@ type SideMenuProps = {
 
 const SideMenu = ({ open, setOpen, pid } : SideMenuProps) => {
 	const project : ProjectObj | undefined = useProjectState();
-	const setProject : Dispatch<ProjectObj> = useProjectDispatch();
+	const setProject : (id: number, p: ProjectObj) => void = useProjectDispatch();
 	const [update, forceUpdate] = useState(true);
 
 	const togglePrivate = () => {
@@ -29,8 +29,7 @@ const SideMenu = ({ open, setOpen, pid } : SideMenuProps) => {
 		}
 		const tmp = project;
 		tmp[pid].isPrivate = !tmp[pid].isPrivate;
-		console.log(`toogle ${pid} to ${!tmp[pid].isPrivate}`);
-		setProject(tmp);
+		setProject(pid, tmp);
 		forceUpdate(!update);
 	};
 	const toggleMark = () => {
@@ -39,8 +38,7 @@ const SideMenu = ({ open, setOpen, pid } : SideMenuProps) => {
 		}
 		const tmp = project;
 		tmp[pid].bookMark = !tmp[pid].bookMark;
-		console.log(`toogle ${pid} to ${!tmp[pid].bookMark}`);
-		setProject(tmp);
+		setProject(pid, tmp);
 		forceUpdate(!update);
 	};
 
