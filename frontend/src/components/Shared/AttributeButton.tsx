@@ -14,7 +14,7 @@ type AttributeButtonProps = {
 	menuOpen: boolean;
 	handleMenuOpen: () => void;
 	handleMenuClose: () => void;
-	handlePairDelete?: (indexToDelete:number) => void | undefined;
+	handlePairDelete?: (indexToDelete: number) => void | undefined;
 }
 
 const AttributeButton = ({
@@ -30,14 +30,12 @@ const AttributeButton = ({
 		<Grid className="attributebutton">
 			<div className="attribute">
 				{type === 'add-button' && (
-					<Grid className="add">
-						<Button
-							classList={['']}
-							value="+"
-							transparent={true}
-							onClickFun={menuOpen ? handleMenuClose : handleMenuOpen}
-						/>
-					</Grid>
+					<Button
+						classList={['add']}
+						value="+"
+						transparent={true}
+						onClickFun={menuOpen ? handleMenuClose : handleMenuOpen}
+					/>
 				)}
 				{type === 'description' && '설명'}
 				{(type !== 'description' && type !== 'add-button') &&
@@ -49,15 +47,13 @@ const AttributeButton = ({
 							{name}
 							{show &&
 								(
-									<Grid className="delete">
-										<Button
-											classList={['']}
-											value={<CloseSharpIcon />}
-											tooltip="속성 삭제하기"
-											transparent={true}
-											onClickFun={handlePairDelete && (() => handlePairDelete(index))}
-										/>
-									</Grid>
+									<Button
+										classList={['delete']}
+										value={<CloseSharpIcon />}
+										tooltip="속성 삭제하기"
+										transparent={true}
+										onClickFun={handlePairDelete && (() => handlePairDelete(index))}
+									/>
 								)}
 						</div>
 					)}
