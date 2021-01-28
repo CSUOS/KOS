@@ -3,6 +3,10 @@ import React, {
 } from 'react';
 import axios from 'axios';
 
+/*
+	todo : user 정보를 쿠키에서 받아와서 model에 저장, 바꿀 수 있는 함수는 x
+*/
+
 /* open context */
 // create context to use open
 type childrenObj = {
@@ -231,7 +235,7 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 
 		setProject(p);
 		axios.put(`http://localhost:8080/v1/project-api/project/${id}`, p[id])
-			.then(async (res) => {
+			.then((res) => {
 				console.dir(res);
 			})
 			.catch((e) => {
