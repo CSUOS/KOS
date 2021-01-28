@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 import { Grid } from '@material-ui/core';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
@@ -17,6 +18,10 @@ type SubMenuProps = {
 
 const SubMenu = ({ pid } : SubMenuProps) => {
 	const [proSetOpen, setProSetOpen] = useState(false); // 프로젝트 설정창 오픈
+	const [proCopyOpen, setProCopyOpen] = useState(false); // 프로젝트 복사창 오픈
+	const [proBackUpOpen, setProBackUpOpen] = useState(false); // 프로젝트 복사창 오픈
+
+	const userAuth = 2;
 	const project : ProjectObj | undefined = useProjectState();
 	const windows =
 		<>
@@ -33,9 +38,9 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 			</Window>
 			<Window
 				type="project-copy-con"
-				open={proSetOpen}
+				open={proCopyOpen}
 				hasCloseBtn={true}
-				handleWindowClose={() => setProSetOpen(false)}
+				handleWindowClose={() => setProCopyOpen(false)}
 			>
 				<WindowHeader
 					mainTitle="Project Copy"
@@ -44,9 +49,9 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 			</Window>
 			<Window
 				type="project-backup-con"
-				open={proSetOpen}
+				open={proBackUpOpen}
 				hasCloseBtn={true}
-				handleWindowClose={() => setProSetOpen(false)}
+				handleWindowClose={() => setProBackUpOpen(false)}
 			>
 				<WindowHeader
 					mainTitle="Project BackUp"
@@ -56,11 +61,17 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 		</>;
 
 	const deleteProject = () => {
-		console.log('delete project');
+		axios.delete(`http://localhost:8080/v1/project-api/project/${pid}`)
+			.then((res) => {
+				console.dir(res);
+			})
+			.catch((e) => {
+				console.dir(e);
+			});
 	};
 
 	const hangUpProject = () => {
-		console.log('hangUp project');
+		/* api 미구현 */
 	};
 
 	return (
@@ -74,6 +85,7 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 							<Button
 								classList={[]}
 								value={<FileCopyIcon />}
+								onClickFun={() => { setProCopyOpen(true); }}
 							/>
 							<p>복사</p>
 						</Grid>
@@ -88,21 +100,28 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 							<Button
 								classList={[]}
 								value={<BackupIcon />}
+								onClickFun={() => { setProBackUpOpen(true); }}
 							/>
 							<p>백업</p>
 						</Grid>
-						<Grid className="delete">
-							<Button
-								classList={[]}
-								value={<DeleteIcon />}
-								onClickFun={() => {
-									if (window.confirm(`[${project[pid].name}] 프로젝트를 정말로 삭제하시겠습니까?`)) {
-										deleteProject();
-									}
-								}}
-							/>
-							<p>삭제</p>
-						</Grid>
+						{
+							/*
+								todo : model에 저장된 user 정보를 받아와서 구현
+							*/
+							userAuth === 2 &&
+							<Grid className="delete">
+								<Button
+									classList={[]}
+									value={<DeleteIcon />}
+									onClickFun={() => {
+										if (window.confirm(`[${project[pid].name}] 프로젝트를 정말로 삭제하시겠습니까?`)) {
+											deleteProject();
+										}
+									}}
+								/>
+								<p>삭제</p>
+							</Grid>
+						}
 						<Grid className="setting">
 							<Button
 								classList={[]}

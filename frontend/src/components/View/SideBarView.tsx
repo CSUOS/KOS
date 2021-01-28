@@ -1,4 +1,5 @@
 import React, { createRef, forwardRef, useState } from 'react';
+import axios from 'axios';
 import clsx from 'clsx';
 
 import { Grid, Input } from '@material-ui/core';
@@ -24,6 +25,19 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 	const project : ProjectObj | undefined = useProjectState();
 	const [modalOpen, setModalOpen] = useState(false);
 	const [pri, setPrivate] = useState(true);
+	const [name, setName] = useState('');
+
+	const makeProject = () => {
+		axios.post('http://localhost:8080/v1/project-api/project', {
+			'Name': name
+		})
+			.then((res) => {
+				console.dir(res);
+			})
+			.catch((e) => {
+				console.dir(e);
+			});
+	};
 
 	return (
 		<Grid ref={ref} className={clsx('sidebar', type)}>
@@ -41,7 +55,7 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 				<Grid container className="p-contents-con">
 					<Grid container>
 						<Grid className="p-key-con">Project Name</Grid>
-						<Input className="p-value-con" placeholder="프로젝트 이름" />
+						<Input className="p-value-con" placeholder="프로젝트 이름" value={name} onChange={(e) => setName(e.target.value)} />
 					</Grid>
 					<Grid container justify="space-between">
 						<Grid container className="pm-btn-con">
@@ -61,6 +75,7 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 						<Button
 							classList={['project-add-btn']}
 							value="프로젝트 생성"
+							onClickFun={makeProject}
 						/>
 					</Grid>
 				</Grid>
