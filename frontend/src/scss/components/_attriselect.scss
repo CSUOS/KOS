@@ -4,7 +4,7 @@
 	.container{
 		padding: 1.0rem 0.0rem 1.0rem 0.7rem;
 		width: 14.0rem;
-
+		margin-bottom: 20px;
 		div{
 			max-height: 15.0rem;
 			overflow: auto;
@@ -39,8 +39,5 @@
 		font-size: inherit;
 		border: 1.5px solid $light-gray;
 		border-radius: 3px;
-		&:focus{
-			outline: none;
-		}
 	}
 }

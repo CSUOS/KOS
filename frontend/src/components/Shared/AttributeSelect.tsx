@@ -1,8 +1,11 @@
-import React, { useState, forwardRef, ReactFragment } from 'react';
+import React, { createRef, forwardRef, ReactFragment } from 'react';
 
 import { Grid, Paper } from '@material-ui/core';
 
-import { checkIsStringEmpty } from '../../function/FunctionManager';
+import { checkIsStringEmpty, handleScrollToTop } from '../../function/FunctionManager';
+
+const nameInputRef = createRef<HTMLInputElement>();
+const containerRef = createRef<HTMLDivElement>();
 
 type PartProps = {
 	subject: string,
@@ -16,6 +19,8 @@ const Part = ({ subject, children }: PartProps) => (
 	</Grid>
 );
 
+// ======================================================================
+// =============== [ TODO : 리소스 스크립트 분리하기 ]  ===================
 const subjects = ['속성 이름 지정', '기본', '생성'];
 const defaultMenus = ['작성자', '최근 편집자', '멤버', '생성일자', '최근 수정일자', '데드라인', '진행 상태'];
 const createMenus = ['텍스트', '날짜', '단일 선택', '다중 선택', 'URL', '단일 체크박스'];
@@ -36,6 +41,8 @@ const createPairs = [
 	{ type: 'url', name: 'URL', value: '' },
 	{ type: 'checkbox', name: '체크박스', value: false },
 ];
+// ======================================================================
+// ======================================================================
 
 const namePlaceholder = '속성 이름';
 type AttributeSelectProps = {
@@ -49,26 +56,32 @@ const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 	text, handleNameInputChange, handleMenuClose, handlePairAdd
 }, ref) => {
 	// TODO : 함수 개선하기
-	const onOptionClick = (isDefault: boolean, pairToAdd: any) => {
-		if (isDefault) {
-			if (handlePairAdd) handlePairAdd(pairToAdd);
-			handleMenuClose();
+	const onDefaultOptionClick = (e:any) => {
+		const pairToAdd = defaultPairs[e.target.value];
+		if (handlePairAdd) handlePairAdd(pairToAdd);
+		handleMenuClose();
+	};
+
+	const onCreateOptionClick = (e:any) => {
+		const isNameEmpty = checkIsStringEmpty(text);
+		if (isNameEmpty) {
+			handleScrollToTop(containerRef);
+			nameInputRef.current?.focus();
 		} else {
-			const isNameEmpty = checkIsStringEmpty(text);
-			if (!isNameEmpty) {
-				const newPair = { ...pairToAdd, name: text };
-				if (handlePairAdd) handlePairAdd(newPair);
-				handleMenuClose();
-			}
+			const pairToAdd = createPairs[e.target.value];
+			const newPair = { ...pairToAdd, name: text };
+			if (handlePairAdd) handlePairAdd(newPair);
+			handleMenuClose();
 		}
 	};
 
 	return (
 		<Grid ref={ref} className="attriselect">
 			<Paper className="container" elevation={5}>
-				<div>
+				<div ref={containerRef}>
 					<Part subject={subjects[0]}>
 						<input
+							ref={nameInputRef}
 							type="text"
 							className="attri-input"
 							placeholder={namePlaceholder}
@@ -80,7 +93,7 @@ const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 						{defaultMenus.map((menu, index) => (
 							<button
 								type="button"
-								onClick={(e:any) => onOptionClick(true, defaultPairs[e.target.value])}
+								onClick={onDefaultOptionClick}
 								value={index}
 							>
 								{menu}
@@ -91,7 +104,7 @@ const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 						{createMenus.map((menu, index) => (
 							<button
 								type="button"
-								onClick={(e:any) => onOptionClick(false, createPairs[e.target.value])}
+								onClick={onCreateOptionClick}
 								value={index}
 							>
 								{menu}

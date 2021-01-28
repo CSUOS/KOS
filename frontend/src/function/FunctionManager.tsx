@@ -12,3 +12,7 @@ export const checkIsStringEmpty = (str:string | undefined | null) => {
 	if (!str || !str.trim()) return true;
 	return false;
 };
+
+export const handleScrollToTop = (refObject: RefObject<HTMLElement>) => {
+	refObject.current?.scrollTo(0, 0);
+};
