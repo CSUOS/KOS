@@ -27,14 +27,18 @@ const tooltip = '옵션 설정하기';
 const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 	type, options, creatable, newOption, selectOption, createOption, handleSelectClose
 }, ref) => {
-	const [settingWindowOpen, setSettingWindowOpen] = useState(false);
+	const [settingWindowOpen, setSettingWindowOpen] = useState(Array(options?.length).fill(false));
 
-	const handleSettingWindowOpen = () => {
-		setSettingWindowOpen(true);
+	const handleSettingWindowOpen = (index:number) => {
+		const editedOpen = settingWindowOpen.slice();
+		editedOpen[index] = true;
+		setSettingWindowOpen(editedOpen);
 	};
 
-	const handleSettingWindowClose = () => {
-		setSettingWindowOpen(false);
+	const handleSettingWindowClose = (index:number) => {
+		const editedOpen = settingWindowOpen.slice();
+		editedOpen[index] = false;
+		setSettingWindowOpen(editedOpen);
 	};
 
 	const onOptionClick = (e: any) => {
@@ -47,14 +51,14 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 		handleSelectClose();
 	};
 
-	useEffect(() => {
-		document.addEventListener('mousedown',
-			(e: any) => handleOutsideClick(e, settingWindowRef, handleSettingWindowClose), true);
-		return () => {
-			document.removeEventListener('mousedown',
-				(e: any) => handleOutsideClick(e, settingWindowRef, handleSettingWindowClose), true);
-		};
-	});
+	// useEffect(() => {
+	// 	document.addEventListener('mousedown',
+	// 		(e: any) => handleOutsideClick(e, settingWindowRef, handleSettingWindowClose), true);
+	// 	return () => {
+	// 		document.removeEventListener('mousedown',
+	// 			(e: any) => handleOutsideClick(e, settingWindowRef, handleSettingWindowClose), true);
+	// 	};
+	// });
 
 	return (
 		<Grid ref={ref} className="valueselect">
@@ -62,7 +66,7 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 				<Grid className="tooltip">
 					{type === 'member' ? '클릭하여 멤버 추가' : '입력하여 옵션 생성 또는 클릭하여 옵션 추가'}
 				</Grid>
-				{options && options.map((option) => (
+				{options && options.map((option, index) => (
 					<>
 						<Grid className="item">
 							<button
@@ -85,17 +89,18 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 									value={<MoreVertIcon />}
 									transparent={true}
 									tooltip={tooltip}
-									onClickFun={settingWindowOpen ? handleSettingWindowClose : handleSettingWindowOpen}
+									onClickFun={settingWindowOpen[index] ?
+										() => handleSettingWindowClose(index) : () => handleSettingWindowOpen(index)}
 								/>}
 						</Grid>
-						{settingWindowOpen &&
+						{settingWindowOpen[index] &&
 							<Grid
 								ref={settingWindowRef}
 								className="optionsettingwindow"
 							>
 								<SettingWindow
 									handleOptionColor={() => { }}
-									handleSettingWindowClose={handleSettingWindowClose}
+									handleSettingWindowClose={() => handleSettingWindowClose(index)}
 								/>
 							</Grid>}
 					</>
