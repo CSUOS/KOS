@@ -116,7 +116,6 @@ func InviteUser(c *gin.Context) {
 	}
 
 	var req reqBody
-
 	c.BindJSON(&req)
 
 	var User Models.User
@@ -141,13 +140,18 @@ func InviteUser(c *gin.Context) {
 	worksIn.User = User
 	worksIn.Project = Project
 
-	err = Models.CreateWorksIn(&worksIn)
-
+	err = Models.GetWorksInByUserNProjectID(&worksIn, req.UserID, req.ProjectID)
 	if err != nil {
-		fmt.Println(err.Error())
-		c.AbortWithStatus(http.StatusNotFound)
+		err = Models.CreateWorksIn(&worksIn)
+		if err != nil {
+			fmt.Println(err.Error())
+			c.AbortWithStatus(http.StatusNotFound)
+		} else {
+			c.JSON(http.StatusOK, worksIn)
+		}
 	} else {
-		c.JSON(http.StatusOK, worksIn)
+		// 이미 관계 존재
+		c.AbortWithStatus(http.StatusMethodNotAllowed)
 	}
 }
 
