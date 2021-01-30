@@ -12,4 +12,6 @@ type Project struct {
 	IsPrivate  bool   // 공개 프로젝트 설정
 	BookMark   bool   // 북마크
 	Name       string // 이름
+	RepoOwner  string // GitHub 리포지토리 소유자 (ex. CSUOS)
+	RepoName   string // GitHub 리포지토리 이름 (ex. KOS)
 }
