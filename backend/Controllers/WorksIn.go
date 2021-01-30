@@ -140,7 +140,7 @@ func InviteUser(c *gin.Context) {
 // ExitUserFromProject 프로젝트에 유저 이탈
 func ExitUserFromProject(c *gin.Context) {
 	type reqBody struct {
-		UserID    string `json:"userID"`
+		UserID    string `json:"UserID"`
 		ProjectID string `json:"ProjectID"`
 	}
 

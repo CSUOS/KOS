@@ -56,7 +56,10 @@ func SetupRouter() *gin.Engine {
 
 		listRoutes.GET("lists", Controllers.GetAllLists)
 
-		listRoutes.POST("list", Controllers.CreateList)
+		// 프로젝트안에 리스트를 만든다.
+		listRoutes.POST("list", Controllers.AddList)
+		// listRoutes.POST("list", Controllers.CreateList)
+
 
 		// 하나의 리스트를 반환
 		listRoutes.GET("list/:id", Controllers.GetListByID)

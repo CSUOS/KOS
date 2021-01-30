@@ -84,9 +84,9 @@ func DeleteTask(c *gin.Context) {
 func MoveTask(c *gin.Context) {
 	type reqBody struct {
 		ProjectID string `json:"ProjectID"`
-		From      string `json:"fromID"`
+		From      string `json:"FromID"`
 		To        string `json:"ToID"`
-		TaskID    string `json:"taskID"`
+		TaskID    string `json:"TaskID"`
 	}
 
 	var req reqBody
