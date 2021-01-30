@@ -129,13 +129,13 @@ func CountCommits(c *gin.Context) {
 // CopyProject 프로젝트를 복사한다.
 func CopyProject(c *gin.Context) {
 	// 리퀘스트 바디에서 아이디 1개를 가져온다.
-	type copy struct {
+	type reqBody struct {
 		ProjectID string `json:"ProjectID"`
 	}
 
 	// JSON 디코드
-	var temp copy
-	c.BindJSON(&temp)
+	var req reqBody
+	c.BindJSON(&req)
 
 	var targetProject Models.Project
 	var newProject Models.Project
@@ -146,9 +146,9 @@ func CopyProject(c *gin.Context) {
 	var counts []int64
 
 	// 디코드된 아이디를 기준으로 하나 가져온다.
-	err := Models.GetProjectByID(&targetProject, temp.ProjectID)
+	err := Models.GetProjectByID(&targetProject, req.ProjectID)
 
-	Models.GetAllListID(&lists, temp.ProjectID)
+	Models.GetAllListID(&lists, req.ProjectID)
 
 	// 먼저 태스크들을 새롭게 복사한다.
 	for i := 0; i < len(lists); i++ {
@@ -166,7 +166,7 @@ func CopyProject(c *gin.Context) {
 	}
 
 	// 그 다음 리스트를 복사한다.
-	err = Models.GetListsByProjectID(&lists, temp.ProjectID)
+	err = Models.GetListsByProjectID(&lists, req.ProjectID)
 
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
@@ -191,8 +191,6 @@ func CopyProject(c *gin.Context) {
 	newProject.RepoOwner = targetProject.RepoOwner
 	newProject.RepoName = targetProject.RepoName
 	newProject.Lists = newLists
-
-	c.JSON(http.StatusOK, newProject)
 
 	// 프로젝트 새로 생성
 	err = Models.CreateProject(&newProject)

@@ -38,6 +38,14 @@ func GetWorksInByUserID(worksIn *[]WorksIn, id string) (err error) {
 	return nil
 }
 
+// 특정 프로젝트에 속해있는 유저 받아오기
+func GetWorksInByProjectID(worksIn *[]WorksIn, id string) (err error) {
+	if err = Config.DB.Where("project_id = ?", id).Find(worksIn).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 // UpdateWorksIn 아이디에 매칭되는 유저 - 프로젝트 관계 업데이트
 func UpdateWorksIn(worksIn *WorksIn, id string) (err error) {
 	fmt.Println(worksIn)
@@ -48,5 +56,18 @@ func UpdateWorksIn(worksIn *WorksIn, id string) (err error) {
 // DeleteWorksIn 아이디에 매칭되는 유저 - 프로젝트 관계 삭제
 func DeleteWorksIn(worksIn *WorksIn, id string) (err error) {
 	Config.DB.Where("id = ?", id).Delete(worksIn)
+	return nil
+}
+
+func DeleteWorksInByUserNProjectID(worksIn *WorksIn, userID string, projectID string) (err error) {
+	Config.DB.Where("user_id = ?", userID).Where("project_id = ?", projectID).Delete(worksIn)
+	return nil
+}
+
+// GetWorksInByUserNProjectID 유저 아이디와 프로젝트 아이디를 조회해서 관계를 찾아온다.
+func GetWorksInByUserNProjectID(worksIn *WorksIn, userID string, projectID string) (err error) {
+	if err = Config.DB.Where("user_id = ?", userID).Where("project_id = ?", projectID).First(worksIn).Error; err != nil {
+		return err
+	}
 	return nil
 }

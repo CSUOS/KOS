@@ -93,7 +93,58 @@ func DeleteTask(c *gin.Context) {
 
 // MoveTask 태스크를 이동
 func MoveTask(c *gin.Context) {
+	type reqBody struct {
+		ProjectID string `json:"ProjectID"`
+		From      string `json:"fromID"`
+		To        string `json:"ToID"`
+		TaskID    string `json:"taskID"`
+	}
 
+	var req reqBody
+
+	c.BindJSON(&req)
+
+	var toList Models.List
+	var fromList Models.List
+	var targetTask Models.Task
+
+	// 리스트가 프로젝트 안에 포함되어 있는 리스트 인지 확인하고 가져온다.
+	err := Models.GetListByProjectNListID(&toList, req.To, req.ProjectID)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	err = Models.GetListByProjectNListID(&fromList, req.From, req.ProjectID)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	// 태스크가 리스트에 포함되어 있는지 확인.
+	err = Models.GetTaskByListID(&targetTask, req.TaskID, req.From)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	var newTask Models.Task
+
+	newTask.Reactions = targetTask.Reactions
+	newTask.Name = targetTask.Name
+	newTask.Attribute = targetTask.Attribute
+
+	Models.DeleteTask(&targetTask, req.TaskID)
+
+	toList.Tasks = append(toList.Tasks, newTask)
+
+	err = Models.UpdateList(&toList, req.To)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, toList)
+	}
 }
 
 // AddReaction 태스크에 리액션을 추가
