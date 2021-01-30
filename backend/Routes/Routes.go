@@ -30,6 +30,9 @@ func SetupRouter() *gin.Engine {
 
 		userRoutes.DELETE("user/:id", Controllers.DeleteUser)
 
+		userRoutes.POST("login", Controllers.Login)
+
+		userRoutes.POST("logout", Controllers.Logout)
 	}
 
 	projectRoutes := r.Group("/v1/project-api")
