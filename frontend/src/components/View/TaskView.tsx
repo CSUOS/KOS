@@ -56,9 +56,9 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 						emojisData.filter((emojiData: any) => emojiData !== clickedEmojiData);
 					setEmojis(editedEmojisData);
 				} else {
-					const editedUserData =
+					const editedUsersData =
 						clickedEmojiData.users.filter((user: string) => user !== userName);
-					const editedEmojiData = { ...clickedEmojiData, users: editedUserData };
+					const editedEmojiData = { ...clickedEmojiData, users: editedUsersData };
 					emojisData[index] = editedEmojiData;
 					setEmojis(emojisData);
 				}
