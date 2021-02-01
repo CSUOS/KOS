@@ -163,6 +163,62 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 
 	const [task, setTask] = useState<ProjectTaskObj>();
 
+	/*
+	// backend를 안켰을 때를 위해 남겨두는 test data
+	const [project, setProject] = useState<ProjectObj>({
+		1: {
+			isPrivate: false,
+			bookMark: true,
+			bgColor: 'pink',
+			name: 'KOS'
+		},
+		2: {
+			isPrivate: false,
+			bookMark: true,
+			bgColor: 'green',
+			name: 'NERA'
+		},
+		3: {
+			isPrivate: false,
+			bookMark: true,
+			bgColor: 'purple',
+			name: 'HHsadfasdfasdfasdfsdafsadf'
+		}
+	});
+
+	const [team, setTeam] = useState<ProjectTeamObj>(
+		[
+			{
+				userID: 1,
+				userIcon: 'pet',
+				userName: 'heeeun',
+				gitID: 'gmldms784@naver.com'
+			},
+			{
+				userID: 2,
+				userIcon: 'apple',
+				userName: 'taejin',
+				gitID: 'thereisnotruth12@gmail.com'
+			}
+		]
+	);
+
+	const [list, setList] = useState<ProjectListObj>([
+		{
+			listID: 1,
+			name: '할 일',
+			index: 0
+		},
+		{
+			listID: 2,
+			name: '끝난 일',
+			index: 1
+		}
+	]);
+
+	const [task, setTask] = useState<ProjectTaskObj>();
+	*/
+
 	const a = 1;
 	const pid = usePIDState();
 
