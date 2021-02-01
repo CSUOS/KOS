@@ -38,6 +38,14 @@ func GetWorksInByUserID(worksIn *[]WorksIn, id string) (err error) {
 	return nil
 }
 
+// 특정 프로젝트에 속해있는 유저 받아오기
+func GetWorksInByProjectID(worksIn *[]WorksIn, id string) (err error) {
+	if err = Config.DB.Where("project_id = ?", id).Find(worksIn).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 // UpdateWorksIn 아이디에 매칭되는 유저 - 프로젝트 관계 업데이트
 func UpdateWorksIn(worksIn *WorksIn, id string) (err error) {
 	fmt.Println(worksIn)

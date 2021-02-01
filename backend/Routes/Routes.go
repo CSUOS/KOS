@@ -3,12 +3,17 @@ package Routes
 import (
 	"github.com/CSUOS/KOS/backend/Controllers"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 // SetupRouter 경로를 정의
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000", "http://127.0.0.1:3000"}
+	r.Use(cors.New(config))
+
 
 	userRoutes := r.Group("/v1/user-api")
 	{
@@ -33,13 +38,22 @@ func SetupRouter() *gin.Engine {
 		// 프로젝트 생성
 		projectRoutes.POST("project", Controllers.CreateProject)
 
-		// 프로젝트의 기여도를 가져온다.
-		projectRoutes.GET("contribution/:id", Controllers.GetContributions)
+		// 프로젝트에 연결된 GitHub 리포지토리의 브랜치 목록을 가져온다.
+		projectRoutes.GET("contribution/branches", Controllers.GetBranches)
+
+		// 특정 Github ID의, 프로젝트에 연결된 GitHub 리포지토리의 커밋 목록을 가져온다.
+		projectRoutes.GET("contribution/commits/list/:id", Controllers.GetContributionsOfID)
+
+		// 모든 멤버의, 프로젝트에 연결된 GitHub 리포지토리의 커밋 목록을 가져온다.
+		projectRoutes.GET("contribution/commits/list/", Controllers.GetContributions)
+
+		// 프로젝트에 연결된 GitHub 리포지토리의 특정 브랜치에 커밋된 커밋 수를 가져온다.
+		projectRoutes.GET("contribution/commits/count", Controllers.CountCommits)
 
 		// 프로젝트를 카피한다.
 		projectRoutes.POST("copy", Controllers.CopyProject)
 
-		// 유저의 권한을 확인 후에 프로젝트를 삭제
+		// 유저의 권한을 확인 후에 프로젝트 다루기
 		projectRoutes.DELETE("delete", Controllers.DeleteProjectByAuthUser)
 
 		projectRoutes.GET("projects", Controllers.GetAllProjects)
@@ -121,6 +135,8 @@ func SetupRouter() *gin.Engine {
 		worksInRoutes.POST("works-in", Controllers.CreateWorksIn)
 
 		worksInRoutes.GET("works-in/:id", Controllers.GetWorksInByID)
+
+		worksInRoutes.GET("works-in-project/:id", Controllers.GetWorksInByProjectID)
 
 		worksInRoutes.PUT("works-in/:id", Controllers.UpdateWorksIn)
 
