@@ -1,4 +1,4 @@
-import React, { createRef, forwardRef, useState, useEffect } from 'react';
+import React, { createRef, forwardRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { Grid, Input } from '@material-ui/core';
@@ -31,10 +31,6 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 		addProject(name, pri);
 		setModalOpen(false);
 	};
-
-	useEffect(() => {
-		set
-	}, [project]);
 
 	return (
 		<Grid ref={ref} className={clsx('sidebar', type)}>
@@ -92,7 +88,7 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 			</header>
 			<Grid className="project-con">
 				{
-					project && Object.keys(project).map((id) => <SideProject key={id} pid={Number(id)} />)
+					project && Object.keys(project).map((id) => <SideProject project={project} key={id} pid={Number(id)} />)
 				}
 			</Grid>
 			<Grid className="generate-project">

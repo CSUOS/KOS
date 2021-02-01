@@ -48,6 +48,9 @@
 		.side-project{
 			display: flex;
 			flex-direction: column;
+			&.bookmark{
+				order: -1;
+			}
 			.project-info{
 				display: flex;
 				justify-content: space-between;
