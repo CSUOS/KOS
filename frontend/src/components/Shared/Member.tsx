@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 
-import { Grid, Tooltip, Avatar } from '@material-ui/core';
+import {
+	Tooltip, Avatar, Menu, MenuItem, ListItemIcon
+} from '@material-ui/core';
 import MoodIcon from '@material-ui/icons/Mood';
 import PetsIcon from '@material-ui/icons/Pets';
 import AppleIcon from '@material-ui/icons/Apple';
@@ -9,6 +11,8 @@ import AudiotrackIcon from '@material-ui/icons/Audiotrack';
 import BeachAccessIcon from '@material-ui/icons/BeachAccess';
 import CakeIcon from '@material-ui/icons/Cake';
 import ChildCareIcon from '@material-ui/icons/ChildCare';
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
+import CallMissedOutgoingIcon from '@material-ui/icons/CallMissedOutgoing';
 
 import { UserObj } from '../Model';
 
@@ -43,14 +47,50 @@ const returnIcon = (text : string) => {
 	return icon;
 };
 
-const Member = (user : UserObj) => {
-	const a = 1;
+type MemberProps = {
+	user: UserObj
+}
+
+const Member = ({ user } : MemberProps) => {
+	const [anchorEl, setAnchorEl] = useState<EventTarget & Element | null>(null);
+	const handleClick = (event : React.SyntheticEvent) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
 	return (
-		<Tooltip placement="bottom" title={user.userName} arrow>
-			<Avatar className={clsx('member', user.userIcon)}>
-				{returnIcon(user.userIcon)}
-			</Avatar>
-		</Tooltip>
+		<>
+			<Tooltip placement="bottom" title={user.userName} arrow>
+				<Avatar className={clsx('member', user.userIcon)} onClick={handleClick}>
+					{returnIcon(user.userIcon)}
+				</Avatar>
+			</Tooltip>
+			<Menu
+				anchorEl={anchorEl}
+				keepMounted
+				anchorOrigin={{
+					vertical: 'bottom',
+					horizontal: 'center',
+				}}
+				open={anchorEl !== null}
+				onClose={handleClose}
+				className="menu-popup"
+			>
+				<MenuItem>
+					<ListItemIcon>
+						<SupervisedUserCircleIcon />
+						관리자 권한부여
+					</ListItemIcon>
+				</MenuItem>
+				<MenuItem>
+					<ListItemIcon>
+						<CallMissedOutgoingIcon />
+						추방하기
+					</ListItemIcon>
+				</MenuItem>
+			</Menu>
+		</>
 	);
 };
 
