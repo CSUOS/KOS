@@ -26,7 +26,10 @@ const PageView = forwardRef<HTMLDivElement, PageViewProps>(({
 
 	/* ==============테스크 윈도우 열기 위한 임의의 값들============== */
 	const buttonName = '테스크 설정하기';
-	const task = tasks && tasks[Number(Object.keys(tasks)[0])][0];
+	let task;
+	if (tasks !== undefined && Object.keys(tasks).length !== 0) {
+		task = tasks[Number(Object.keys(tasks)[0])][0];
+	}
 	// 지금은 가장 처음 task를 받아오게 설정되어있음
 	const [openTask, setOpenTask] = useState(false);
 
@@ -53,12 +56,15 @@ const PageView = forwardRef<HTMLDivElement, PageViewProps>(({
 					/>
 				</>}
 			<List mainTitle="제목" /* for test only */ />
-			<TaskView				/* for test only */
-				open={openTask}
-				handleTaskWindowClose={handleTaskWindowClose}
-				task={task}
-				ref={taskRef}
-			/>
+			{
+				task &&
+				<TaskView				/* for test only */
+					open={openTask}
+					handleTaskWindowClose={handleTaskWindowClose}
+					task={task}
+					ref={taskRef}
+				/>
+			}
 		</Grid>
 	);
 });
