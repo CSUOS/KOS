@@ -82,11 +82,3 @@ func GetListByProjectNListID(list *List, listID string, projectID string) (err e
 	}
 	return nil
 }
-
-// UpdateIndex 인덱스를 새 인덱스로 바꾼다.
-func UpdateIndex(list *List, oldRank string, newRank int) (err error) {
-	if err = Config.DB.Where("rank=?", oldRank).First(list).Update(oldRank, newRank).Error; err != nil {
-		return err
-	}
-	return nil
-}

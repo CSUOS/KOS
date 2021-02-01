@@ -24,15 +24,20 @@ func GetAllTasks(c *gin.Context) {
 // CreateTask 태스크를 하나 생성한다.
 func CreateTask(c *gin.Context) {
 	var task Models.Task
-	c.BindJSON(&task)
-	err := Models.CreateTask(&task)
 
-	if err != nil {
+	if err := c.BindJSON(&task); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	if err := Models.CreateTask(&task); err != nil {
 		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, task)
+		return
 	}
+
+	c.JSON(http.StatusOK, task)
 }
 
 // GetTaskByID 아이디에 매칭되는 태스크를 반환
@@ -56,15 +61,21 @@ func UpdateTask(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusNotFound, task)
+		return
 	}
 
-	c.BindJSON(&task)
-	err = Models.UpdateTask(&task, id)
-	if err != nil {
-		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, task)
+	if err := c.BindJSON(&task); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
 	}
+	
+	if err = Models.UpdateTask(&task, id); err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	c.JSON(http.StatusOK, task)
 }
 
 // DeleteTask 아이디와 매칭되는 태스크 삭제
@@ -84,9 +95,9 @@ func DeleteTask(c *gin.Context) {
 func MoveTask(c *gin.Context) {
 	type reqBody struct {
 		ProjectID string `json:"ProjectID"`
-		From      string `json:"fromID"`
+		From      string `json:"FromID"`
 		To        string `json:"ToID"`
-		TaskID    string `json:"taskID"`
+		TaskID    string `json:"TaskID"`
 	}
 
 	var req reqBody

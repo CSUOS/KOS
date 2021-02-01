@@ -21,18 +21,48 @@ func GetAllLists(c *gin.Context) {
 	}
 }
 
+// AddList 프로젝트안에 리스트를 추가한다.
+func AddList(c *gin.Context) {
+	id := c.Params.ByName("id")
+	var Project Models.Project
+	var list Models.List
+
+	err := Models.GetProjectByID(&Project, id)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	c.BindJSON(&list)
+
+	Project.Lists = append(Project.Lists, list)
+
+	err = Models.UpdateProject(&Project, id)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, Project)
+	}
+}
+
 // CreateList 리스트를 하나 생성한다.
 func CreateList(c *gin.Context) {
 	var list Models.List
-	c.BindJSON(&list)
-	err := Models.CreateList(&list)
 
-	if err != nil {
+	if err := c.BindJSON(&list); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	if err := Models.CreateList(&list); err != nil {
 		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, list)
+		return
 	}
+
+	c.JSON(http.StatusOK, list)
 }
 
 // GetListByID 아이디에 매칭되는 리스트를 반환한다.
@@ -56,15 +86,22 @@ func UpdateList(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusNotFound, list)
+		return
 	}
 
-	c.BindJSON(&list)
-	err = Models.UpdateList(&list, id)
-	if err != nil {
-		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, list)
+	if err := c.BindJSON(&list); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
 	}
+
+	if err = Models.UpdateList(&list, id); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	c.JSON(http.StatusOK, list)
 }
 
 // DeleteList 아이디와 매칭되는 리스트를 삭제한다.
@@ -84,8 +121,8 @@ func DeleteList(c *gin.Context) {
 func MoveList(c *gin.Context) {
 	type reqBody struct {
 		ProjectID string `json:"ProjectID"`
-		From      string `json:"fromID"`
-		To        string `json:"toID"`
+		From      string `json:"FromID"`
+		To        string `json:"ToID"`
 	}
 
 	var req reqBody
@@ -202,8 +239,8 @@ func CopyList(c *gin.Context) {
 // ExportsList 리스트를 다른 프로젝트로 이동시킨다.
 func ExportsList(c *gin.Context) {
 	type reqBody struct {
-		From   string `json:"fromID"`
-		To     string `json:"toID"`
+		From   string `json:"FromID"`
+		To     string `json:"ToID"`
 		ListID string `json:"ListID"`
 	}
 
