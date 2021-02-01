@@ -51,7 +51,8 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 						/>
 				}
 				{
-					project && pid &&
+					// project network를 통해 안들어오거나, pid가 정해지지 않거나, pid에 해당하는 project가 없으면 표시하지 x
+					project && pid && project[pid] &&
 					<>
 						<Grid className="info-con">
 							<Grid className="border-con">
@@ -71,7 +72,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 							<Grid className="member-con">
 								<Grid className="all-member">
 									{
-										team.map((member) => Member(member))
+										team.map((member) => <Member user={member} />)
 									}
 								</Grid>
 								<Grid className="plus-member">
@@ -86,7 +87,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 										team.map((member) => {
 											if (member.userID === userID) {
 												return (
-													Member(member)
+													<Member user={member} />
 												);
 											}
 											return undefined;

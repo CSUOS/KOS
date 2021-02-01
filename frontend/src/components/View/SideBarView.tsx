@@ -1,5 +1,4 @@
-import React, { createRef, forwardRef, useState } from 'react';
-import axios from 'axios';
+import React, { createRef, forwardRef, useState, useEffect } from 'react';
 import clsx from 'clsx';
 
 import { Grid, Input } from '@material-ui/core';
@@ -9,7 +8,7 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 
 import { Button, Window, WindowHeader } from '../Shared';
 import { SideProject } from '../Sub';
-import { useProjectState, ProjectObj } from '../Model';
+import { useProjectState, ProjectObj, useProjectAdd } from '../Model';
 
 const buttonRef = createRef<HTMLDivElement>();
 
@@ -23,21 +22,19 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 	type, handleSideBarClose
 }, ref) => {
 	const project : ProjectObj | undefined = useProjectState();
+	const addProject : (name: string, pri: boolean) => void = useProjectAdd();
 	const [modalOpen, setModalOpen] = useState(false);
 	const [pri, setPrivate] = useState(true);
 	const [name, setName] = useState('');
 
 	const makeProject = () => {
-		axios.post('http://localhost:8080/v1/project-api/project', {
-			'Name': name
-		})
-			.then((res) => {
-				console.dir(res);
-			})
-			.catch((e) => {
-				console.dir(e);
-			});
+		addProject(name, pri);
+		setModalOpen(false);
 	};
+
+	useEffect(() => {
+		set
+	}, [project]);
 
 	return (
 		<Grid ref={ref} className={clsx('sidebar', type)}>
