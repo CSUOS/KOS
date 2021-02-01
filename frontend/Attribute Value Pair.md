@@ -9,49 +9,6 @@
 
 
 
-### Attribute type의 구분
-
-1. 기본
-
-해당 type의 경우, 사용자는 name과 value를 수정할 수 없다. 단, 예외로 value를 지정하거나 수정할 수 있는 type도 있다.
-
-사용자가 지정하거나 수정할 수 없는 value는 모두 *이탤릭체*이다.
-
-사용자가 지정하거나 수정할 수 있는 value는 **볼드체**이다.
-
-| attribute type | attribute name | attribute value                                 | 비고                                                         | component     | editable | selectable | creatable |
-| -------------- | -------------- | ----------------------------------------------- | ------------------------------------------------------------ | ------------- | -------- | ---------- | --------- |
-| creator        | *Creator*      | *작성자 이름 : string*                          |                                                              |               | false    |            |           |
-| editor         | *Editor*       | *최근 수정자 이름: string*                      |                                                              |               | false    |            |           |
-| member         | *Assign*       | **선택된 멤버들** : 사용자 지정<br />*멤버들*   | 사용자가 *멤버들* 중에서 선택한 값으로 **선택된 멤버들** 수정 가능 | tag           | true     | true       | false     |
-| createdAt      | *CreatedAt*    | *생성일자 : string*                             |                                                              | date-picker   | false    |            |           |
-| updatedAt      | *UpdatedAt*    | *최근 수정일자 : string*                        |                                                              | date-picker   | false    |            |           |
-| deadline       | *Deadline*     | **데드라인 : string**                           | 사용자가 **데드라인** 수정 가능(날짜 선택 가능)              | date-picker   | true     | false      |           |
-| state          | *State*        | **선택된 상태** : 사용자 지정<br />***상태들*** | 사용자가 ***상태들*** 중에서 선택한 값으로 **선택된 상태** 수정 가능<br />사용자가 ***상태들***에 **원하는 상태** 추가 가능<br />***상태들*** 중 기본 제공: 시작전 / 진행중 / 완료 | single-select | true     | true       | true      |
-
-2. 생성
-
-해당 type의 경우, 사용자는 name과 value를 수정할 수 있다.
-
-| attribute type | attribute name | attribute value                                              | 비고                                                         | component     | editable | selectable | creatable |
-| -------------- | -------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------- | -------- | ---------- | --------- |
-| text-field     | 사용자 입력    | 사용자 입력 : string                                         |                                                              | text-field    | true     | false      |           |
-| date-picker    | 사용자 입력    | 사용자 입력 : string                                         |                                                              | date-picker   | true     | false      |           |
-| single-select  | 사용자 입력    | ```선택된 값``` : 사용자 지정<br />```옵션들``` : 사용자 입력 | 사용자가 ```옵션들```을 만들고 삭제할 수 있음<br />사용자가 ```옵션들``` 중 ```선택한 값```으로 ```선택된 값``` 수정 가능 | single-select | true     | true       | true      |
-| multi-select   | 사용자 입력    | ```선택된 값들``` : 사용자 지정<br/>```옵션들``` : 사용자 입력 | 사용자가 ```옵션들```을 만들고 삭제할 수 있음<br/>사용자가 ```옵션들``` 중 선택한 값으로 ```선택된 값들``` 수정 가능 | multi-select  | true     | true       | true      |
-| url            | 사용자 입력    | 사용자 입력 : string                                         |                                                              | url           | true     | false      |           |
-| checkbox       | 사용자 입력    | 사용자 지정 : boolean                                        |                                                              | checkbox      | true     | false      |           |
-
-3. 기타
-
-해당 type의 경우, 사용자가 선택하여 생성할 수 없으며 기본적으로 만들어져있다.
-
-| attribute type | attribute name | attribute value | 비고                                  | component       | editable | selectable | creatable |
-| -------------- | -------------- | --------------- | ------------------------------------- | --------------- | -------- | ---------- | --------- |
-| add-button     | +              | 해당 없음       | 가장 마지막 pair 아래에 생성되어 있음 | 해당 없음       |          |            |           |
-| description    | 설명           | 사용자 입력     | task window 가장 하단에 생성되어 있음 | 마크다운 에디터 | true     | false      |           |
-
-
 
 ## Attribute type의 Class
 
@@ -96,3 +53,46 @@ creatable : boolean
 | [3]   | 수정불가능<br />editable=false                               | creator<br />createdAt<br/>modifiedAt<br/>editor<br/>add-button |
 | [4]   | 기타<br />editable=true, selectable=false                    | deadline<br />text-field<br />date-picker<br />url<br />checkbox<br />description |
 
+
+
+## Attribute type의 구분
+
+1. **기본**
+
+해당 type의 경우, 사용자는 name과 value를 수정할 수 없다. 단, 예외로 value를 지정하거나 수정할 수 있는 type도 있다.
+
+사용자가 지정하거나 수정할 수 없는 value는 모두 *이탤릭체*이다.
+
+사용자가 지정하거나 수정할 수 있는 value는 **볼드체**이다.
+
+| attribute type | attribute name | attribute value                                 | 비고                                                         | component     | editable | selectable | creatable |
+| -------------- | -------------- | ----------------------------------------------- | ------------------------------------------------------------ | ------------- | -------- | ---------- | --------- |
+| creator        | *Creator*      | *작성자 이름 : string*                          |                                                              |               | false    |            |           |
+| editor         | *Editor*       | *최근 수정자 이름: string*                      |                                                              |               | false    |            |           |
+| member         | *Assign*       | **선택된 멤버들** : 사용자 지정<br />*멤버들*   | 사용자가 *멤버들* 중에서 선택한 값으로 **선택된 멤버들** 수정 가능 | tag           | true     | true       | false     |
+| createdAt      | *CreatedAt*    | *생성일자 : string*                             |                                                              | date-picker   | false    |            |           |
+| updatedAt      | *UpdatedAt*    | *최근 수정일자 : string*                        |                                                              | date-picker   | false    |            |           |
+| deadline       | *Deadline*     | **데드라인 : string**                           | 사용자가 **데드라인** 수정 가능(날짜 선택 가능)              | date-picker   | true     | false      |           |
+| state          | *State*        | **선택된 상태** : 사용자 지정<br />***상태들*** | 사용자가 ***상태들*** 중에서 선택한 값으로 **선택된 상태** 수정 가능<br />사용자가 ***상태들***에 **원하는 상태** 추가 가능<br />***상태들*** 중 기본 제공: 시작전 / 진행중 / 완료 | single-select | true     | true       | true      |
+
+2. **생성**
+
+해당 type의 경우, 사용자는 name과 value를 수정할 수 있다.
+
+| attribute type | attribute name | attribute value                                              | 비고                                                         | component     | editable | selectable | creatable |
+| -------------- | -------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------- | -------- | ---------- | --------- |
+| text-field     | 사용자 입력    | 사용자 입력 : string                                         |                                                              | text-field    | true     | false      |           |
+| date-picker    | 사용자 입력    | 사용자 입력 : string                                         |                                                              | date-picker   | true     | false      |           |
+| single-select  | 사용자 입력    | ```선택된 값``` : 사용자 지정<br />```옵션들``` : 사용자 입력 | 사용자가 ```옵션들```을 만들고 삭제할 수 있음<br />사용자가 ```옵션들``` 중 ```선택한 값```으로 ```선택된 값``` 수정 가능 | single-select | true     | true       | true      |
+| multi-select   | 사용자 입력    | ```선택된 값들``` : 사용자 지정<br/>```옵션들``` : 사용자 입력 | 사용자가 ```옵션들```을 만들고 삭제할 수 있음<br/>사용자가 ```옵션들``` 중 선택한 값으로 ```선택된 값들``` 수정 가능 | multi-select  | true     | true       | true      |
+| url            | 사용자 입력    | 사용자 입력 : string                                         |                                                              | url           | true     | false      |           |
+| checkbox       | 사용자 입력    | 사용자 지정 : boolean                                        |                                                              | checkbox      | true     | false      |           |
+
+3. **기타**
+
+해당 type의 경우, 사용자가 선택하여 생성할 수 없으며 기본적으로 만들어져있다.
+
+| attribute type | attribute name | attribute value | 비고                                  | component       | editable | selectable | creatable |
+| -------------- | -------------- | --------------- | ------------------------------------- | --------------- | -------- | ---------- | --------- |
+| add-button     | +              | 해당 없음       | 가장 마지막 pair 아래에 생성되어 있음 | 해당 없음       |          |            |           |
+| description    | 설명           | 사용자 입력     | task window 가장 하단에 생성되어 있음 | 마크다운 에디터 | true     | false      |           |
