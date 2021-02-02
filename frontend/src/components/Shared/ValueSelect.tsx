@@ -13,7 +13,7 @@ import { handleOutsideClick } from '../../function/FunctionManager';
 const settingWindowRef = createRef<HTMLDivElement>();
 
 type ValueSelectProps = {
-	type?: string | undefined,
+	type: string,
 	options?: Array<string> | undefined,
 	creatable: boolean,
 	newOption?: string | undefined,
@@ -125,7 +125,6 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 });
 
 ValueSelect.defaultProps = {
-	type: undefined,
 	options: undefined,
 	newOption: undefined,
 };

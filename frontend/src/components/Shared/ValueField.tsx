@@ -8,7 +8,10 @@ import {
 } from '.';
 
 const getWhetherItHasHoverEvent = (
-	editable: boolean, selectable: boolean, selectOpen: boolean, type: string | undefined
+	editable: boolean,
+	selectable: boolean,
+	selectOpen: boolean,
+	type: string
 ) => {
 	if (editable && type !== 'checkbox') {
 		if ((selectable && !selectOpen) || !selectable) return true;
@@ -17,7 +20,7 @@ const getWhetherItHasHoverEvent = (
 };
 
 type ValueFieldProps = {
-	type?: string | undefined;
+	type: string;
 	value?: any | undefined;
 	creatable: boolean;
 	editable: boolean;
@@ -26,14 +29,17 @@ type ValueFieldProps = {
 	newOption: string;
 	createOption: () => void;
 	deleteSelectedOption: (optionToDelete: string) => void;
-	handleSingleValueChange: (arg: any) => void;
-	handleSelectInputChange: (arg: string) => void;
+	handleSingleValueChange: (singleValue: any) => void;
+	handleSelectInputChange: (selectInput: string) => void;
 	handleSelectOpen: () => void;
 	handleSelectClose: () => void;
 }
 
 const ValueField = ({
-	type, value, creatable, selectable, editable, selectOpen, newOption, createOption, deleteSelectedOption, handleSingleValueChange, handleSelectInputChange, handleSelectOpen, handleSelectClose
+	type, value, creatable, selectable, editable, selectOpen,
+	newOption, createOption, deleteSelectedOption,
+	handleSingleValueChange, handleSelectInputChange,
+	handleSelectOpen, handleSelectClose
 }: ValueFieldProps) => {
 	const hasHoverEvent = getWhetherItHasHoverEvent(editable, selectable, selectOpen, type);
 
@@ -86,13 +92,12 @@ const ValueField = ({
 						{type === 'checkbox' && <Checkbox value={value} handleValueChange={handleSingleValueChange} />}
 					</button>
 			)}
-			{ type === 'description'}
+			{type === 'description'}
 		</Grid>
 	);
 };
 
 ValueField.defaultProps = {
-	type: 'add-button',
 	value: undefined,
 };
 

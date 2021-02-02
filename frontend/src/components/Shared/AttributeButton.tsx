@@ -9,7 +9,7 @@ import {
 
 type AttributeButtonProps = {
 	index: number;
-	type?: string | undefined;
+	type: string;
 	name?: string | undefined;
 	menuOpen: boolean;
 	handleMenuOpen: () => void;
@@ -63,7 +63,6 @@ const AttributeButton = ({
 };
 
 AttributeButton.defaultProps = {
-	type: 'add-button',
 	name: undefined,
 	handlePairDelete: undefined,
 };

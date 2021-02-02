@@ -9,7 +9,7 @@ import {
 } from '.';
 import { handleOutsideClick, checkIsStringEmpty } from '../../function/FunctionManager';
 
-const getEditable = (type: string | undefined) => {
+const getEditable = (type: string) => {
 	if (type === 'creator' ||
 		type === 'createdAt' ||
 		type === 'updatedAt' ||
@@ -20,7 +20,7 @@ const getEditable = (type: string | undefined) => {
 	return true;
 };
 
-const getSelectable = (type: string | undefined) => {
+const getSelectable = (type: string) => {
 	if (type === 'single-select' ||
 		type === 'multi-select' ||
 		type === 'state' ||
@@ -30,7 +30,7 @@ const getSelectable = (type: string | undefined) => {
 	return false;
 };
 
-const getMultiSelectable = (type: string | undefined, selectable: boolean) => {
+const getMultiSelectable = (type: string, selectable: boolean) => {
 	if (selectable) {
 		if (type === 'multi-select' || type === 'member') return true;
 		return false;
@@ -38,7 +38,7 @@ const getMultiSelectable = (type: string | undefined, selectable: boolean) => {
 	return undefined;
 };
 
-const getCreatable = (type:string | undefined, selectable: boolean) => {
+const getCreatable = (type:string, selectable: boolean) => {
 	if (selectable) {
 		if (type === 'member') return false;
 		return true;
@@ -56,7 +56,7 @@ const getClass = (editable: boolean, creatable: boolean) => {
 
 type AttributeValuePairProps = {
 	index: number;
-	type?: string | undefined;
+	type: string;
 	name?: string | undefined;
 	value?: any | undefined;
 	handlePairAdd?: (pairToAdd: any) => void | undefined;
@@ -69,16 +69,18 @@ const menuRef = createRef<HTMLDivElement>();
 const AttributeValuePair = ({
 	index, type, name, value, handlePairAdd, handlePairDelete
 }: AttributeValuePairProps) => {
+	// Get editable, selectable, multiSelectable, creatable of type
 	const editable = getEditable(type);
 	const selectable = getSelectable(type);
 	const multiSelectable = getMultiSelectable(type, selectable);
 	const creatable = getCreatable(type, selectable);
 
-	const [selectOpen, setSelectOpen] = useState(false);
+	// for menu to create attribute value pair
 	const [menuOpen, setMenuOpen] = useState(false);
-	const [newName, setNewName] = useState(undefined);
+	const [newName, setNewName] = useState('');
 
 	// for selectable
+	const [selectOpen, setSelectOpen] = useState(false);
 	const [options, setOptions] = useState(selectable && value.options);
 	const [selectedOptions, setSelectedOptions] = useState(selectable && value.selectedOptions);
 
@@ -94,7 +96,7 @@ const AttributeValuePair = ({
 
 	const handleMenuClose = () => {
 		setMenuOpen(false);
-		setNewName(undefined);
+		setNewName('');
 	};
 
 	const handleNameInputChange = (e: any) => {
@@ -214,7 +216,6 @@ const AttributeValuePair = ({
 };
 
 AttributeValuePair.defaultProps = {
-	type: 'add-button',
 	name: undefined,
 	value: undefined,
 	handlePairAdd: undefined,
