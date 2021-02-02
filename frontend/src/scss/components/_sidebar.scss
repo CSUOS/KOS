@@ -62,11 +62,11 @@
 				}
 				.info{
 					width: 65%;
+					cursor: pointer;
 					.project-name{
 						font-size: $md-font;
 						flex-shrink: 1!important;
 						word-break: break-all;
-						cursor: pointer;
 					}
 					.bg-color{
 						margin-right: 10px;
