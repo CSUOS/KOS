@@ -66,15 +66,15 @@ const Member = ({ user } : MemberProps) => {
 	};
 	const userAuthChange = (auth: number) => {
 		// 유저 권한 변경
-		setUserAuth(user.userID, auth);
+		setUserAuth(user.ID, auth);
 	};
 	const returnMenu = () => {
 		let menuString = '관리자 권한 부여';
-		if (user.userID === nowUser?.userID) {
+		if (user.ID === nowUser?.ID) {
 			// 본인 프로필이라면, 메뉴 노출 x
 			return undefined;
 		}
-		if (user.AuthLvL === 1) {
+		if (user.AuthLVL === 1) {
 			// 관리자 권한의 유저라면, '유저 권한으로 되돌리기' 사용
 			menuString = '유저 권한으로 되돌리기';
 		}
@@ -90,7 +90,7 @@ const Member = ({ user } : MemberProps) => {
 				onClose={handleClose}
 				className="menu-popup"
 			>
-				<MenuItem onClick={() => userAuthChange(user.AuthLvL)}>
+				<MenuItem onClick={() => userAuthChange(user.AuthLVL)}>
 					<ListItemIcon>
 						<SupervisedUserCircleIcon />
 					</ListItemIcon>
@@ -108,13 +108,13 @@ const Member = ({ user } : MemberProps) => {
 
 	return (
 		<>
-			<Tooltip placement="bottom" title={user.userName} arrow>
-				<Avatar className={clsx('member', user.userIcon)} onClick={handleClick}>
-					{returnIcon(user.userIcon)}
+			<Tooltip placement="bottom" title={user.Name} arrow>
+				<Avatar className={clsx('member', user.Icon)} onClick={handleClick}>
+					{returnIcon(user.Icon)}
 				</Avatar>
 			</Tooltip>
 			{
-				nowUser && nowUser.AuthLvL === 2 && returnMenu()
+				nowUser && nowUser.AuthLVL === 2 && returnMenu()
 				// 현재 유저가 관리자이면 메뉴 노출
 			}
 		</>

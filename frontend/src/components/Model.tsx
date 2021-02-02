@@ -46,11 +46,11 @@ type UserObj = {
 	gitID: string;
 }
 export type ProjectUserObj = {
-	userID : number;
-	userName: string;
-	userIcon: string;
-	gitID: string;
-	AuthLvL: number;
+	ID : number;
+	Name : string;
+	Icon : string;
+	GitID : string;
+	AuthLVL : number;
 }
 
 type Attribute = {
@@ -153,24 +153,7 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 	const [update, forceUpdate] = useState(true);
 	const [project, setProject] = useState<ProjectObj>({});
 
-	const [team, setTeam] = useState<ProjectTeamObj>(
-		[
-			{
-				userID: 1,
-				userIcon: 'pet',
-				userName: 'heeeun',
-				gitID: 'gmldms784@naver.com',
-				AuthLvL: 2
-			},
-			{
-				userID: 2,
-				userIcon: 'apple',
-				userName: 'taejin',
-				gitID: 'thereisnotruth12@gmail.com',
-				AuthLvL: 1
-			}
-		]
-	);
+	const [team, setTeam] = useState<ProjectTeamObj>([]);
 
 	const [list, setList] = useState<ProjectListObj>([]);
 
@@ -298,6 +281,17 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			.catch((e) => {
 				console.dir(e);
 			});
+		/*
+		자꾸 DB 에러남 => 고쳐야함
+		axios.get(`http://localhost:8080/v1/works-in-api/works-in-project/${pid}`)
+			.then((res) => {
+				console.log(res);
+				setTeam(res.data);
+			})
+			.catch((e) => {
+				console.dir(e);
+			});
+		*/
 	}, [a, pid]); // 나중에는 a를 대체하여 쿠키/세션 정보가 바뀌면 다시 받아오도록 하기
 
 	/* project api 함수 */
@@ -482,11 +476,11 @@ const userDispatchContext = createContext<Dispatch<ProjectUserObj>>(() => {});
 
 export const UserContextProvider = ({ children } : childrenObj) => {
 	const [id, setUserID] = useState<ProjectUserObj>({
-		userName: 'heeeun',
-		userID: 1,
-		userIcon: 'pet',
-		gitID: 'gmldms784@naver.com',
-		AuthLvL: 2
+		ID: 1,
+		Name: 'heeeun',
+		Icon: 'pet',
+		GitID: 'gmldms784@naver.com',
+		AuthLVL: 2
 	});
 	/*
 	const a = 1;
