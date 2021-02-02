@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/CSUOS/KOS/backend/Models"
-	"github.com/CSUOS/KOS/backend/GitHubInteraction"
 
 	"github.com/gin-gonic/gin"
 )
@@ -148,11 +147,16 @@ func CopyProject(c *gin.Context) {
 	// 디코드된 아이디를 기준으로 하나 가져온다.
 	err := Models.GetProjectByID(&targetProject, req.ProjectID)
 
-	Models.GetAllListID(&lists, req.ProjectID)
+	// 프로젝트에 포함된 모든 리스트들을 가져온다.
+	err = Models.GetAllListID(&lists, req.ProjectID)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
 
 	// 먼저 태스크들을 새롭게 복사한다.
 	for i := 0; i < len(lists); i++ {
-		err = Models.GetTasksByListID(&tasks, lists[i].ID)
+		err = Models.GetTasksNameNAttrByListID(&tasks, lists[i].ID)
 		if err != nil {
 			c.AbortWithStatus(http.StatusNotFound)
 		} else {
