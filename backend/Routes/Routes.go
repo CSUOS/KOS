@@ -146,6 +146,9 @@ func SetupRouter() *gin.Engine {
 
 		// 유저의 프로젝트 정보를 가져온다.
 		worksInRoutes.GET("works-in-user/:id", Controllers.GetWorksInByUserID)
+		
+		// 프로젝트에 속해있는 유저들 정보를 가져온다.
+		worksInRoutes.GET("works-in-project/:id", Controllers.GetWorksInByProjectID)
 
 		// 유저를 프로젝트에 초대
 		worksInRoutes.POST("invite", Controllers.InviteUser)
@@ -162,11 +165,9 @@ func SetupRouter() *gin.Engine {
 		// 아이디에 매칭되는 프로젝트 - 유저 관계를 가져온다.
 		worksInRoutes.GET("works-in/:id", Controllers.GetWorksInByID)
 
-		// 프로젝트 아이디에 매칭되는 모든 프로젝트 - 유저 관계 반환.
-		worksInRoutes.GET("works-in-project/:id", Controllers.GetWorksInByProjectID)
 
-		// 프로젝트 - 유저 관계 업데이트.
-		worksInRoutes.PUT("works-in/:id", Controllers.UpdateWorksIn)
+		// 프로젝트 권한 부여
+		worksInRoutes.POST("works-in/setAuth", Controllers.UpdateWorksIn)
 
 		// 프로젝트 - 유저 관계 삭제.
 		worksInRoutes.DELETE("works-in/:id", Controllers.DeleteWorksIn)
