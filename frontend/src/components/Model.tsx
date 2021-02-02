@@ -151,7 +151,7 @@ const TaskDispatchContext = createContext<Dispatch<ProjectTaskObj>>(() => {});
 
 export const ProjectContextProvider = ({ children } : childrenObj) => {
 	const [update, forceUpdate] = useState(true);
-	/*
+
 	const [project, setProject] = useState<ProjectObj>({});
 
 	const [team, setTeam] = useState<ProjectTeamObj>([]);
@@ -159,7 +159,7 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 	const [list, setList] = useState<ProjectListObj>([]);
 
 	const [task, setTask] = useState<ProjectTaskObj>({});
-	*/
+	/*
 	// backend를 안켰을 때를 위해 남겨두는 test data
 	const [project, setProject] = useState<ProjectObj>({
 		1: {
@@ -213,8 +213,8 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			index: 1
 		}
 	]);
-
 	const [task, setTask] = useState<ProjectTaskObj>();
+	*/
 
 	const a = 1;
 	const pid = usePIDState();
