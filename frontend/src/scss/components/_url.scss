@@ -1,0 +1,30 @@
+.url{
+	display: flex;
+	width: 100%;
+	justify-content: flex-start;
+	.container{
+		display: flex;
+		align-items: center;
+		height: 100%;
+		input{
+			border: none;
+			padding-left: 0;
+			font-size: inherit;
+			background-color: inherit;
+			&:focus{
+				outline: none;
+			}
+		}
+
+		&.chip{
+			padding: 0px 5px;
+			border-radius: 5px;
+			background-color: #f1f1f1;
+		}
+		.link-btn{
+			button{
+				padding: 0;
+			}
+		}
+	}
+}
