@@ -32,8 +32,15 @@
 .menu-popup{
 	.MuiMenu-paper{
 		margin: 2rem 0 0 0rem;
-		.MuiSvgIcon-root{
-			margin-right: 7px;
+		.MuiListItem-root{
+			font-size: 14px;
+			.MuiListItemIcon-root{
+				margin-right: 7px;
+				min-width: auto;
+				.MuiSvgIcon-root{
+					font-size: 20px;
+				}
+			}
 		}
 	}
 }

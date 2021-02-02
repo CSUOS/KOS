@@ -39,11 +39,18 @@ export function useOpenDispatch() {
 }
 
 /* project context */
-export type UserObj = {
+type UserObj = {
 	userID : number;
 	userName: string;
 	userIcon: string;
 	gitID: string;
+}
+export type ProjectUserObj = {
+	userID : number;
+	userName: string;
+	userIcon: string;
+	gitID: string;
+	AuthLvL: number;
 }
 
 type Attribute = {
@@ -86,7 +93,7 @@ export type ProjectObj = {
 
 /* 선택된 project에 대한 team, list, task */
 
-export type ProjectTeamObj = Array<UserObj>;
+export type ProjectTeamObj = Array<ProjectUserObj>;
 
 type ProjectListObj = Array<ListObj>;
 
@@ -151,13 +158,15 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 				userID: 1,
 				userIcon: 'pet',
 				userName: 'heeeun',
-				gitID: 'gmldms784@naver.com'
+				gitID: 'gmldms784@naver.com',
+				AuthLvL: 2
 			},
 			{
 				userID: 2,
 				userIcon: 'apple',
 				userName: 'taejin',
-				gitID: 'thereisnotruth12@gmail.com'
+				gitID: 'thereisnotruth12@gmail.com',
+				AuthLvL: 1
 			}
 		]
 	);
@@ -226,6 +235,7 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 	const pid = usePIDState();
 
 	useEffect(() => {
+		// pid와 세션 정보가 바뀔 때마다 project 정보 다시 받아오기
 		axios.get('http://localhost:8080/v1/project-api/projects')
 			.then(async (res) => {
 				console.log(res);
@@ -441,12 +451,27 @@ export function usePIDDispatch() {
 
 /* user context */
 
-export const userContext = createContext<number>(1);
-const userDispatchContext = createContext<Dispatch<number>>(() => {});
+export const userContext = createContext<ProjectUserObj | undefined>(undefined);
+const userDispatchContext = createContext<Dispatch<ProjectUserObj>>(() => {});
 
 export const UserContextProvider = ({ children } : childrenObj) => {
-	const [id, setUserID] = useState<number>(1);
+	const [id, setUserID] = useState<ProjectUserObj>({
+		userName: 'heeeun',
+		userID: 1,
+		userIcon: 'pet',
+		gitID: 'gmldms784@naver.com',
+		AuthLvL: 3
+	});
+	/*
+	const a = 1;
+	const pid = usePIDState();
 
+	useEffect(() => {
+		// pid와 세션 정보가 바뀔 때마다 user 정보 다시 받아오기
+		// 세션 정보 없으면 로그인 페이지로
+		axios.
+	}, [a, pid]);
+	*/
 	return (
 		<userContext.Provider value={id}>
 			<userDispatchContext.Provider value={setUserID}>

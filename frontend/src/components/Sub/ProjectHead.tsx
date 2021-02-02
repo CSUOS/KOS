@@ -12,7 +12,7 @@ import {
 	Button, SubMenu, SideMenu, Member
 } from '../Shared';
 import {
-	ProjectObj, ProjectTeamObj, useUserState, useProjectState, usePIDState, useTeamState
+	ProjectObj, ProjectTeamObj, ProjectUserObj, useUserState, useProjectState, usePIDState, useTeamState
 } from '../Model';
 
 const buttonRef = createRef<HTMLDivElement>();
@@ -29,7 +29,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 	const project : ProjectObj | undefined = useProjectState();
 	const team : ProjectTeamObj | undefined = useTeamState();
 	const pid : number = usePIDState();
-	const userID : number = useUserState();
+	const nowUser : ProjectUserObj | undefined = useUserState();
 
 	const [open, setOpen] = useState(false);
 
@@ -68,7 +68,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 							</Grid>
 						</Grid>
 						{
-							team &&
+							team && nowUser &&
 							<Grid className="member-con">
 								<Grid className="all-member">
 									{
@@ -83,16 +83,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 									</Tooltip>
 								</Grid>
 								<Grid className="my-icon">
-									{
-										team.map((member) => {
-											if (member.userID === userID) {
-												return (
-													<Member user={member} />
-												);
-											}
-											return undefined;
-										})
-									}
+									<Member user={nowUser} />
 								</Grid>
 							</Grid>
 						}
