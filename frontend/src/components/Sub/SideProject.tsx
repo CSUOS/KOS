@@ -18,7 +18,7 @@ const SideProject = forwardRef<HTMLDivElement, SideProjectProps>(({ project, pid
 		<Grid ref={ref} className={clsx('side-project', project[pid].bookMark && 'bookmark')}>
 			<Grid className="project-info">
 				<Grid className="info">
-					<Grid className={clsx('bg-color', project[pid].bgColor)}> </Grid>
+					<Grid className={clsx('bg-color', project[pid].bgColor)} />
 					<Grid className="project-name" onClick={() => setPID(pid)}><p>{project[pid].name.length > 14 ? `${project[pid].name.substr(0, 14)}...` : project[pid].name}</p></Grid>
 				</Grid>
 				<SideMenu

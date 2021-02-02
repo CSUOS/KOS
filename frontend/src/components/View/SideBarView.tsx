@@ -9,6 +9,7 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 import { Button, Window, WindowHeader } from '../Shared';
 import { SideProject } from '../Sub';
 import { useProjectState, ProjectObj, useProjectAdd } from '../Model';
+import { checkIsStringEmpty } from '../../function/FunctionManager';
 
 const buttonRef = createRef<HTMLDivElement>();
 
@@ -28,6 +29,11 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 	const [name, setName] = useState('');
 
 	const makeProject = () => {
+		if (checkIsStringEmpty(name)) {
+			// name이 없으면 생성 x
+			alert('프로젝트 이름을 입력해주세요.');
+			return;
+		}
 		addProject(name, pri);
 		setModalOpen(false);
 	};

@@ -151,6 +151,7 @@ const TaskDispatchContext = createContext<Dispatch<ProjectTaskObj>>(() => {});
 
 export const ProjectContextProvider = ({ children } : childrenObj) => {
 	const [update, forceUpdate] = useState(true);
+	/*
 	const [project, setProject] = useState<ProjectObj>({});
 
 	const [team, setTeam] = useState<ProjectTeamObj>([]);
@@ -158,8 +159,7 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 	const [list, setList] = useState<ProjectListObj>([]);
 
 	const [task, setTask] = useState<ProjectTaskObj>({});
-
-	/*
+	*/
 	// backend를 안켰을 때를 위해 남겨두는 test data
 	const [project, setProject] = useState<ProjectObj>({
 		1: {
@@ -185,16 +185,18 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 	const [team, setTeam] = useState<ProjectTeamObj>(
 		[
 			{
-				userID: 1,
-				userIcon: 'pet',
-				userName: 'heeeun',
-				gitID: 'gmldms784@naver.com'
+				ID: 1,
+				Icon: 'pet',
+				Name: 'heeeun',
+				GitID: 'gmldms784@naver.com',
+				AuthLVL: 1
 			},
 			{
-				userID: 2,
-				userIcon: 'apple',
-				userName: 'taejin',
-				gitID: 'thereisnotruth12@gmail.com'
+				ID: 2,
+				Icon: 'apple',
+				Name: 'taejin',
+				GitID: 'thereisnotruth12@gmail.com',
+				AuthLVL: 2
 			}
 		]
 	);
@@ -213,7 +215,6 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 	]);
 
 	const [task, setTask] = useState<ProjectTaskObj>();
-	*/
 
 	const a = 1;
 	const pid = usePIDState();
