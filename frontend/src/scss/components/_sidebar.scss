@@ -70,6 +70,8 @@
 					}
 					.bg-color{
 						margin-right: 10px;
+						border : 2px solid white;
+						border-radius: $radius;
 					}
 					&>div{
 						margin-right: 3px;
@@ -128,30 +130,6 @@
 
 /*project-modal-con*/
 .project-modal-con{
-	.p-contents-con{
-		margin-top: 2rem;
-		&>div{
-			flex-wrap: nowrap;
-			margin-bottom: 20px;
-		}
-	}
-	.p-key-con{
-		width: 130px;
-		text-align: center;
-		background-color: $sub-color;
-		color: white;
-		border-radius: $radius;
-		display: flex;
-		align-items: center;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin-right: 1rem;
-		flex-shrink: 0;
-	}
-	.p-value-con{
-		width: 100%;
-	}
 	.pm-btn-con{
 		width: auto;
 		.pm-private-btn{
@@ -182,4 +160,30 @@
 		align-items: center;
 		border: 1px solid $light-gray;
 	}
+}
+
+/* use in sideMenu too */
+.p-contents-con{
+	margin-top: 2rem;
+	&>div{
+		flex-wrap: nowrap;
+		margin-bottom: 20px;
+	}
+}
+.p-key-con{
+	width: 130px;
+	text-align: center;
+	background-color: $sub-color;
+	color: white;
+	border-radius: $radius;
+	display: flex;
+	align-items: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 1rem;
+	flex-shrink: 0;
+}
+.p-value-con{
+	width: 100%;
 }
