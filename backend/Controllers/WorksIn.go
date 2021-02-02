@@ -69,15 +69,37 @@ func GetWorksInByUserID(c *gin.Context) {
 
 // 특정 프로젝트에 속해있는 유저 받아오기
 func GetWorksInByProjectID(c *gin.Context) {
+	// 유저 정보는 Password 빼고 보내기
+	type resBody struct {
+		ID    uint `json:"ID"`
+		Name  string `json:"Name"`
+		Icon  string `json:"Icon"`
+		GitID  string `json:"GitID"`
+		AuthLVL uint `json:"AuthLVL`
+	}
+
 	id := c.Params.ByName("id")
 	var worksIn []Models.WorksIn
+	var res []resBody
 
+	// 우선 worksIn으로 가져오고,
 	err := Models.GetWorksInByProjectID(&worksIn, id)
-
+	fmt.Println(worksIn)
+	
+	for i := 0; i < len(worksIn); i++ {
+		fmt.Println(worksIn[i].User)
+		var tmp resBody
+		tmp.ID = worksIn[i].User.ID
+		tmp.Name = worksIn[i].User.Name
+		tmp.Icon = worksIn[i].User.Icon
+		tmp.GitID = worksIn[i].User.GitID
+		tmp.AuthLVL = worksIn[i].AuthLVL
+		res = append(res, tmp)
+	}
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
-		c.JSON(http.StatusOK, worksIn)
+		c.JSON(http.StatusOK, res)
 	}
 }
 
