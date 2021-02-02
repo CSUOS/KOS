@@ -199,7 +199,7 @@ func CopyList(c *gin.Context) {
 	}
 
 	// 리스트 아이디에 매칭되는 태스크들을 반환한다.
-	err = Models.GetTasksByListID(&targetTasks, targetList.ID)
+	err = Models.GetTasksNameNAttrByListID(&targetTasks, targetList.ID)
 
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
@@ -275,7 +275,7 @@ func ExportsList(c *gin.Context) {
 	var newList Models.List
 	var newTasks []Models.Task
 
-	err = Models.GetTasksByListID(&targetTasks, targetList.ID)
+	err = Models.GetTasksNameNAttrByListID(&targetTasks, targetList.ID)
 
 	for i := 0; i < len(targetTasks); i++ {
 		var temp Models.Task

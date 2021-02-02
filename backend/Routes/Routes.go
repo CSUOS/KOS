@@ -14,12 +14,12 @@ func SetupRouter() *gin.Engine {
 	config.AllowOrigins = []string{"http://localhost:3000", "http://127.0.0.1:3000"}
 	r.Use(cors.New(config))
 
-
 	userRoutes := r.Group("/v1/user-api")
 	{
 		// 모든 사용자의 정보를 가져온다.
 		userRoutes.GET("users", Controllers.GetAllUsers)
 
+		// 유저 생성.
 		userRoutes.POST("user", Controllers.CreateUser)
 
 		// 특정 사용자의 정보를 가져온다.
@@ -28,6 +28,7 @@ func SetupRouter() *gin.Engine {
 		// 사용자의 정보를 업데이트
 		userRoutes.PUT("user/:id", Controllers.UpdateUser)
 
+		// 유저 삭제.
 		userRoutes.DELETE("user/:id", Controllers.DeleteUser)
 
 	}
@@ -56,24 +57,29 @@ func SetupRouter() *gin.Engine {
 		// 유저의 권한을 확인 후에 프로젝트 다루기
 		projectRoutes.DELETE("delete", Controllers.DeleteProjectByAuthUser)
 
+		// 모든 프로젝트를 가져온다.
 		projectRoutes.GET("projects", Controllers.GetAllProjects)
 
+		// 아이디에 매칭되는 프로젝트 하나 반환.
 		projectRoutes.GET("project/:id", Controllers.GetProjectByID)
 
+		// 아이디에 매칭되는 프로젝트 업데이트.
 		projectRoutes.PUT("project/:id", Controllers.UpdateProject)
 
+		// 아이디에 매칭되는 프로젝트 하나 삭제.
 		projectRoutes.DELETE("project/:id", Controllers.DeleteProject)
 	}
 
 	listRoutes := r.Group("/v1/list-api")
 	{
-
+		// 모든 리스트를 반환한다.
 		listRoutes.GET("lists", Controllers.GetAllLists)
 
 		// 프로젝트안에 리스트를 만든다.
 		listRoutes.POST("list", Controllers.AddList)
-		// listRoutes.POST("list", Controllers.CreateList)
 
+		// 리스트 생성(테스트 API)
+		// listRoutes.POST("list", Controllers.CreateList)
 
 		// 하나의 리스트를 반환
 		listRoutes.GET("list/:id", Controllers.GetListByID)
@@ -97,10 +103,14 @@ func SetupRouter() *gin.Engine {
 	taskRoutes := r.Group("/v1/task-api")
 	{
 
+		// 모든 태스크들을 가져온다.(테스트 API)
 		taskRoutes.GET("tasks", Controllers.GetAllTasks)
 
-		// 태스크 생성
-		taskRoutes.POST("task", Controllers.CreateTask)
+		// 리스트안에 태스크 생성
+		taskRoutes.POST("task", Controllers.AddTask)
+
+		// 태스크 생성(테스트 API)
+		// taskRoutes.POST("task", Controllers.CreateTask)
 
 		// 태스크 이동
 		taskRoutes.POST("move", Controllers.MoveTask)
@@ -114,6 +124,16 @@ func SetupRouter() *gin.Engine {
 		// 리액션 추가
 		taskRoutes.PUT("reaction", Controllers.AddReaction)
 
+		// 태스크 속성 수정
+		taskRoutes.PUT("modify", Controllers.ModifyTaskProp)
+
+		// 태스크들을 일정한 순서로 가져온다.
+		taskRoutes.GET("sort/:id", Controllers.GetTasksBySortedOrder)
+
+		// 태스크 검색.
+		taskRoutes.GET("search", Controllers.TasksSearch)
+
+		// 아이디에 매칭되는 태스크 삭제.
 		taskRoutes.DELETE("task/:id", Controllers.DeleteTask)
 
 	}
@@ -130,16 +150,22 @@ func SetupRouter() *gin.Engine {
 		// 프로젝트에서 나간다.
 		worksInRoutes.DELETE("exit", Controllers.ExitUserFromProject)
 
+		// 모든 프로젝트 - 유저 관계를 가져온다.
 		worksInRoutes.GET("works-ins", Controllers.GetAllWorksIn)
 
+		// 프로젝트 - 유저 관계 생성(테스트 API)
 		worksInRoutes.POST("works-in", Controllers.CreateWorksIn)
 
+		// 아이디에 매칭되는 프로젝트 - 유저 관계를 가져온다.
 		worksInRoutes.GET("works-in/:id", Controllers.GetWorksInByID)
 
+		// 프로젝트 아이디에 매칭되는 모든 프로젝트 - 유저 관계 반환.
 		worksInRoutes.GET("works-in-project/:id", Controllers.GetWorksInByProjectID)
 
+		// 프로젝트 - 유저 관계 업데이트.
 		worksInRoutes.PUT("works-in/:id", Controllers.UpdateWorksIn)
 
+		// 프로젝트 - 유저 관계 삭제.
 		worksInRoutes.DELETE("works-in/:id", Controllers.DeleteWorksIn)
 	}
 
