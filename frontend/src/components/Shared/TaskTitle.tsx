@@ -61,7 +61,7 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 						<Button
 							classList={['task-pin']}
 							value={pin ? <StarIcon /> : <StarBorderIcon />}
-							tooltip="상단에 고정시키기"
+							tooltip={pin ? '고정 해제하기' : '상단에 고정하기'}
 							ttside="right"
 							transparent={true}
 							onClickFun={handlePin}
