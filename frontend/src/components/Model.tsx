@@ -344,7 +344,7 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 		axios.delete(`http://localhost:8080/v1/project-api/project/${id}`)
 			.then((res) => {
 				console.dir(res);
-				// pid에 해당하는 프로젝트 삭제
+				// id에 해당하는 프로젝트 삭제
 				const tmpProject = project;
 				delete tmpProject[id];
 				setProject(tmpProject);
