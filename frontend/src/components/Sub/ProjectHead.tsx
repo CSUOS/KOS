@@ -12,7 +12,7 @@ import {
 	Button, SubMenu, SideMenu, Member
 } from '../Shared';
 import {
-	ProjectObj, ProjectTeamObj, useUserState, useProjectState, usePIDState, useTeamState
+	ProjectObj, ProjectTeamObj, ProjectUserObj, useUserState, useProjectState, usePIDState, useTeamState
 } from '../Model';
 
 const buttonRef = createRef<HTMLDivElement>();
@@ -29,7 +29,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 	const project : ProjectObj | undefined = useProjectState();
 	const team : ProjectTeamObj | undefined = useTeamState();
 	const pid : number = usePIDState();
-	const userID : number = useUserState();
+	const nowUser : ProjectUserObj | undefined = useUserState();
 
 	const [open, setOpen] = useState(false);
 
@@ -51,7 +51,8 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 						/>
 				}
 				{
-					project && pid &&
+					// project network를 통해 안들어오거나, pid에 해당하는 project가 없으면 표시하지 x
+					project && project[pid] &&
 					<>
 						<Grid className="info-con">
 							<Grid className="border-con">
@@ -67,11 +68,11 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 							</Grid>
 						</Grid>
 						{
-							team &&
+							team && nowUser &&
 							<Grid className="member-con">
 								<Grid className="all-member">
 									{
-										team.map((member) => Member(member))
+										team.map((member) => <Member user={member} />)
 									}
 								</Grid>
 								<Grid className="plus-member">
@@ -82,16 +83,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 									</Tooltip>
 								</Grid>
 								<Grid className="my-icon">
-									{
-										team.map((member) => {
-											if (member.userID === userID) {
-												return (
-													Member(member)
-												);
-											}
-											return undefined;
-										})
-									}
+									<Member user={nowUser} />
 								</Grid>
 							</Grid>
 						}

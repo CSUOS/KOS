@@ -10,7 +10,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { Window, WindowHeader, Button } from '.';
-import { useProjectState, ProjectObj } from '../Model';
+import { useProjectState, ProjectObj, useProjectDelete } from '../Model';
 
 type SubMenuProps = {
 	pid : number;
@@ -23,6 +23,7 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 
 	const userAuth = 2;
 	const project : ProjectObj | undefined = useProjectState();
+	const deleteProject : (id : number) => void = useProjectDelete();
 	const windows =
 		<>
 			<Window
@@ -59,16 +60,6 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 				/>
 			</Window>
 		</>;
-
-	const deleteProject = () => {
-		axios.delete(`http://localhost:8080/v1/project-api/project/${pid}`)
-			.then((res) => {
-				console.dir(res);
-			})
-			.catch((e) => {
-				console.dir(e);
-			});
-	};
 
 	const hangUpProject = () => {
 		/* api 미구현 */
@@ -115,7 +106,7 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 									value={<DeleteIcon />}
 									onClickFun={() => {
 										if (window.confirm(`[${project[pid].name}] 프로젝트를 정말로 삭제하시겠습니까?`)) {
-											deleteProject();
+											deleteProject(pid);
 										}
 									}}
 								/>

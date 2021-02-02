@@ -1,5 +1,4 @@
 import React, { createRef, forwardRef, useState } from 'react';
-import axios from 'axios';
 import clsx from 'clsx';
 
 import { Grid, Input } from '@material-ui/core';
@@ -9,7 +8,8 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 
 import { Button, Window, WindowHeader } from '../Shared';
 import { SideProject } from '../Sub';
-import { useProjectState, ProjectObj } from '../Model';
+import { useProjectState, ProjectObj, useProjectAdd } from '../Model';
+import { checkIsStringEmpty } from '../../function/FunctionManager';
 
 const buttonRef = createRef<HTMLDivElement>();
 
@@ -23,20 +23,19 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 	type, handleSideBarClose
 }, ref) => {
 	const project : ProjectObj | undefined = useProjectState();
+	const addProject : (name: string, pri: boolean) => void = useProjectAdd();
 	const [modalOpen, setModalOpen] = useState(false);
 	const [pri, setPrivate] = useState(true);
 	const [name, setName] = useState('');
 
 	const makeProject = () => {
-		axios.post('http://localhost:8080/v1/project-api/project', {
-			'Name': name
-		})
-			.then((res) => {
-				console.dir(res);
-			})
-			.catch((e) => {
-				console.dir(e);
-			});
+		if (checkIsStringEmpty(name)) {
+			// name이 없으면 생성 x
+			alert('프로젝트 이름을 입력해주세요.');
+			return;
+		}
+		addProject(name, pri);
+		setModalOpen(false);
 	};
 
 	return (
@@ -96,7 +95,7 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 			</header>
 			<Grid className="project-con">
 				{
-					project && Object.keys(project).map((id) => <SideProject key={id} pid={Number(id)} />)
+					project && Object.keys(project).map((id) => <SideProject project={project} key={id} pid={Number(id)} />)
 				}
 			</Grid>
 			<Grid className="generate-project">

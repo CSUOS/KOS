@@ -48,6 +48,9 @@
 		.side-project{
 			display: flex;
 			flex-direction: column;
+			&.bookmark{
+				order: -1;
+			}
 			.project-info{
 				display: flex;
 				justify-content: space-between;
@@ -63,6 +66,7 @@
 						font-size: $md-font;
 						flex-shrink: 1!important;
 						word-break: break-all;
+						cursor: pointer;
 					}
 					.bg-color{
 						margin-right: 10px;
@@ -74,9 +78,11 @@
 				}
 				.detail{
 					width: 20%;
+					min-width: 70px;
 				}
 				.arrow{
 					width: 15%;
+					min-width: 40px;
 				}
 			}
 		}
