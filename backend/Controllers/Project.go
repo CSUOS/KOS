@@ -127,14 +127,17 @@ func CountCommits(c *gin.Context) {
 
 // CopyProject 프로젝트를 복사한다.
 func CopyProject(c *gin.Context) {
-	// 리퀘스트 바디에서 아이디 1개를 가져온다.
+	// 리퀘스트 바디에서 아이디 1개를 가져온다.\
 	type reqBody struct {
 		ProjectID string `json:"ProjectID"`
 	}
 
 	// JSON 디코드
 	var req reqBody
-	c.BindJSON(&req)
+
+	if err :=c.BindJSON(&req); err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+	}
 
 	var targetProject Models.Project
 	var newProject Models.Project
