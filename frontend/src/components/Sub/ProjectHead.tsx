@@ -51,8 +51,8 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 						/>
 				}
 				{
-					// project network를 통해 안들어오거나, pid가 정해지지 않거나, pid에 해당하는 project가 없으면 표시하지 x
-					project && pid && project[pid] &&
+					// project network를 통해 안들어오거나, pid에 해당하는 project가 없으면 표시하지 x
+					project && project[pid] &&
 					<>
 						<Grid className="info-con">
 							<Grid className="border-con">
