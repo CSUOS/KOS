@@ -56,6 +56,7 @@ module.exports = {
 		'react/jsx-boolean-value': 0, // boolean 못넘기게 하는 룰 없애기
 		'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
 		'@typescript-eslint/no-empty-function': 0, // ()=>{} 가능하게 하기
+		'prefer-destructuring': ['warn'],
 	},
 	'settings': {
 		'react': {

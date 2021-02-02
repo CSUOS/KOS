@@ -39,11 +39,18 @@ export function useOpenDispatch() {
 }
 
 /* project context */
-export type UserObj = {
+type UserObj = {
 	userID : number;
 	userName: string;
 	userIcon: string;
 	gitID: string;
+}
+export type ProjectUserObj = {
+	ID : number;
+	Name : string;
+	Icon : string;
+	GitID : string;
+	AuthLVL : number;
 }
 
 type Attribute = {
@@ -86,7 +93,7 @@ export type ProjectObj = {
 
 /* 선택된 project에 대한 team, list, task */
 
-export type ProjectTeamObj = Array<UserObj>;
+export type ProjectTeamObj = Array<ProjectUserObj>;
 
 type ProjectListObj = Array<ListObj>;
 
@@ -131,42 +138,89 @@ type ImportProjectObj = {
 }
 
 const ProjectDataContext = createContext<ProjectObj | undefined>(undefined);
-const ProjectDispatchContext = createContext<(id: number, p: ProjectObj) => void>(() => {});
+const ProjectUpdateContext = createContext<(id: number, p: ProjectObj) => void>(() => {});
+const ProjectAddContext = createContext<(name : string, pri : boolean) => void>(() => {});
+const ProjectDeleteContext = createContext<(id: number) => void>(() => {});
 const TeamContext = createContext<ProjectTeamObj | undefined>(undefined);
 const TeamDispatchContext = createContext<Dispatch<ProjectTeamObj>>(() => {});
+const UserAuthChangeContext = createContext<(uid: number, auth: number) => void>(() => {});
 const ListContext = createContext<ProjectListObj | undefined>(undefined);
 const ListDispatchContext = createContext<Dispatch<ProjectListObj>>(() => {});
 const TaskContext = createContext<ProjectTaskObj | undefined>(undefined);
 const TaskDispatchContext = createContext<Dispatch<ProjectTaskObj>>(() => {});
 
 export const ProjectContextProvider = ({ children } : childrenObj) => {
-	const [project, setProject] = useState<ProjectObj>();
+	const [update, forceUpdate] = useState(true);
+
+	const [project, setProject] = useState<ProjectObj>({});
+
+	const [team, setTeam] = useState<ProjectTeamObj>([]);
+
+	const [list, setList] = useState<ProjectListObj>([]);
+
+	const [task, setTask] = useState<ProjectTaskObj>({});
+	/*
+	// backend를 안켰을 때를 위해 남겨두는 test data
+	const [project, setProject] = useState<ProjectObj>({
+		1: {
+			isPrivate: false,
+			bookMark: true,
+			bgColor: 'pink',
+			name: 'KOS'
+		},
+		2: {
+			isPrivate: false,
+			bookMark: true,
+			bgColor: 'green',
+			name: 'NERA'
+		},
+		3: {
+			isPrivate: false,
+			bookMark: true,
+			bgColor: 'purple',
+			name: 'HHsadfasdfasdfasdfsdafsadf'
+		}
+	});
 
 	const [team, setTeam] = useState<ProjectTeamObj>(
 		[
 			{
-				userID: 1,
-				userIcon: 'pet',
-				userName: 'heeeun',
-				gitID: 'gmldms784@naver.com'
+				ID: 1,
+				Icon: 'pet',
+				Name: 'heeeun',
+				GitID: 'gmldms784@naver.com',
+				AuthLVL: 1
 			},
 			{
-				userID: 2,
-				userIcon: 'apple',
-				userName: 'taejin',
-				gitID: 'thereisnotruth12@gmail.com'
+				ID: 2,
+				Icon: 'apple',
+				Name: 'taejin',
+				GitID: 'thereisnotruth12@gmail.com',
+				AuthLVL: 2
 			}
 		]
 	);
 
-	const [list, setList] = useState<ProjectListObj>();
-
+	const [list, setList] = useState<ProjectListObj>([
+		{
+			listID: 1,
+			name: '할 일',
+			index: 0
+		},
+		{
+			listID: 2,
+			name: '끝난 일',
+			index: 1
+		}
+	]);
 	const [task, setTask] = useState<ProjectTaskObj>();
+	*/
 
 	const a = 1;
 	const pid = usePIDState();
 
 	useEffect(() => {
+		// pid와 세션 정보가 바뀔 때마다 project 정보 다시 받아오기
 		axios.get('http://localhost:8080/v1/project-api/projects')
 			.then(async (res) => {
 				console.log(res);
@@ -228,7 +282,20 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			.catch((e) => {
 				console.dir(e);
 			});
+		/*
+		자꾸 DB 에러남 => 고쳐야함
+		axios.get(`http://localhost:8080/v1/works-in-api/works-in-project/${pid}`)
+			.then((res) => {
+				console.log(res);
+				setTeam(res.data);
+			})
+			.catch((e) => {
+				console.dir(e);
+			});
+		*/
 	}, [a, pid]); // 나중에는 a를 대체하여 쿠키/세션 정보가 바뀌면 다시 받아오도록 하기
+
+	/* project api 함수 */
 
 	const changeProject = (id : number, p : ProjectObj) => {
 		if (p === undefined) return;
@@ -241,25 +308,92 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			.catch((e) => {
 				console.dir(e);
 			});
+
+		forceUpdate(!update);
+	};
+
+	const addProject = (name : string, pri : boolean) => {
+		if (name === '') {
+			alert('프로젝트 이름을 입력해주세요.');
+		}
+		axios.post('http://localhost:8080/v1/project-api/project', {
+			'Name': name,
+			'IsPrivate': pri
+		})
+			.then((res) => {
+				console.dir(res);
+				// 추가한 프로젝트 정보 받아서 project에 넣기
+				const { data } = res;
+				const tmpProject = project;
+				tmpProject[data.ID] = {
+					isPrivate: data.IsPrivate,
+					bookMark: data.BookMark,
+					bgColor: data.BGColor,
+					name: data.Name
+				};
+				setProject(tmpProject);
+				forceUpdate(!update);
+			})
+			.catch((e) => {
+				console.dir(e);
+			});
+	};
+
+	const deleteProject = (id : number) => {
+		axios.delete(`http://localhost:8080/v1/project-api/project/${id}`)
+			.then((res) => {
+				console.dir(res);
+				// pid에 해당하는 프로젝트 삭제
+				const tmpProject = project;
+				delete tmpProject[id];
+				setProject(tmpProject);
+				forceUpdate(!update);
+			})
+			.catch((e) => {
+				console.dir(e);
+			});
+	};
+
+	/* team api 함수 */
+	const userAuthChange = (uid: number, auth: number) => {
+		// 관리자는 유저로, 유저는 관리자로
+		const resultAuth = auth === 1 ? 2 : 1;
+		axios.post('http://localhost:8080/v1/works-in-api/works-in/setAuth', {
+			'ProjectID': pid.toString(),
+			'UserID': uid.toString(),
+			'AuthLVL': auth.toString()
+		})
+			.then((res) => {
+				console.dir(res);
+			})
+			.catch((err) => {
+				console.dir(err);
+			});
 	};
 
 	return (
 		<ProjectDataContext.Provider value={project}>
-			<ProjectDispatchContext.Provider value={changeProject}>
-				<TeamContext.Provider value={team}>
-					<TeamDispatchContext.Provider value={setTeam}>
-						<ListContext.Provider value={list}>
-							<ListDispatchContext.Provider value={setList}>
-								<TaskContext.Provider value={task}>
-									<TaskDispatchContext.Provider value={setTask}>
-										{children}
-									</TaskDispatchContext.Provider>
-								</TaskContext.Provider>
-							</ListDispatchContext.Provider>
-						</ListContext.Provider>
-					</TeamDispatchContext.Provider>
-				</TeamContext.Provider>
-			</ProjectDispatchContext.Provider>
+			<ProjectUpdateContext.Provider value={changeProject}>
+				<ProjectAddContext.Provider value={addProject}>
+					<ProjectDeleteContext.Provider value={deleteProject}>
+						<TeamContext.Provider value={team}>
+							<TeamDispatchContext.Provider value={setTeam}>
+								<UserAuthChangeContext.Provider value={userAuthChange}>
+									<ListContext.Provider value={list}>
+										<ListDispatchContext.Provider value={setList}>
+											<TaskContext.Provider value={task}>
+												<TaskDispatchContext.Provider value={setTask}>
+													{children}
+												</TaskDispatchContext.Provider>
+											</TaskContext.Provider>
+										</ListDispatchContext.Provider>
+									</ListContext.Provider>
+								</UserAuthChangeContext.Provider>
+							</TeamDispatchContext.Provider>
+						</TeamContext.Provider>
+					</ProjectDeleteContext.Provider>
+				</ProjectAddContext.Provider>
+			</ProjectUpdateContext.Provider>
 		</ProjectDataContext.Provider>
 	);
 };
@@ -268,8 +402,16 @@ export function useProjectState() {
 	const context = useContext(ProjectDataContext);
 	return context;
 }
-export function useProjectDispatch() {
-	const context = useContext(ProjectDispatchContext);
+export function useProjectUpdate() {
+	const context = useContext(ProjectUpdateContext);
+	return context;
+}
+export function useProjectAdd() {
+	const context = useContext(ProjectAddContext);
+	return context;
+}
+export function useProjectDelete() {
+	const context = useContext(ProjectDeleteContext);
 	return context;
 }
 export function useTeamState() {
@@ -278,6 +420,10 @@ export function useTeamState() {
 }
 export function useTeamDispatch() {
 	const context = useContext(TeamDispatchContext);
+	return context;
+}
+export function useUserAuthDispatch() {
+	const context = useContext(UserAuthChangeContext);
 	return context;
 }
 export function useListState() {
@@ -299,11 +445,11 @@ export function useTaskDispatch() {
 
 /* projectID context */
 
-export const PIDContext = createContext<number>(1);
+export const PIDContext = createContext<number>(0);
 export const PIDDispatchContext = createContext<Dispatch<number>>(() => {});
 
 export const PIDContextProvider = ({ children } : childrenObj) => {
-	const [pid, setPID] = useState<number>(1);
+	const [pid, setPID] = useState<number>(0);
 
 	return (
 		<PIDContext.Provider value={pid}>
@@ -326,12 +472,27 @@ export function usePIDDispatch() {
 
 /* user context */
 
-export const userContext = createContext<number>(1);
-const userDispatchContext = createContext<Dispatch<number>>(() => {});
+export const userContext = createContext<ProjectUserObj | undefined>(undefined);
+const userDispatchContext = createContext<Dispatch<ProjectUserObj>>(() => {});
 
 export const UserContextProvider = ({ children } : childrenObj) => {
-	const [id, setUserID] = useState<number>(1);
+	const [id, setUserID] = useState<ProjectUserObj>({
+		ID: 1,
+		Name: 'heeeun',
+		Icon: 'pet',
+		GitID: 'gmldms784@naver.com',
+		AuthLVL: 2
+	});
+	/*
+	const a = 1;
+	const pid = usePIDState();
 
+	useEffect(() => {
+		// pid와 세션 정보가 바뀔 때마다 user 정보 다시 받아오기
+		// 세션 정보 없으면 로그인 페이지로
+		axios.
+	}, [a, pid]);
+	*/
 	return (
 		<userContext.Provider value={id}>
 			<userDispatchContext.Provider value={setUserID}>

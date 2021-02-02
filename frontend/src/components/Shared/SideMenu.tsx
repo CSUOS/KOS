@@ -9,7 +9,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-import { ProjectObj, useProjectState, useProjectDispatch } from '../Model';
+import { ProjectObj, useProjectState, useProjectUpdate } from '../Model';
 import { Button } from '.';
 
 type SideMenuProps = {
@@ -20,8 +20,7 @@ type SideMenuProps = {
 
 const SideMenu = ({ open, setOpen, pid } : SideMenuProps) => {
 	const project : ProjectObj | undefined = useProjectState();
-	const setProject : (id: number, p: ProjectObj) => void = useProjectDispatch();
-	const [update, forceUpdate] = useState(true);
+	const setProject : (id: number, p: ProjectObj) => void = useProjectUpdate();
 
 	const togglePrivate = () => {
 		if (project === undefined || pid === undefined) {
@@ -30,7 +29,6 @@ const SideMenu = ({ open, setOpen, pid } : SideMenuProps) => {
 		const tmp = project;
 		tmp[pid].isPrivate = !tmp[pid].isPrivate;
 		setProject(pid, tmp);
-		forceUpdate(!update);
 	};
 	const toggleMark = () => {
 		if (project === undefined || pid === undefined) {
@@ -39,13 +37,13 @@ const SideMenu = ({ open, setOpen, pid } : SideMenuProps) => {
 		const tmp = project;
 		tmp[pid].bookMark = !tmp[pid].bookMark;
 		setProject(pid, tmp);
-		forceUpdate(!update);
 	};
 
 	return (
 		<>
 			{
-				project && pid &&
+				// project network를 통해 안들어오거나, pid에 해당하는 project가 없으면 표시하지 x
+				project && project[pid] &&
 				<Grid className="detail">
 					<Grid className="private">
 						<Button
