@@ -15,7 +15,9 @@ import ChildCareIcon from '@material-ui/icons/ChildCare';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import CallMissedOutgoingIcon from '@material-ui/icons/CallMissedOutgoing';
 
-import { useUserState, ProjectUserObj } from '../Model';
+import {
+	useUserState, ProjectUserObj, useUserAuthDispatch
+} from '../Model';
 
 const returnIcon = (text : string) => {
 	let icon = <MoodIcon />;
@@ -54,6 +56,7 @@ type MemberProps = {
 
 const Member = ({ user } : MemberProps) => {
 	const nowUser : ProjectUserObj | undefined = useUserState();
+	const setUserAuth : (uid: number, auth: number) => void = useUserAuthDispatch();
 	const [anchorEl, setAnchorEl] = useState<EventTarget & Element | null>(null);
 	const handleClick = (event : React.SyntheticEvent) => {
 		setAnchorEl(event.currentTarget);
@@ -61,14 +64,9 @@ const Member = ({ user } : MemberProps) => {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
-	const userToAdmin = () => {
-		axios.put(`http://localhost:8080/v1/works-in/${user.userID}`)
-			.then((res) => {
-				console.dir(res);
-			})
-			.catch((err) => {
-				console.dir(err);
-			});
+	const userAuthChange = (auth: number) => {
+		// 유저 권한 변경
+		setUserAuth(user.userID, auth);
 	};
 	const returnMenu = () => {
 		let menuString = '관리자 권한 부여';
@@ -92,7 +90,7 @@ const Member = ({ user } : MemberProps) => {
 				onClose={handleClose}
 				className="menu-popup"
 			>
-				<MenuItem onClick={userToAdmin}>
+				<MenuItem onClick={() => userAuthChange(user.AuthLvL)}>
 					<ListItemIcon>
 						<SupervisedUserCircleIcon />
 					</ListItemIcon>

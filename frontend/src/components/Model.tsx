@@ -143,6 +143,7 @@ const ProjectAddContext = createContext<(name : string, pri : boolean) => void>(
 const ProjectDeleteContext = createContext<(id: number) => void>(() => {});
 const TeamContext = createContext<ProjectTeamObj | undefined>(undefined);
 const TeamDispatchContext = createContext<Dispatch<ProjectTeamObj>>(() => {});
+const UserAuthChangeContext = createContext<(uid: number, auth: number) => void>(() => {});
 const ListContext = createContext<ProjectListObj | undefined>(undefined);
 const ListDispatchContext = createContext<Dispatch<ProjectListObj>>(() => {});
 const TaskContext = createContext<ProjectTaskObj | undefined>(undefined);
@@ -299,6 +300,8 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			});
 	}, [a, pid]); // 나중에는 a를 대체하여 쿠키/세션 정보가 바뀌면 다시 받아오도록 하기
 
+	/* project api 함수 */
+
 	const changeProject = (id : number, p : ProjectObj) => {
 		if (p === undefined) return;
 
@@ -356,6 +359,23 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			});
 	};
 
+	/* team api 함수 */
+	const userAuthChange = (uid: number, auth: number) => {
+		// 관리자는 유저로, 유저는 관리자로
+		const resultAuth = auth === 1 ? 2 : 1;
+		axios.post('http://localhost:8080/v1/works-in-api/works-in/setAuth', {
+			'ProjectID': pid.toString(),
+			'UserID': uid.toString(),
+			'AuthLVL': auth.toString()
+		})
+			.then((res) => {
+				console.dir(res);
+			})
+			.catch((err) => {
+				console.dir(err);
+			});
+	};
+
 	return (
 		<ProjectDataContext.Provider value={project}>
 			<ProjectUpdateContext.Provider value={changeProject}>
@@ -363,15 +383,17 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 					<ProjectDeleteContext.Provider value={deleteProject}>
 						<TeamContext.Provider value={team}>
 							<TeamDispatchContext.Provider value={setTeam}>
-								<ListContext.Provider value={list}>
-									<ListDispatchContext.Provider value={setList}>
-										<TaskContext.Provider value={task}>
-											<TaskDispatchContext.Provider value={setTask}>
-												{children}
-											</TaskDispatchContext.Provider>
-										</TaskContext.Provider>
-									</ListDispatchContext.Provider>
-								</ListContext.Provider>
+								<UserAuthChangeContext.Provider value={userAuthChange}>
+									<ListContext.Provider value={list}>
+										<ListDispatchContext.Provider value={setList}>
+											<TaskContext.Provider value={task}>
+												<TaskDispatchContext.Provider value={setTask}>
+													{children}
+												</TaskDispatchContext.Provider>
+											</TaskContext.Provider>
+										</ListDispatchContext.Provider>
+									</ListContext.Provider>
+								</UserAuthChangeContext.Provider>
 							</TeamDispatchContext.Provider>
 						</TeamContext.Provider>
 					</ProjectDeleteContext.Provider>
@@ -403,6 +425,10 @@ export function useTeamState() {
 }
 export function useTeamDispatch() {
 	const context = useContext(TeamDispatchContext);
+	return context;
+}
+export function useUserAuthDispatch() {
+	const context = useContext(UserAuthChangeContext);
 	return context;
 }
 export function useListState() {
@@ -460,7 +486,7 @@ export const UserContextProvider = ({ children } : childrenObj) => {
 		userID: 1,
 		userIcon: 'pet',
 		gitID: 'gmldms784@naver.com',
-		AuthLvL: 3
+		AuthLvL: 2
 	});
 	/*
 	const a = 1;
