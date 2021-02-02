@@ -10,7 +10,9 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { Window, WindowHeader, Button } from '.';
-import { useProjectState, ProjectObj, useProjectDelete } from '../Model';
+import {
+	useProjectState, ProjectObj, useProjectDelete, useProjectCopy
+} from '../Model';
 import { useInviteDispatch } from '../Sub/InviteWindow';
 
 type SubMenuProps = {
@@ -19,13 +21,13 @@ type SubMenuProps = {
 
 const SubMenu = ({ pid } : SubMenuProps) => {
 	const [proSetOpen, setProSetOpen] = useState<boolean>(false); // 프로젝트 설정창 오픈
-	const [proCopyOpen, setProCopyOpen] = useState<boolean>(false); // 프로젝트 복사창 오픈
-	const [proBackUpOpen, setProBackUpOpen] = useState<boolean>(false); // 프로젝트 복사창 오픈
+	const [proBackUpOpen, setProBackUpOpen] = useState<boolean>(false); // 프로젝트 백업창 오픈
 	const setInviteOpen : Dispatch<number> = useInviteDispatch();
 
 	const userAuth = 2;
 	const project : ProjectObj | undefined = useProjectState();
 	const deleteProject : (id : number) => void = useProjectDelete();
+	const copyProject : Dispatch<number> = useProjectCopy();
 	const windows =
 		<>
 			<Window
@@ -37,17 +39,6 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 				<WindowHeader
 					mainTitle="Project Setting"
 					subTitle="프로젝트에 대한 여러 설정을 하는 곳입니다."
-				/>
-			</Window>
-			<Window
-				type="project-copy-con"
-				open={proCopyOpen}
-				hasCloseBtn={true}
-				handleWindowClose={() => setProCopyOpen(false)}
-			>
-				<WindowHeader
-					mainTitle="Project Copy"
-					subTitle="프로젝트를 복사하는 곳입니다."
 				/>
 			</Window>
 			<Window
@@ -78,7 +69,7 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 							<Button
 								classList={[]}
 								value={<FileCopyIcon />}
-								onClickFun={() => setProCopyOpen(true)}
+								onClickFun={() => copyProject(pid)}
 							/>
 							<p>복사</p>
 						</Grid>

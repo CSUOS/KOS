@@ -141,6 +141,7 @@ const ProjectDataContext = createContext<ProjectObj | undefined>(undefined);
 const ProjectUpdateContext = createContext<(id: number, p: ProjectObj) => void>(() => {});
 const ProjectAddContext = createContext<(name : string, pri : boolean) => void>(() => {});
 const ProjectDeleteContext = createContext<(id: number) => void>(() => {});
+const ProjectCopyContext = createContext<(id: number) => void>(() => {});
 const TeamContext = createContext<ProjectTeamObj | undefined>(undefined);
 const TeamDispatchContext = createContext<Dispatch<ProjectTeamObj>>(() => {});
 const UserAuthChangeContext = createContext<(uid: number, auth: number) => void>(() => {});
@@ -354,6 +355,27 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			});
 	};
 
+	const copyProject = (id : number) => {
+		axios.post('http://localhost:8080/v1/project-api/copy', {
+			ProjectID: id.toString()
+		})
+			.then((res) => {
+				console.dir(res);
+				const tmpProject : ProjectObj = project;
+				tmpProject[res.data.ID] = {
+					bgColor: res.data.BGColor,
+					bookMark: res.data.BookMark,
+					isPrivate: res.data.IsPrivate,
+					name: res.data.Name
+				};
+				setProject(tmpProject);
+				forceUpdate(!update);
+			})
+			.catch((e) => {
+				console.dir(e);
+			});
+	};
+
 	/* team api 함수 */
 	const userAuthChange = (uid: number, auth: number) => {
 		// 관리자는 유저로, 유저는 관리자로
@@ -376,21 +398,23 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			<ProjectUpdateContext.Provider value={changeProject}>
 				<ProjectAddContext.Provider value={addProject}>
 					<ProjectDeleteContext.Provider value={deleteProject}>
-						<TeamContext.Provider value={team}>
-							<TeamDispatchContext.Provider value={setTeam}>
-								<UserAuthChangeContext.Provider value={userAuthChange}>
-									<ListContext.Provider value={list}>
-										<ListDispatchContext.Provider value={setList}>
-											<TaskContext.Provider value={task}>
-												<TaskDispatchContext.Provider value={setTask}>
-													{children}
-												</TaskDispatchContext.Provider>
-											</TaskContext.Provider>
-										</ListDispatchContext.Provider>
-									</ListContext.Provider>
-								</UserAuthChangeContext.Provider>
-							</TeamDispatchContext.Provider>
-						</TeamContext.Provider>
+						<ProjectCopyContext.Provider value={copyProject}>
+							<TeamContext.Provider value={team}>
+								<TeamDispatchContext.Provider value={setTeam}>
+									<UserAuthChangeContext.Provider value={userAuthChange}>
+										<ListContext.Provider value={list}>
+											<ListDispatchContext.Provider value={setList}>
+												<TaskContext.Provider value={task}>
+													<TaskDispatchContext.Provider value={setTask}>
+														{children}
+													</TaskDispatchContext.Provider>
+												</TaskContext.Provider>
+											</ListDispatchContext.Provider>
+										</ListContext.Provider>
+									</UserAuthChangeContext.Provider>
+								</TeamDispatchContext.Provider>
+							</TeamContext.Provider>
+						</ProjectCopyContext.Provider>
 					</ProjectDeleteContext.Provider>
 				</ProjectAddContext.Provider>
 			</ProjectUpdateContext.Provider>
@@ -412,6 +436,10 @@ export function useProjectAdd() {
 }
 export function useProjectDelete() {
 	const context = useContext(ProjectDeleteContext);
+	return context;
+}
+export function useProjectCopy() {
+	const context = useContext(ProjectCopyContext);
 	return context;
 }
 export function useTeamState() {
