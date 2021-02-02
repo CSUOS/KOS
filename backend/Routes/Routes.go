@@ -38,8 +38,17 @@ func SetupRouter() *gin.Engine {
 		// 프로젝트 생성
 		projectRoutes.POST("project", Controllers.CreateProject)
 
-		// 프로젝트의 기여도를 가져온다.
-		projectRoutes.GET("contribution/:id", Controllers.GetContributions)
+		// 프로젝트에 연결된 GitHub 리포지토리의 브랜치 목록을 가져온다.
+		projectRoutes.GET("contribution/branches", Controllers.GetBranches)
+
+		// 특정 Github ID의, 프로젝트에 연결된 GitHub 리포지토리의 커밋 목록을 가져온다.
+		projectRoutes.GET("contribution/commits/list/:id", Controllers.GetContributionsOfID)
+
+		// 모든 멤버의, 프로젝트에 연결된 GitHub 리포지토리의 커밋 목록을 가져온다.
+		projectRoutes.GET("contribution/commits/list/", Controllers.GetContributions)
+
+		// 프로젝트에 연결된 GitHub 리포지토리의 특정 브랜치에 커밋된 커밋 수를 가져온다.
+		projectRoutes.GET("contribution/commits/count", Controllers.CountCommits)
 
 		// 프로젝트를 카피한다.
 		projectRoutes.POST("copy", Controllers.CopyProject)
@@ -61,7 +70,10 @@ func SetupRouter() *gin.Engine {
 
 		listRoutes.GET("lists", Controllers.GetAllLists)
 
-		listRoutes.POST("list", Controllers.CreateList)
+		// 프로젝트안에 리스트를 만든다.
+		listRoutes.POST("list", Controllers.AddList)
+		// listRoutes.POST("list", Controllers.CreateList)
+
 
 		// 하나의 리스트를 반환
 		listRoutes.GET("list/:id", Controllers.GetListByID)
