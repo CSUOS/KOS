@@ -1,5 +1,5 @@
 import React, {
-	useState, createRef, useEffect, RefObject
+	useState, createRef, useEffect, ChangeEvent
 } from 'react';
 
 import { Grid } from '@material-ui/core';
@@ -69,7 +69,7 @@ const menuRef = createRef<HTMLDivElement>();
 const AttributeValuePair = ({
 	index, type, name, value, handlePairAdd, handlePairDelete
 }: AttributeValuePairProps) => {
-	// Get editable, selectable, multiSelectable, creatable of type
+	// Get editable, selectable, multiSelectable, creatable of attribute type
 	const editable = getEditable(type);
 	const selectable = getSelectable(type);
 	const multiSelectable = getMultiSelectable(type, selectable);
@@ -99,16 +99,16 @@ const AttributeValuePair = ({
 		setNewName('');
 	};
 
-	const handleNameInputChange = (e: any) => {
+	const handleNameInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setNewName(e.target.value);
 	};
 
-	const handleSingleValueChange = (arg: any) => {
-		setSingleValue(arg);
+	const handleSingleValueChange = (newSingleValue: any) => {
+		setSingleValue(newSingleValue);
 	};
 
-	const handleSelectInputChange = (input: string) => {
-		setNewOption(input);
+	const handleSelectInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setNewOption(e.target.value);
 	};
 
 	const handleSelectOpen = () => {

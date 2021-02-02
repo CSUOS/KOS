@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, KeyboardEvent } from 'react';
 import clsx from 'clsx';
 
 import { Grid } from '@material-ui/core';
@@ -13,7 +13,7 @@ const getWhetherItHasHoverEvent = (
 	selectOpen: boolean,
 	type: string
 ) => {
-	if (editable && type !== 'checkbox') {
+	if (editable && type !== 'checkbox' && type !== 'description') {
 		if ((selectable && !selectOpen) || !selectable) return true;
 	}
 	return false;
@@ -30,7 +30,7 @@ type ValueFieldProps = {
 	createOption: () => void;
 	deleteSelectedOption: (optionToDelete: string) => void;
 	handleSingleValueChange: (singleValue: any) => void;
-	handleSelectInputChange: (selectInput: string) => void;
+	handleSelectInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	handleSelectOpen: () => void;
 	handleSelectClose: () => void;
 }
@@ -49,50 +49,66 @@ const ValueField = ({
 		}
 	};
 
-	const handleSelectInputKeyPress = (e: any) => {
+	const handleSelectInputKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter') {
 			createOption();
 			handleSelectClose();
 		}
 	};
+
+	const getValueComponent = (attributeType:string) => {
+		switch (attributeType) {
+		case ('creator' || 'editor'): return value;
+		case 'text-field':
+			return <TextField value={value} handleValueChange={handleSingleValueChange} />;
+		case ('date-picker' || 'deadline' || 'createdAt' || 'updatedAt'):
+			return (
+				<DatePicker
+					value={value}
+					editable={editable}
+					handleValueChange={handleSingleValueChange}
+				/>);
+		case 'checkbox':
+			return <Checkbox value={value} handleValueChange={handleSingleValueChange} />;
+		case 'url':
+			return <URL value={value} handleValueChange={handleSingleValueChange} />;
+		case ('single-select' || 'multi-select' || 'state'):
+			return value.map((option: string) => (
+				<SelectItem
+					value={option}
+					hasCloseBtn={true}
+					handleSelectedDelete={deleteSelectedOption}
+				/>));
+		case 'member':
+			return value.map((option: string) => (
+				<Tag
+					value={option}
+					handleTagDelete={deleteSelectedOption}
+				/>));
+		default:
+			return undefined;
+		}
+	};
+
 	return (
 		<Grid className="valuefield">
-			{type !== 'description' && (
-				selectable ?
-					<button
-						type="button"
-						className={clsx('value', hasHoverEvent && 'editable')}
-						onClick={onSelectOpenButtonClick}
-					>
-						{(type === 'single-select' || type === 'multi-select' || type === 'state')
-							&& value.map((option: string) => (
-								<SelectItem value={option} hasCloseBtn={true} handleSelectedDelete={deleteSelectedOption} />))}
-						{type === 'member' && value.map((option: string) => <Tag value={option} handleTagDelete={deleteSelectedOption} />)}
-						<input
-							className="option-input"
-							type="text"
-							placeholder={value.length === 0 ? '옵션을 선택하세요' : ''}
-							readOnly={!selectOpen}
-							onKeyPress={creatable ? handleSelectInputKeyPress : undefined}
-							onChange={(e: any) => handleSelectInputChange(e.target.value)}
-							value={newOption}
-						/>
-					</button>
-					:
-					<button
-						type="button"
-						className={clsx('value', hasHoverEvent && 'editable')}
-					>
-						{type === 'add-button'}
-						{(type === 'creator' || type === 'editor') && value}
-						{type === 'text-field' && <TextField value={value} handleValueChange={handleSingleValueChange} />}
-						{type === 'url' && <URL value={value} handleValueChange={handleSingleValueChange} />}
-						{(type === 'date-picker' || type === 'deadline' || type === 'createdAt' || type === 'updatedAt')
-							&& <DatePicker value={value} editable={editable} handleValueChange={handleSingleValueChange} />}
-						{type === 'checkbox' && <Checkbox value={value} handleValueChange={handleSingleValueChange} />}
-					</button>
-			)}
-			{type === 'description'}
+			<button
+				type="button"
+				className={clsx('value', hasHoverEvent && 'editable')}
+				onClick={selectable ? onSelectOpenButtonClick : undefined}
+			>
+				{getValueComponent(type)}
+				{selectable &&
+					<input
+						className="option-input"
+						type="text"
+						placeholder={value.length === 0 ? '옵션을 선택하세요' : ''}
+						readOnly={!selectOpen}
+						onKeyPress={creatable ? handleSelectInputKeyPress : undefined}
+						onChange={handleSelectInputChange}
+						value={newOption}
+					/>}
+			</button>
 		</Grid>
 	);
 };

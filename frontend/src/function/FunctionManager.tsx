@@ -1,5 +1,6 @@
-import React, { RefObject, ForwardedRef } from 'react';
+import React, { RefObject } from 'react';
 
+// TODO: 타입 명시하기
 export const handleOutsideClick = (
 	e: any, refObject: RefObject<HTMLElement>, callback: () => void
 ) => {
