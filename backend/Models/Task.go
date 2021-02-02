@@ -49,9 +49,17 @@ func DeleteTaskByListID(task *Task, id uint) (err error) {
 	return nil
 }
 
-// GetTasksByListID 태스크들을 리스트 아이디로 조회해서 반환한다.
-func GetTasksByListID(tasks *[]Task, id uint) (err error) {
+// GetTasksNameNAttrByListID 태스크들을 리스트 아이디로 이름과 속성만 반환한다.(복사시에 ID와 불필요한 복사를 피하기위해서 이용)
+func GetTasksNameNAttrByListID(tasks *[]Task, id uint) (err error) {
 	if err = Config.DB.Where("list_id = ?", id).Select("Name", "Attribute").Find(tasks).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// GetTasksByListID 리스트 아이디에 매칭되는 태스크들을 반환한다.
+func GetTasksByListID(tasks *[]Task, id uint) (err error) {
+	if err = Config.DB.Where("list_id = ?", id).Find(tasks).Error; err != nil {
 		return err
 	}
 	return nil
