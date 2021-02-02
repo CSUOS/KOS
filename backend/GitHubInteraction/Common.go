@@ -29,7 +29,7 @@ func getToken() *string {
 		err := godotenv.Load()
 
 		if err != nil {
-			fmt.Println("Failed to load .env: " + err.Error())
+			fmt.Println("Failed to load '.env'. Create one and set GITHUB_TOKEN: " + err.Error())
 			return nil
 		}
 
