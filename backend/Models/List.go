@@ -69,7 +69,7 @@ func GetAllListID(list *[]List, id string) (err error) {
 
 // GetListsByProjectID 프로젝트 아이디에 매칭되는 리스트들을 반환
 func GetListsByProjectID(list *[]List, id string) (err error) {
-	if err = Config.DB.Where("project_id = ?", id).Select("Name", "Index").Find(list).Error; err != nil {
+	if err = Config.DB.Where("project_id = ?", id).Select("Name", "Rank").Find(list).Error; err != nil {
 		return err
 	}
 	return nil
