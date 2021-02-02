@@ -14,7 +14,7 @@ type AttributeButtonProps = {
 	menuOpen: boolean;
 	handleMenuOpen: () => void;
 	handleMenuClose: () => void;
-	handlePairDelete?: (indexToDelete: number) => void | undefined;
+	handlePairDelete?: (indexToDelete: number) => void;
 }
 
 const AttributeButton = ({

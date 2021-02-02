@@ -49,7 +49,7 @@ type AttributeSelectProps = {
 	text: string | undefined,
 	handleNameInputChange: (e: any) => void,
 	handleMenuClose: () => void,
-	handlePairAdd?: (pairToAdd: any) => void | undefined;
+	handlePairAdd?: (pairToAdd: any) => void;
 };
 
 const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
