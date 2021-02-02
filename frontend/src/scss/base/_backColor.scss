@@ -5,6 +5,7 @@ $bg-blue: #a9caef;
 $bg-purple: #d3a9ef;
 $bg-green: #bfefa9;
 $bg-mint: #a9efdd;
+$bg-yellow: #ffcd77;
 
 .bg-color{
 	width: 40px;
@@ -28,5 +29,8 @@ $bg-mint: #a9efdd;
 	}
 	&.mint{
 		background-color: $bg-mint;
+	}
+	&.yellow{
+		background-color: $bg-yellow;
 	}
 }

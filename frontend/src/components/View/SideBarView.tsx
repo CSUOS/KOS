@@ -38,6 +38,7 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 				type="project-modal-con"
 				open={modalOpen}
 				hasCloseBtn={true}
+				maxWidth="md"
 				handleWindowClose={() => setModalOpen(false)}
 			>
 				<WindowHeader
