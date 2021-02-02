@@ -7,13 +7,14 @@ import {
 	DatePicker, SelectItem, Checkbox, TextField, Tag, URL
 } from '.';
 
+// Get whether the component has hover event
 const getWhetherItHasHoverEvent = (
-	editable: boolean,
+	modifiable: boolean,
 	selectable: boolean,
 	selectOpen: boolean,
 	type: string
 ) => {
-	if (editable && type !== 'checkbox' && type !== 'description') {
+	if (modifiable && type !== 'checkbox' && type !== 'description') {
 		if ((selectable && !selectOpen) || !selectable) return true;
 	}
 	return false;
@@ -23,7 +24,7 @@ type ValueFieldProps = {
 	type: string;
 	value?: any | undefined;
 	creatable: boolean;
-	editable: boolean;
+	modifiable: boolean;
 	selectable: boolean;
 	selectOpen: boolean;
 	newOption: string;
@@ -36,26 +37,33 @@ type ValueFieldProps = {
 }
 
 const ValueField = ({
-	type, value, creatable, selectable, editable, selectOpen,
+	type, value, creatable, selectable, modifiable, selectOpen,
 	newOption, createOption, deleteSelectedOption,
 	handleSingleValueChange, handleSelectInputChange,
 	handleSelectOpen, handleSelectClose
 }: ValueFieldProps) => {
-	const hasHoverEvent = getWhetherItHasHoverEvent(editable, selectable, selectOpen, type);
+	const hasHoverEvent = getWhetherItHasHoverEvent(modifiable, selectable, selectOpen, type);
 
+	// When button of value field is clicked
 	const onSelectOpenButtonClick = () => {
+		// if select is closed
 		if (!selectOpen) {
+			// open select
 			handleSelectOpen();
 		}
 	};
 
 	const handleSelectInputKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+		// if pressed key is 'Enter'
 		if (e.key === 'Enter') {
+			// create new option by input
 			createOption();
+			// and Close select
 			handleSelectClose();
 		}
 	};
 
+	// Return custom component corresponding to type of attribute
 	const getValueComponent = (attributeType:string) => {
 		switch (attributeType) {
 		case ('creator' || 'editor'): return value;
@@ -65,7 +73,7 @@ const ValueField = ({
 			return (
 				<DatePicker
 					value={value}
-					editable={editable}
+					modifiable={modifiable}
 					handleValueChange={handleSingleValueChange}
 				/>);
 		case 'checkbox':
@@ -94,7 +102,7 @@ const ValueField = ({
 		<Grid className="valuefield">
 			<button
 				type="button"
-				className={clsx('value', hasHoverEvent && 'editable')}
+				className={clsx('value', hasHoverEvent && 'modifiable')}
 				onClick={selectable ? onSelectOpenButtonClick : undefined}
 			>
 				{getValueComponent(type)}

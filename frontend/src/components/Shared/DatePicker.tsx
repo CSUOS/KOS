@@ -6,24 +6,24 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 
 type DatePickerProps = {
 	value: string | number | Date;
-	editable: boolean;
+	modifiable: boolean;
 	handleValueChange: (date: any) => void;
 }
 
-const DatePicker = ({ value, handleValueChange, editable }: DatePickerProps) => (
+const DatePicker = ({ value, handleValueChange, modifiable }: DatePickerProps) => (
 	<Grid className="datepicker">
 		<MuiPickersUtilsProvider utils={DateFnsUtils}>
 			<KeyboardDatePicker
 				disableToolbar
 				variant="inline"
 				format="yyyy-MM-dd"
-				readOnly={!editable}
+				readOnly={!modifiable}
 				value={value}
 				onChange={(date) => handleValueChange(date)}
 				KeyboardButtonProps={{
 					'aria-label': 'change date',
 				}}
-				InputProps={{ readOnly: !editable }}
+				InputProps={{ readOnly: !modifiable }}
 			/>
 		</MuiPickersUtilsProvider>
 	</Grid>

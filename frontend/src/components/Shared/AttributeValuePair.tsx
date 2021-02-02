@@ -9,7 +9,7 @@ import {
 } from '.';
 import { handleOutsideClick, checkIsStringEmpty } from '../../function/FunctionManager';
 
-const getEditable = (type: string) => {
+const getmodifiable = (type: string) => {
 	if (type === 'creator' ||
 		type === 'createdAt' ||
 		type === 'updatedAt' ||
@@ -46,8 +46,8 @@ const getCreatable = (type:string, selectable: boolean) => {
 	return false;
 };
 
-const getClass = (editable: boolean, creatable: boolean) => {
-	if (editable) {
+const getClass = (modifiable: boolean, creatable: boolean) => {
+	if (modifiable) {
 		if (creatable) return 1;	// [1] 수정 가능, 옵션 선택 가능, 옵션 추가 가능
 		return 2;					// [2] 수정 가능, 옵션 선택 가능, 옵션 추가 불가능
 	}
@@ -69,8 +69,8 @@ const menuRef = createRef<HTMLDivElement>();
 const AttributeValuePair = ({
 	index, type, name, value, handlePairAdd, handlePairDelete
 }: AttributeValuePairProps) => {
-	// Get editable, selectable, multiSelectable, creatable of attribute type
-	const editable = getEditable(type);
+	// Get modifiable, selectable, multiSelectable, creatable of attribute type
+	const modifiable = getmodifiable(type);
 	const selectable = getSelectable(type);
 	const multiSelectable = getMultiSelectable(type, selectable);
 	const creatable = getCreatable(type, selectable);
@@ -178,7 +178,7 @@ const AttributeValuePair = ({
 					<Value
 						type={type}
 						value={selectable ? selectedOptions : singleValue}
-						editable={editable}
+						modifiable={modifiable}
 						selectable={selectable}
 						creatable={creatable}
 						newOption={newOption}
