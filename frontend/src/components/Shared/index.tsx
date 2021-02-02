@@ -4,6 +4,7 @@ export { default as Window } from './Window';
 export { default as SubMenu } from './SubMenu';
 export { default as SideMenu } from './SideMenu';
 export { default as Member } from './Member';
+export { default as TaskCard } from './TaskCard';
 export { default as TaskTitle } from './TaskTitle';
 export { default as AttributeValuePair } from './AttributeValuePair';
 export { default as AttributeButton } from './AttributeButton';

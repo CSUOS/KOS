@@ -66,10 +66,15 @@ const ValueField = ({
 	// Return custom component corresponding to type of attribute
 	const getValueComponent = (attributeType:string) => {
 		switch (attributeType) {
-		case ('creator' || 'editor'): return value;
+		case 'creator':
+		case 'editor':
+			return value;
 		case 'text-field':
 			return <TextField value={value} handleValueChange={handleSingleValueChange} />;
-		case ('date-picker' || 'deadline' || 'createdAt' || 'updatedAt'):
+		case 'date-picker':
+		case 'deadline':
+		case 'createdAt':
+		case 'updatedAt':
 			return (
 				<DatePicker
 					value={value}
@@ -80,7 +85,9 @@ const ValueField = ({
 			return <Checkbox value={value} handleValueChange={handleSingleValueChange} />;
 		case 'url':
 			return <URL value={value} handleValueChange={handleSingleValueChange} />;
-		case ('single-select' || 'multi-select' || 'state'):
+		case 'single-select':
+		case 'multi-select':
+		case 'state':
 			return value.map((option: string) => (
 				<SelectItem
 					value={option}

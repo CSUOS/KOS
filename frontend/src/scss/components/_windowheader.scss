@@ -30,6 +30,14 @@
 					color: $gray;
 				}
 			}
+			.windowheader-emojilist{
+				display: flex;
+				width: 100%;
+				height: 100%;
+				justify-content: flex-end;
+				align-items: flex-end;
+				margin-bottom: 0.8rem;
+			}
 		}
 	}
 	.windowheader-sub {

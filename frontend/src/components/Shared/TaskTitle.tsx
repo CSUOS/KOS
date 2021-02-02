@@ -23,14 +23,14 @@ type TaskTitleProps = {
 const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 	taskTitle, handleTitleChange, pin, handlePin, emojis, handleEmojis,
 }, ref) => {
-	const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
+	const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
 
 	const handleEmojiPickerOpen = () => {
-		setOpenEmojiPicker(true);
+		setEmojiPickerOpen(true);
 	};
 
 	const handleEmojiPickerClose = () => {
-		setOpenEmojiPicker(false);
+		setEmojiPickerOpen(false);
 	};
 
 	const onEmojiSelect = (emoji: any) => {
@@ -66,17 +66,19 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 							transparent={true}
 							onClickFun={handlePin}
 						/>
-						<EmojiList
-							emojis={emojis}
-							openEmojiPicker={openEmojiPicker}
-							onEmojiClick={onEmojiClick}
-							handleEmojiPickerOpen={handleEmojiPickerOpen}
-							handleEmojiPickerClose={handleEmojiPickerClose}
-						/>
+						<Grid className="windowheader-emojilist">
+							<EmojiList
+								emojis={emojis}
+								emojiPickerOpen={emojiPickerOpen}
+								onEmojiClick={onEmojiClick}
+								handleEmojiPickerOpen={handleEmojiPickerOpen}
+								handleEmojiPickerClose={handleEmojiPickerClose}
+							/>
+						</Grid>
 					</Grid>
 				</Grid>
 			</Grid>
-			{openEmojiPicker
+			{emojiPickerOpen
 				&&
 				<Grid
 					ref={emojiPickerRef}
