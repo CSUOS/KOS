@@ -138,7 +138,8 @@ func SetupRouter() *gin.Engine {
 
 		worksInRoutes.GET("works-in-project/:id", Controllers.GetWorksInByProjectID)
 
-		worksInRoutes.PUT("works-in/:id", Controllers.UpdateWorksIn)
+		// 프로젝트 권한 부여
+		worksInRoutes.POST("works-in/setAuth", Controllers.UpdateWorksIn)
 
 		worksInRoutes.DELETE("works-in/:id", Controllers.DeleteWorksIn)
 	}

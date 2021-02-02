@@ -83,21 +83,30 @@ func GetWorksInByProjectID(c *gin.Context) {
 
 // UpdateWorksIn 유저 - 프로젝트 관계를 업데이트
 func UpdateWorksIn(c *gin.Context) {
-	var worksIn Models.WorksIn
-	id := c.Params.ByName("id")
-	err := Models.GetWorksInByID(&worksIn, id)
-
-	if err != nil {
-		c.JSON(http.StatusNotFound, worksIn)
+	// todo : 유저가 AuthLvL이 3인 유저인지 확인
+	type reqBody struct {
+		UserID    string `json:"UserID"`
+		ProjectID string `json:"ProjectID"`
+		AuthLVL   string   `json:"AuthLVL"`
 	}
-
-	if err := c.BindJSON(&worksIn); err != nil {
+	var req reqBody
+	var worksIn Models.WorksIn
+	
+	if err := c.BindJSON(&req); err != nil {
 		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
+
+	// 해당 유저와 프로젝트와의 관계 찾기
+	err := Models.GetWorksInByUserNProjectID(&worksIn, req.UserID, req.ProjectID)
+
+	if err != nil {
+		c.JSON(http.StatusNotFound, req)
+	}
 	
-	if err = Models.UpdateWorksIn(&worksIn, id); err != nil {
+	// 추출한 프로젝트 - 유저 관계를 authlvl로 update
+	if err = Models.UpdateWorksIn(&worksIn, req.AuthLVL); err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}

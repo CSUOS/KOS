@@ -1,14 +1,12 @@
 package Models
 
 import (
-	"fmt"
-
 	"github.com/CSUOS/KOS/backend/Config"
 )
 
 // GetAllWorksIn 모든 유저와 프로젝트의 관계를 반환
 func GetAllWorksIn(worksIn *[]WorksIn) (err error) {
-	if err = Config.DB.Find(worksIn).Error; err != nil {
+	if err = Config.DB.Preload("User").Preload("Project").Find(worksIn).Error; err != nil {
 		return err
 	}
 	return nil
@@ -47,9 +45,10 @@ func GetWorksInByProjectID(worksIn *[]WorksIn, id string) (err error) {
 }
 
 // UpdateWorksIn 아이디에 매칭되는 유저 - 프로젝트 관계 업데이트
-func UpdateWorksIn(worksIn *WorksIn, id string) (err error) {
-	fmt.Println(worksIn)
-	Config.DB.Save(worksIn)
+func UpdateWorksIn(worksIn *WorksIn, authlvl string) (err error) {
+	if err = Config.DB.Model(worksIn).Update("AuthLVL", authlvl).Error; err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -66,7 +65,7 @@ func DeleteWorksInByUserNProjectID(worksIn *WorksIn, userID string, projectID st
 
 // GetWorksInByUserNProjectID 유저 아이디와 프로젝트 아이디를 조회해서 관계를 찾아온다.
 func GetWorksInByUserNProjectID(worksIn *WorksIn, userID string, projectID string) (err error) {
-	if err = Config.DB.Where("user_id = ?", userID).Where("project_id = ?", projectID).First(worksIn).Error; err != nil {
+	if err = Config.DB.Preload("User").Preload("Project").Where("user_id = ?", userID).Where("project_id = ?", projectID).First(worksIn).Error; err != nil {
 		return err
 	}
 	return nil
