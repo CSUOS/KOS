@@ -5,6 +5,7 @@ import { Grid } from '@material-ui/core';
 
 import { useProjectState, ProjectObj, usePIDDispatch } from '../Model';
 import { SubMenu, SideMenu } from '../Shared';
+import { InviteWindow } from './InviteWindow';
 
 type SideProjectProps = {
 	project: ProjectObj;
@@ -27,7 +28,7 @@ const SideProject = forwardRef<HTMLDivElement, SideProjectProps>(({ project, pid
 					pid={pid}
 				/>
 			</Grid>
-			{ open && <SubMenu pid={pid} /> }
+			{ open && <InviteWindow><SubMenu pid={pid} /></InviteWindow> }
 		</Grid>
 	);
 });

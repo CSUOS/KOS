@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Dispatch } from 'react';
 import axios from 'axios';
 
 import { Grid } from '@material-ui/core';
@@ -11,15 +11,17 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import { Window, WindowHeader, Button } from '.';
 import { useProjectState, ProjectObj, useProjectDelete } from '../Model';
+import { useInviteDispatch } from '../Sub/InviteWindow';
 
 type SubMenuProps = {
 	pid : number;
 };
 
 const SubMenu = ({ pid } : SubMenuProps) => {
-	const [proSetOpen, setProSetOpen] = useState(false); // 프로젝트 설정창 오픈
-	const [proCopyOpen, setProCopyOpen] = useState(false); // 프로젝트 복사창 오픈
-	const [proBackUpOpen, setProBackUpOpen] = useState(false); // 프로젝트 복사창 오픈
+	const [proSetOpen, setProSetOpen] = useState<boolean>(false); // 프로젝트 설정창 오픈
+	const [proCopyOpen, setProCopyOpen] = useState<boolean>(false); // 프로젝트 복사창 오픈
+	const [proBackUpOpen, setProBackUpOpen] = useState<boolean>(false); // 프로젝트 복사창 오픈
+	const setInviteOpen : Dispatch<number> = useInviteDispatch();
 
 	const userAuth = 2;
 	const project : ProjectObj | undefined = useProjectState();
@@ -76,7 +78,7 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 							<Button
 								classList={[]}
 								value={<FileCopyIcon />}
-								onClickFun={() => { setProCopyOpen(true); }}
+								onClickFun={() => setProCopyOpen(true)}
 							/>
 							<p>복사</p>
 						</Grid>
@@ -84,6 +86,7 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 							<Button
 								classList={[]}
 								value={<GroupAddIcon />}
+								onClickFun={() => setInviteOpen(pid)}
 							/>
 							<p>초대</p>
 						</Grid>
@@ -91,7 +94,7 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 							<Button
 								classList={[]}
 								value={<BackupIcon />}
-								onClickFun={() => { setProBackUpOpen(true); }}
+								onClickFun={() => setProBackUpOpen(true)}
 							/>
 							<p>백업</p>
 						</Grid>
@@ -117,7 +120,7 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 							<Button
 								classList={[]}
 								value={<SettingsIcon />}
-								onClickFun={() => { setProSetOpen(true); }}
+								onClickFun={() => setProSetOpen(true)}
 							/>
 							<p>설정</p>
 						</Grid>

@@ -1,4 +1,6 @@
-import React, { useState, createRef, forwardRef } from 'react';
+import React, {
+	Dispatch, useState, createRef, forwardRef, useContext
+} from 'react';
 
 import {
 	Grid, Input, Tooltip, Avatar
@@ -14,6 +16,7 @@ import {
 import {
 	ProjectObj, ProjectTeamObj, ProjectUserObj, useUserState, useProjectState, usePIDState, useTeamState
 } from '../Model';
+import { useInviteDispatch, InviteWindow } from './InviteWindow';
 
 const buttonRef = createRef<HTMLDivElement>();
 const searchInputRef = createRef<HTMLDivElement>();
@@ -30,6 +33,8 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 	const team : ProjectTeamObj | undefined = useTeamState();
 	const pid : number = usePIDState();
 	const nowUser : ProjectUserObj | undefined = useUserState();
+
+	const setInviteOpen : Dispatch<number> = useInviteDispatch();
 
 	const [open, setOpen] = useState(false);
 
@@ -64,7 +69,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 										pid={pid}
 									/>
 								</Grid>
-								{ open && <SubMenu pid={pid} /> }
+								{ open && <InviteWindow><SubMenu pid={pid} /></InviteWindow> }
 							</Grid>
 						</Grid>
 						{
@@ -77,7 +82,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 								</Grid>
 								<Grid className="plus-member">
 									<Tooltip placement="bottom" title="Add Member" arrow>
-										<Avatar className="member add-member">
+										<Avatar className="member add-member" onClick={() => setInviteOpen(pid)}>
 											<GroupAddIcon />
 										</Avatar>
 									</Tooltip>

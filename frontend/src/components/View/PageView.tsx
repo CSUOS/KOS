@@ -7,6 +7,7 @@ import { ProjectHead, List } from '../Sub';
 import {
 	useProjectState, usePIDState, useTaskState, ProjectObj, ProjectTaskObj
 } from '../Model';
+import { InviteWindow } from '../Sub/InviteWindow';
 import { TaskView } from '.';
 
 const taskRef = createRef<HTMLDivElement>();
@@ -45,10 +46,12 @@ const PageView = forwardRef<HTMLDivElement, PageViewProps>(({
 		<Grid ref={ref} className="page">
 			{!openTask &&
 				<>
-					<ProjectHead
-						sideBarOpen={open}
-						handleSideBarOpen={handleSideBarOpen}
-					/>
+					<InviteWindow>
+						<ProjectHead
+							sideBarOpen={open}
+							handleSideBarOpen={handleSideBarOpen}
+						/>
+					</InviteWindow>
 					<Button
 						classList={['']}
 						value={buttonName}
