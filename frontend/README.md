@@ -30,25 +30,24 @@
 
 
 
-### 프로젝트 별 사용 색상
+### 색상 관리
 
 #### 사용하기
 
-1. `_backColor.scss`에 정의된 bgColor들을 살펴본다.
-
-2. 원하는 색상을 css에서 가져다가 변수로 사용한다. 
-
-   ex_) background-color : $bg-pink;
+1. function 폴더의 BGColor.tsx에 정의된 color를 사용한다.
+2. 원하는 색상을 bg-color와 함께 class로 주면 해당 색상이 노드에 적용된다.
 
 
 
 #### 추가하기
 
-1. `_backColor.scss`에 변수를 추가한다.
+1. function 폴더의 BGColor.tsx에 있는 color 변수에 색상을 추가한다.
+
+2. `_backColor.scss`에 변수를 추가한다.
 
    변수명은 $bg-(색상) 의 형태로 고정한다.
 
-2. `.bg-color`에 (색상) 클래스를 추가한다.
+3. `.bg-color`에 (색상) 클래스를 추가한다.
 
    `&.(색상)`으로 추가하면 된다.
 
