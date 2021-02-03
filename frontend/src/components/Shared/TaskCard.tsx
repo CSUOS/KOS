@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, createRef, useEffect } from 'react';
 
 import { Grid } from '@material-ui/core';
 import PriorityHighRoundedIcon from '@material-ui/icons/PriorityHighRounded';
@@ -6,15 +6,21 @@ import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
-import { Button, EmojiPicker, EmojiList } from '.';
+import { ReactComponent as PinIcon } from '../../images/pin.svg';
+import {
+	Button, EmojiPicker, EmojiList, TaskCardMenu
+} from '.';
+import { handleOutsideClick } from '../../function/FunctionManager';
 
 const getIsCloseToTheDeadline = (deadline: any) => {
 	const day = 1000 * 60 * 60 * 24;
 	const currentDate = new Date().getTime();
 	const formatDeadline = new Date(deadline).getTime();
-	if (currentDate - formatDeadline <= 7 * day) return true;
+	if (formatDeadline - currentDate <= 7 * day) return true;
 	return false;
 };
+
+const menuRef = createRef<HTMLDivElement>();
 
 type TaskCardProps = {
 	taskTitle: string | undefined;
@@ -33,6 +39,25 @@ const TaskCard = ({
 	taskTitle, pin, deadline, members, reactions
 }: TaskCardProps) => {
 	const isCloseToTheDeadline = getIsCloseToTheDeadline(deadline);
+	const [menuOpen, setMenuOpen] = useState(false);
+
+	const handleMenuOpen = () => {
+		setMenuOpen(true);
+	};
+
+	const handleMenuClose = () => {
+		setMenuOpen(false);
+	};
+
+	useEffect(() => {
+		document.addEventListener('mousedown',
+			(e: any) => handleOutsideClick(e, menuRef, handleMenuClose), true);
+		return () => {
+			document.removeEventListener('mousedown',
+				(e: any) => handleOutsideClick(e, menuRef, handleMenuClose), true);
+		};
+	});
+
 	return (
 		<div className="taskcard">
 			<div className="taskcard-title">
@@ -51,7 +76,7 @@ const TaskCard = ({
 				<Grid className="title-container">
 					<Button
 						classList={['pin']}
-						value={pin ? <StarIcon /> : <StarBorderIcon />}
+						value={pin ? <PinIcon /> : <StarBorderIcon />}
 						tooltip={pin ? '고정 해제하기' : '상단에 고정하기'}
 						ttside="right"
 						transparent={true}
@@ -61,7 +86,12 @@ const TaskCard = ({
 						value={<MoreHorizIcon />}
 						tooltip="테스크 설정하기"
 						ttside="right"
+						onClickFun={menuOpen ? handleMenuClose : handleMenuOpen}
 					/>
+					{menuOpen &&
+						<Grid ref={menuRef}>
+							<TaskCardMenu />
+						</Grid>}
 				</Grid>
 			</div>
 			<Grid className="taskcard-content">
@@ -79,9 +109,9 @@ const TaskCard = ({
 						<EmojiList
 							emojis={emojis}
 							emojiPickerOpen={false}
-							onEmojiClick={() => {}}
-							handleEmojiPickerOpen={() => {}}
-							handleEmojiPickerClose={() => {}}
+							onEmojiClick={() => { }}
+							handleEmojiPickerOpen={() => { }}
+							handleEmojiPickerClose={() => { }}
 							hasAddButton={false}
 						/>
 					</Grid>

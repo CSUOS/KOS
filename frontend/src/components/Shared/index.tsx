@@ -20,3 +20,4 @@ export { default as Checkbox } from './Checkbox';
 export { default as TextField } from './TextField';
 export { default as AttributeSelect } from './AttributeSelect';
 export { default as ValueSelectOptionSetting } from './ValueSelectOptionSetting';
+export { default as TaskCardMenu } from './TaskCardMenu';

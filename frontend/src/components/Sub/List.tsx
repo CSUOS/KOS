@@ -14,7 +14,7 @@ type ListProps = {
 // 임시 값
 const taskTitle = 'API 문서 작성';
 const pin = true;
-const deadline = '2021-02-07';
+const deadline = '2021-02-05';
 const members = ['우희은', '김정현'];
 const reactions = ['a', 'b'];
 
@@ -30,6 +30,13 @@ const List = ({ mainTitle }: ListProps) => (
 				/>
 			</Grid>
 			<Grid className="list-main" container>
+				<Task
+					taskTitle={taskTitle}
+					pin={pin}
+					deadline={deadline}
+					members={members}
+					reactions={reactions}
+				/>
 				<Task
 					taskTitle={taskTitle}
 					pin={pin}
