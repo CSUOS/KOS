@@ -94,6 +94,8 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 		console.log(pairs);
 	}, [pairs]);
 
+	// TODO: 주석 달기
+	// TODO: pair의 name이 unique해야함
 	const reorderPairs = (list:any, startIndex:number, endIndex:number) => {
 		const result = Array.from(list);
 		const [removed] = result.splice(startIndex, 1);

@@ -19,10 +19,14 @@ type TaskTitleProps = {
 	emojis?: any | undefined;
 	handleEmojis: (emojiId: string) => void;
 }
+const modifier = '이준영';
+const updatedAt = '2021년 02월 04일';
 
 const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 	taskTitle, handleTitleChange, pin, handlePin, emojis, handleEmojis,
 }, ref) => {
+	const updateRecord = `${modifier}님이 ${updatedAt}에 마지막으로 수정하셨습니다`;
+
 	const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
 
 	const handleEmojiPickerOpen = () => {
@@ -76,6 +80,9 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 							/>
 						</Grid>
 					</Grid>
+				</Grid>
+				<Grid className="task-update">
+					{updateRecord}
 				</Grid>
 			</Grid>
 			{emojiPickerOpen

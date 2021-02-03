@@ -52,6 +52,13 @@
 		font-size: 1.3em;
 		}
 	}
+	.task-update{
+		display: flex;
+		width: 100%;
+		justify-content: flex-end;
+		color: $gray;
+		font-size: 1.2rem;
+	}
 }
 
 .picker{
