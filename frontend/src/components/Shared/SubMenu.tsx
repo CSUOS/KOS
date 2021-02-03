@@ -13,7 +13,7 @@ import {
 	Window, WindowHeader, Button
 } from '.';
 import {
-	useProjectState, ProjectObj, useProjectDelete, useProjectCopy, useProjectUpdate
+	useProjectState, useUserState, ProjectUserObj, ProjectObj, useProjectDelete, useProjectCopy, useProjectUpdate, useExitProject
 } from '../Model';
 import { useInviteDispatch } from '../Sub/InviteWindow';
 import { checkIsStringEmpty } from '../../function/FunctionManager';
@@ -28,11 +28,12 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 	const [proBackUpOpen, setProBackUpOpen] = useState<boolean>(false); // 프로젝트 백업창 오픈
 	const setInviteOpen : Dispatch<number> = useInviteDispatch();
 
-	const userAuth = 2;
+	const user : ProjectUserObj | undefined = useUserState();
 	const project : ProjectObj | undefined = useProjectState();
 	const deleteProject : (id : number) => void = useProjectDelete();
 	const setProject : (id : number, p : ProjectObj) => void = useProjectUpdate();
 	const copyProject : Dispatch<number> = useProjectCopy();
+	const exitProject : (projectID : number, uid: number) => void = useExitProject();
 
 	// 세팅 윈도우 이름 선택 시
 	const [name, setName] = useState('');
@@ -54,6 +55,7 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 	}, [pid]);
 
 	const changeProject = () => {
+		// 프로젝트 update 전처리
 		if (project === undefined) {
 			return;
 		}
@@ -131,7 +133,10 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 		</>;
 
 	const hangUpProject = () => {
-		/* api 미구현 */
+		if (user === undefined) {
+			return;
+		}
+		exitProject(pid, user.ID);
 	};
 
 	return (
@@ -169,7 +174,7 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 							/*
 								todo : model에 저장된 user 정보를 받아와서 구현
 							*/
-							userAuth === 2 &&
+							user?.AuthLVL === 2 &&
 							<Grid className="delete">
 								<Button
 									classList={[]}

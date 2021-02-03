@@ -5,6 +5,7 @@ import axios from 'axios';
 
 /*
 	todo : user 정보를 쿠키에서 받아와서 model에 저장, 바꿀 수 있는 함수는 x
+	todo : model에서 reducer로 관리하기
 */
 
 /* open context */
@@ -145,6 +146,7 @@ const ProjectCopyContext = createContext<(id: number) => void>(() => {});
 const TeamContext = createContext<ProjectTeamObj | undefined>(undefined);
 const TeamDispatchContext = createContext<Dispatch<ProjectTeamObj>>(() => {});
 const UserAuthChangeContext = createContext<(uid: number, auth: number) => void>(() => {});
+const ExitProjectContext = createContext<(projectID : number, uid: number) => void>(() => {});
 const ListContext = createContext<ProjectListObj | undefined>(undefined);
 const ListDispatchContext = createContext<Dispatch<ProjectListObj>>(() => {});
 const TaskContext = createContext<ProjectTaskObj | undefined>(undefined);
@@ -219,9 +221,21 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 
 	const a = 1;
 	const pid = usePIDState();
+	const user = useUserState();
 
 	useEffect(() => {
 		// pid와 세션 정보가 바뀔 때마다 project 정보 다시 받아오기
+		getProject();
+		getTeam();
+	}, [a, pid]); // 나중에는 a를 대체하여 쿠키/세션 정보가 바뀌면 다시 받아오도록 하기
+
+	/* project api 함수 */
+
+	const getProject = () => {
+		if (user === undefined) {
+			return;
+		}
+		/* todo : 해당 user의 project만 받아오도록 변경 */
 		axios.get('http://localhost:8080/v1/project-api/projects')
 			.then(async (res) => {
 				console.log(res);
@@ -271,7 +285,6 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 								});
 							});
 						});
-
 						// team은 따로 api로 받아와야 함 => api 수정 후
 					}
 				});
@@ -283,8 +296,9 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			.catch((e) => {
 				console.dir(e);
 			});
-		/*
-		자꾸 DB 에러남 => 고쳐야함
+	};
+
+	const getTeam = () => {
 		axios.get(`http://localhost:8080/v1/works-in-api/works-in-project/${pid}`)
 			.then((res) => {
 				console.log(res);
@@ -293,10 +307,7 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			.catch((e) => {
 				console.dir(e);
 			});
-		*/
-	}, [a, pid]); // 나중에는 a를 대체하여 쿠키/세션 정보가 바뀌면 다시 받아오도록 하기
-
-	/* project api 함수 */
+	};
 
 	const changeProject = (id : number, p : ProjectObj) => {
 		if (p === undefined) return;
@@ -376,6 +387,9 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			});
 	};
 
+	/*
+		todo : project 랑 works-in api 분리하기
+	*/
 	/* team api 함수 */
 	const userAuthChange = (uid: number, auth: number) => {
 		// 관리자는 유저로, 유저는 관리자로
@@ -383,10 +397,31 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 		axios.post('http://localhost:8080/v1/works-in-api/works-in/setAuth', {
 			'ProjectID': pid.toString(),
 			'UserID': uid.toString(),
-			'AuthLVL': auth.toString()
+			'AuthLVL': resultAuth.toString()
 		})
 			.then((res) => {
 				console.dir(res);
+				getTeam();
+				// forceUpdate(!update);
+			})
+			.catch((err) => {
+				console.dir(err);
+			});
+	};
+
+	const exitProject = (projectID : number, uid: number) => {
+		if (user === undefined) {
+			return;
+		}
+
+		axios.post('http://localhost:8080/v1/works-in-api/exit', {
+			'UserID': uid.toString(),
+			'ProjectID': projectID.toString()
+		})
+			.then((res) => {
+				console.dir(res);
+				getTeam();
+				// forceUpdate(!update);
 			})
 			.catch((err) => {
 				console.dir(err);
@@ -402,15 +437,17 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 							<TeamContext.Provider value={team}>
 								<TeamDispatchContext.Provider value={setTeam}>
 									<UserAuthChangeContext.Provider value={userAuthChange}>
-										<ListContext.Provider value={list}>
-											<ListDispatchContext.Provider value={setList}>
-												<TaskContext.Provider value={task}>
-													<TaskDispatchContext.Provider value={setTask}>
-														{children}
-													</TaskDispatchContext.Provider>
-												</TaskContext.Provider>
-											</ListDispatchContext.Provider>
-										</ListContext.Provider>
+										<ExitProjectContext.Provider value={exitProject}>
+											<ListContext.Provider value={list}>
+												<ListDispatchContext.Provider value={setList}>
+													<TaskContext.Provider value={task}>
+														<TaskDispatchContext.Provider value={setTask}>
+															{children}
+														</TaskDispatchContext.Provider>
+													</TaskContext.Provider>
+												</ListDispatchContext.Provider>
+											</ListContext.Provider>
+										</ExitProjectContext.Provider>
 									</UserAuthChangeContext.Provider>
 								</TeamDispatchContext.Provider>
 							</TeamContext.Provider>
@@ -454,6 +491,10 @@ export function useUserAuthDispatch() {
 	const context = useContext(UserAuthChangeContext);
 	return context;
 }
+export function useExitProject() {
+	const context = useContext(ExitProjectContext);
+	return context;
+}
 export function useListState() {
 	const context = useContext(ListContext);
 	return context;
@@ -473,11 +514,11 @@ export function useTaskDispatch() {
 
 /* projectID context */
 
-export const PIDContext = createContext<number>(0);
+export const PIDContext = createContext<number>(-1);
 export const PIDDispatchContext = createContext<Dispatch<number>>(() => {});
 
 export const PIDContextProvider = ({ children } : childrenObj) => {
-	const [pid, setPID] = useState<number>(0);
+	const [pid, setPID] = useState<number>(-1);
 
 	return (
 		<PIDContext.Provider value={pid}>
@@ -504,7 +545,7 @@ export const userContext = createContext<ProjectUserObj | undefined>(undefined);
 const userDispatchContext = createContext<Dispatch<ProjectUserObj>>(() => {});
 
 export const UserContextProvider = ({ children } : childrenObj) => {
-	const [id, setUserID] = useState<ProjectUserObj>({
+	const [user, setUserID] = useState<ProjectUserObj>({
 		ID: 1,
 		Name: 'heeeun',
 		Icon: 'pet',
@@ -522,7 +563,7 @@ export const UserContextProvider = ({ children } : childrenObj) => {
 	}, [a, pid]);
 	*/
 	return (
-		<userContext.Provider value={id}>
+		<userContext.Provider value={user}>
 			<userDispatchContext.Provider value={setUserID}>
 				{children}
 			</userDispatchContext.Provider>
