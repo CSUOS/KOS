@@ -77,7 +77,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 							<Grid className="member-con">
 								<Grid className="all-member">
 									{
-										team.map((member) => <Member user={member} />)
+										team.map((member) => <Member key={member.ID} user={member} />)
 									}
 								</Grid>
 								<Grid className="plus-member">
