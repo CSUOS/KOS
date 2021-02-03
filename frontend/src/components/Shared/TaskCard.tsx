@@ -90,7 +90,9 @@ const TaskCard = ({
 					/>
 					{menuOpen &&
 						<Grid ref={menuRef}>
-							<TaskCardMenu />
+							<TaskCardMenu
+								handleMenuClose={handleMenuClose}
+							/>
 						</Grid>}
 				</Grid>
 			</div>

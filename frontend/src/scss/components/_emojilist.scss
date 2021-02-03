@@ -3,7 +3,7 @@
 	.emojilist-continer{
 		display: flex;
 		width: 100%;
-		height: 100%;
+		height: 100%;;
 	}
 	.emojiitem{
 		display: inline;
@@ -36,9 +36,6 @@
 		}
 	}
 	.add-button {
-		button{
-			padding: 0px;
-		}
 		svg {
 			font-size: 1.2rem;
 			color: $gray;

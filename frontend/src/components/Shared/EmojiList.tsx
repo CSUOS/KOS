@@ -65,7 +65,9 @@ const EmojiList = ({
 				/>))}
 			{hasAddButton && <Button
 				classList={['add-button']}
-				value={<AddIcon />}
+				value={
+					<AddIcon />
+				}
 				tooltip="add reaction"
 				ttside="bottom"
 				transparent={true}

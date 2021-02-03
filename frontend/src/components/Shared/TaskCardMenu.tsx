@@ -11,49 +11,88 @@ import { ReactComponent as PinIcon } from '../../images/pin.svg';
 
 import { Button } from '.';
 
-const TaskCardMenu = () => {
-	const a = 1;
+type TaskCardMenuProps = {
+	handleMenuClose: () => void;
+}
+
+const TaskCardMenu = ({ handleMenuClose }: TaskCardMenuProps) => {
+	const onCopyButtonClick = () => {
+		handleMenuClose();
+	};
+
+	const onEditButtonClick = () => {
+		handleMenuClose();
+	};
+
+	const onDeleteButtonClick = () => {
+		handleMenuClose();
+	};
+
+	const onPinButtonClick = () => {
+		handleMenuClose();
+	};
+
+	const onMoveToButtonClick = () => {
+		handleMenuClose();
+	};
+
+	const onAddReactButtonClick = () => {
+		handleMenuClose();
+	};
+
 	return (
 		<Grid className="taskcardmenu">
 			<Paper className="container" elevation={3}>
 				<button
 					type="button"
+					value="copy"
 					className="taskcardmenu-button"
+					onClick={onCopyButtonClick}
 				>
 					<FileCopyIcon />
 					copy
 				</button>
 				<button
 					type="button"
+					value="edit"
 					className="taskcardmenu-button"
+					onClick={onEditButtonClick}
 				>
 					<EditIcon />
 					edit
 				</button>
 				<button
 					type="button"
+					value="delete"
 					className="taskcardmenu-button"
+					onClick={onDeleteButtonClick}
 				>
 					<DeleteIcon />
 					delete
 				</button>
 				<button
 					type="button"
+					value="pin"
 					className="taskcardmenu-button"
+					onClick={onPinButtonClick}
 				>
 					<PinIcon />
 					pin
 				</button>
 				<button
 					type="button"
+					value="moveTo"
 					className="taskcardmenu-button"
+					onClick={onMoveToButtonClick}
 				>
 					<ArrowRightAltIcon />
 					moveTo
 				</button>
 				<button
 					type="button"
+					value="addReact"
 					className="taskcardmenu-button"
+					onClick={onAddReactButtonClick}
 				>
 					<SentimentSatisfiedIcon />
 					add react
