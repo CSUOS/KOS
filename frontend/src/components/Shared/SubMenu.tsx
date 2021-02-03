@@ -96,17 +96,18 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 						<Grid className={clsx('select-color-btn', 'bg-color', color)} onClick={handleClick} />
 						<Menu
 							anchorEl={anchorEl}
+							getContentAnchorEl={null}
 							keepMounted
 							anchorOrigin={{
-								vertical: 'bottom',
-								horizontal: 'center',
+								vertical: 'bottom', // 이렇게 조정하려면 getContentAnchorEl을 setting해주어야함
+								horizontal: 'left',
 							}}
 							open={anchorEl !== null}
 							onClose={handleClose}
 							className="color-picker"
 						>
 							{
-								colorArr.map((c) => <Grid className={clsx('color-pick', 'bg-color', c)} onClick={() => { setColor(c); handleClose(); }} />)
+								colorArr.map((c) => <Grid key={c} className={clsx('color-pick', 'bg-color', c)} onClick={() => { setColor(c); handleClose(); }} />)
 							}
 						</Menu>
 					</Grid>
