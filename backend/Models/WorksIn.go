@@ -32,7 +32,15 @@ func GetWorksInByID(worksIn *WorksIn, id string) (err error) {
 
 // GetWorksInByUserID 유저아이디가 속해있는 모든 프로젝트들을 반환한다.
 func GetWorksInByUserID(worksIn *[]WorksIn, id string) (err error) {
-	if err = Config.DB.Where("user_id = ?", id).Find(worksIn).Error; err != nil {
+	if err = Config.DB.Preload("User").Preload("Project.Lists.Tasks").Where("user_id = ?", id).Find(worksIn).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// 특정 프로젝트에 속해있는 유저 받아오기
+func GetWorksInByProjectID(worksIn *[]WorksIn, id string) (err error) {
+	if err = Config.DB.Where("project_id = ?", id).Find(worksIn).Error; err != nil {
 		return err
 	}
 	return nil

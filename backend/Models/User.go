@@ -16,6 +16,7 @@ func GetAllUsers(user *[]User) (err error) {
 
 // CreateUser 유저를 생성
 func CreateUser(user *User) (err error) {
+	// password 변환 과정 필요
 	if err = Config.DB.Create(user).Error; err != nil {
 		return err
 	}

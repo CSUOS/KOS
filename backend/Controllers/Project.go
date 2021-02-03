@@ -24,15 +24,20 @@ func GetAllProjects(c *gin.Context) {
 // CreateProject 프로젝트를 하나 생성한다.
 func CreateProject(c *gin.Context) {
 	var project Models.Project
-	c.BindJSON(&project)
-	err := Models.CreateProject(&project)
 
-	if err != nil {
+	if err := c.BindJSON(&project); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	if err := Models.CreateProject(&project); err != nil {
 		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, project)
+		return
 	}
+
+	c.JSON(http.StatusOK, project)
 }
 
 // GetProjectByID 파라미터로 전달된 아이디와 매칭되는 프로젝트 하나 반환
@@ -56,16 +61,21 @@ func UpdateProject(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusNotFound, project)
+		return
 	}
 
-	c.BindJSON(&project)
-	err = Models.UpdateProject(&project, id)
+	if err := c.BindJSON(&project); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
 
-	if err != nil {
+	if err = Models.UpdateProject(&project, id); err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, project)
+		return
 	}
+
+	c.JSON(http.StatusOK, project)
 }
 
 // DeleteProject 아이디와 매칭되는 프로젝트를 삭제
@@ -95,10 +105,24 @@ func DeleteProject(c *gin.Context) {
 	}
 }
 
-// GetContributions 프로젝트의 기여도를 가져온다.
+// GetBranches 프로젝트에 연결된 GitHub 리포지토리의 브랜치 목록을 가져온다.
+func GetBranches(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "Not Implemented"})
+}
+
+// GetContributionsOfID 특정 Github ID의, 프로젝트에 연결된 GitHub 리포지토리의 기여도를 가져온다.
+func GetContributionsOfID(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "Not Implemented"})
+}
+
+// GetContributions 모든 멤버의, 프로젝트에 연결된 GitHub 리포지토리의 기여도를 가져온다. (GitHub ID가 등록되지 않은 멤버는 제외)
 func GetContributions(c *gin.Context) {
-	id := c.Params.ByName("id")
-	c.JSON(http.StatusOK, gin.H{"Get Project " + id: " Contributions endpoint test"})
+	c.JSON(http.StatusOK, gin.H{"message": "Not Implemented"})
+}
+
+// CountCommits 프로젝트에 연결된 GitHub 리포지토리의 특정 브랜치에 커밋된 커밋 수를 가져온다.
+func CountCommits(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "Not Implemented"})
 }
 
 // CopyProject 프로젝트를 복사한다.
@@ -123,11 +147,16 @@ func CopyProject(c *gin.Context) {
 	// 디코드된 아이디를 기준으로 하나 가져온다.
 	err := Models.GetProjectByID(&targetProject, req.ProjectID)
 
-	Models.GetAllListID(&lists, req.ProjectID)
+	// 프로젝트에 포함된 모든 리스트들을 가져온다.
+	err = Models.GetAllListID(&lists, req.ProjectID)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
 
 	// 먼저 태스크들을 새롭게 복사한다.
 	for i := 0; i < len(lists); i++ {
-		err = Models.GetTasksByListID(&tasks, lists[i].ID)
+		err = Models.GetTasksNameNAttrByListID(&tasks, lists[i].ID)
 		if err != nil {
 			c.AbortWithStatus(http.StatusNotFound)
 		} else {
@@ -163,6 +192,8 @@ func CopyProject(c *gin.Context) {
 	newProject.IsPrivate = targetProject.IsPrivate
 	newProject.BookMark = targetProject.BookMark
 	newProject.Name = targetProject.Name
+	newProject.RepoOwner = targetProject.RepoOwner
+	newProject.RepoName = targetProject.RepoName
 	newProject.Lists = newLists
 
 	// 프로젝트 새로 생성
