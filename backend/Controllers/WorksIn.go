@@ -83,22 +83,18 @@ func GetWorksInByProjectID(c *gin.Context) {
 	var res []resBody
 
 	// 우선 worksIn으로 가져오고,
-	err := Models.GetWorksInByProjectID(&worksIn, id)
-	fmt.Println(worksIn)
-	
-	for i := 0; i < len(worksIn); i++ {
-		fmt.Println(worksIn[i].User)
-		var tmp resBody
-		tmp.ID = worksIn[i].User.ID
-		tmp.Name = worksIn[i].User.Name
-		tmp.Icon = worksIn[i].User.Icon
-		tmp.GitID = worksIn[i].User.GitID
-		tmp.AuthLVL = worksIn[i].AuthLVL
-		res = append(res, tmp)
-	}
-	if err != nil {
+	if err := Models.GetWorksInByProjectID(&worksIn, id); err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
+		for i := 0; i < len(worksIn); i++ {
+			var tmp resBody
+			tmp.ID = worksIn[i].User.ID
+			tmp.Name = worksIn[i].User.Name
+			tmp.Icon = worksIn[i].User.Icon
+			tmp.GitID = worksIn[i].User.GitID
+			tmp.AuthLVL = worksIn[i].AuthLVL
+			res = append(res, tmp)
+		}
 		c.JSON(http.StatusOK, res)
 	}
 }
@@ -198,6 +194,8 @@ func InviteUser(c *gin.Context) {
 
 // ExitUserFromProject 프로젝트에 유저 이탈
 func ExitUserFromProject(c *gin.Context) {
+	// pid만 받고 세션으로 처리하면 되지 않을까?
+
 	type reqBody struct {
 		UserID    string `json:"UserID"`
 		ProjectID string `json:"ProjectID"`
@@ -205,7 +203,10 @@ func ExitUserFromProject(c *gin.Context) {
 
 	var req reqBody
 
-	c.BindJSON(&req)
+	if err := c.BindJSON(&req); err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
 
 	var worksIn Models.WorksIn
 
