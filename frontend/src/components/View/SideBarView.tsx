@@ -72,7 +72,7 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 							/>
 						</Grid>
 						<Button
-							classList={['project-add-btn']}
+							classList={['save-btn']}
 							value="프로젝트 생성"
 							onClickFun={makeProject}
 						/>

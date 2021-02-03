@@ -154,36 +154,40 @@
 			}
 		}
 	}
-	.project-add-btn{
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		border: 1px solid $light-gray;
-	}
 }
 
 /* use in sideMenu too */
-.p-contents-con{
-	margin-top: 2rem;
-	&>div{
-		flex-wrap: nowrap;
-		margin-bottom: 20px;
+.submenu-window-con {
+	.p-contents-con{
+		margin-top: 2rem;
+		&>div{
+			flex-wrap: nowrap;
+			margin-bottom: 20px;
+		}
 	}
-}
-.p-key-con{
-	width: 130px;
-	text-align: center;
-	background-color: $sub-color;
-	color: white;
-	border-radius: $radius;
-	display: flex;
-	align-items: center;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-right: 1rem;
-	flex-shrink: 0;
-}
-.p-value-con{
-	width: 100%;
+	.p-key-con{
+		width: 130px;
+		text-align: center;
+		background-color: $sub-color;
+		color: white;
+		border-radius: $radius;
+		display: flex;
+		align-items: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-right: 1rem;
+		flex-shrink: 0;
+	}
+	.p-value-con{
+		width: 100%;
+	}
+	.p-btn-con{
+		display: flex;
+		justify-content: flex-end;
+		width: 100%;
+		.save-btn{
+			padding: 5px 10px;
+		}
+	}
 }

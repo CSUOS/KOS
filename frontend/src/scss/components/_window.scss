@@ -33,3 +33,11 @@
     }
   }
 }
+
+/* window에서 쓰는 save-btn */
+.save-btn{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid $light-gray;
+}

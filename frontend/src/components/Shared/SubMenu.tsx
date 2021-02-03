@@ -1,7 +1,7 @@
-import React, { useState, Dispatch } from 'react';
+import React, { useState, Dispatch, useEffect } from 'react';
 import clsx from 'clsx';
 
-import { Grid, Input } from '@material-ui/core';
+import { Grid, Input, Menu } from '@material-ui/core';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import BackupIcon from '@material-ui/icons/Backup';
@@ -10,12 +10,14 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import {
-	Window, WindowHeader, Button, AttributeButton
+	Window, WindowHeader, Button
 } from '.';
 import {
-	useProjectState, ProjectObj, useProjectDelete, useProjectCopy
+	useProjectState, ProjectObj, useProjectDelete, useProjectCopy, useProjectUpdate
 } from '../Model';
 import { useInviteDispatch } from '../Sub/InviteWindow';
+import { checkIsStringEmpty } from '../../function/FunctionManager';
+import { color as colorArr } from '../../function/BGColor';
 
 type SubMenuProps = {
 	pid : number;
@@ -29,10 +31,46 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 	const userAuth = 2;
 	const project : ProjectObj | undefined = useProjectState();
 	const deleteProject : (id : number) => void = useProjectDelete();
+	const setProject : (id : number, p : ProjectObj) => void = useProjectUpdate();
 	const copyProject : Dispatch<number> = useProjectCopy();
 
 	// 세팅 윈도우 이름 선택 시
 	const [name, setName] = useState('');
+	// 세팅 색 선택 메뉴
+	const [color, setColor] = useState('');
+	const [anchorEl, setAnchorEl] = useState<EventTarget & Element | null>(null);
+	const handleClick = (event : React.SyntheticEvent) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+	useEffect(() => {
+		if (project !== undefined) {
+			setName(project[pid].name);
+			setColor(project[pid].bgColor);
+		}
+	}, [pid]);
+
+	const changeProject = () => {
+		if (project === undefined) {
+			return;
+		}
+		if (checkIsStringEmpty(name)) {
+			alert('프로젝트 이름을 입력해주세요.');
+			return;
+		}
+		if (checkIsStringEmpty(color)) {
+			alert('프로젝트 색을 선택해주세요.');
+			return;
+		}
+		const tmp = project;
+		tmp[pid].name = name;
+		tmp[pid].bgColor = color;
+		setProject(pid, tmp);
+		setProSetOpen(false);
+	};
 
 	const windows =
 		<>
@@ -53,10 +91,29 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 					</Grid>
 					<Grid container>
 						<Grid className="p-key-con">Project Color</Grid>
-						<Grid className={clsx('select-color-btn', 'bg-color', project && project[pid].bgColor)} />
-						{
-							// todo : menu material ui 이용해서 색 선택 가능한 menu 띄우기
-						}
+						<Grid className={clsx('select-color-btn', 'bg-color', color)} onClick={handleClick} />
+						<Menu
+							anchorEl={anchorEl}
+							keepMounted
+							anchorOrigin={{
+								vertical: 'bottom',
+								horizontal: 'center',
+							}}
+							open={anchorEl !== null}
+							onClose={handleClose}
+							className="color-picker"
+						>
+							{
+								colorArr.map((c) => <Grid className={clsx('color-pick', 'bg-color', c)} onClick={() => { setColor(c); handleClose(); }} />)
+							}
+						</Menu>
+					</Grid>
+					<Grid className="p-btn-con">
+						<Button
+							classList={['save-btn']}
+							value="저장"
+							onClickFun={changeProject}
+						/>
 					</Grid>
 				</Grid>
 			</Window>
