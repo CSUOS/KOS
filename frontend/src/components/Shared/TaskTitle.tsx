@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, {
 	forwardRef, createRef, useState, useEffect,
 } from 'react';
@@ -86,20 +87,20 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 						</Grid>
 					</Grid>
 				</Grid>
-				<Grid className="task-update">
-					{updateRecord}
-				</Grid>
-			</Grid>
-			{emojiPickerOpen
+				{emojiPickerOpen
 				&&
 				<Grid
 					ref={emojiPickerRef}
-					className="picker"
+					className={clsx('picker', 'taskwindow')}
 				>
 					<EmojiPicker
 						onEmojiSelect={onEmojiSelect}
 					/>
 				</Grid>}
+				<Grid className="task-update">
+					{updateRecord}
+				</Grid>
+			</Grid>
 		</>
 	);
 });

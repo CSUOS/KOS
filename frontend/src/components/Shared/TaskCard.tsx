@@ -20,6 +20,7 @@ const getIsCloseToTheDeadline = (deadline: any) => {
 	return false;
 };
 
+const emojiPickerRef = createRef<HTMLDivElement>();
 const menuRef = createRef<HTMLDivElement>();
 
 type TaskCardProps = {
@@ -40,6 +41,7 @@ const TaskCard = ({
 }: TaskCardProps) => {
 	const isCloseToTheDeadline = getIsCloseToTheDeadline(deadline);
 	const [menuOpen, setMenuOpen] = useState(false);
+	const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
 
 	const handleMenuOpen = () => {
 		setMenuOpen(true);
@@ -49,12 +51,29 @@ const TaskCard = ({
 		setMenuOpen(false);
 	};
 
+	const handleEmojiPickerOpen = () => {
+		setEmojiPickerOpen(true);
+	};
+
+	const handleEmojiPickerClose = () => {
+		setEmojiPickerOpen(false);
+	};
+
 	useEffect(() => {
 		document.addEventListener('mousedown',
 			(e: any) => handleOutsideClick(e, menuRef, handleMenuClose), true);
 		return () => {
 			document.removeEventListener('mousedown',
 				(e: any) => handleOutsideClick(e, menuRef, handleMenuClose), true);
+		};
+	});
+
+	useEffect(() => {
+		document.addEventListener('mousedown',
+			(e: any) => handleOutsideClick(e, emojiPickerRef, handleEmojiPickerClose), true);
+		return () => {
+			document.removeEventListener('mousedown',
+				(e: any) => handleOutsideClick(e, emojiPickerRef, handleEmojiPickerClose), true);
 		};
 	});
 
@@ -92,6 +111,16 @@ const TaskCard = ({
 						<Grid ref={menuRef}>
 							<TaskCardMenu
 								handleMenuClose={handleMenuClose}
+								handleEmojiPickerOpen={handleEmojiPickerOpen}
+							/>
+						</Grid>}
+					{emojiPickerOpen &&
+						<Grid
+							ref={emojiPickerRef}
+							className="picker"
+						>
+							<EmojiPicker
+								onEmojiSelect={() => handleEmojiPickerClose()}
 							/>
 						</Grid>}
 				</Grid>

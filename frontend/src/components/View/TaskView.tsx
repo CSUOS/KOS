@@ -107,20 +107,25 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 		console.log(pairs);
 	}, [pairs]);
 
-	// TODO: 주석 달기
+	// TODO: list에도 쓰게 스크립트 분리하기
 	// TODO: pair의 name이 unique해야함
-	const reorderPairs = (list: any, startIndex: number, endIndex: number) => {
-		const result = Array.from(list);
-		const [removed] = result.splice(startIndex, 1);
-		result.splice(endIndex, 0, removed);
+	const reorderPairs = (list: Array<any>, sourceIndex: number, destinationIndex: number) => {
+		// copy original to "reorderedArray"
+		const reorderedArray = Array.from(list);
+		// delete reordered element at source index
+		// return type of splice is array, so using destructing assignment
+		const [reorderedElement] = reorderedArray.splice(sourceIndex, 1);
+		// add moved element at destination index
+		reorderedArray.splice(destinationIndex, 0, reorderedElement);
 
-		return result;
+		// return reoredered pairs
+		return reorderedArray;
 	};
 
 	const onDragEnd = (result: DropResult) => {
 		if (result.destination) {
 			const reorderedPairs = reorderPairs(pairs, result.source.index, result.destination.index);
-			console.log(reorderedPairs);
+
 			setPairs(reorderedPairs);
 		}
 	};
