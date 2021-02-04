@@ -71,7 +71,7 @@ const Member = ({ user } : MemberProps) => {
 	};
 	const makeUserOut = () => {
 		exitProject(pid, user.ID);
-	}
+	};
 	const returnMenu = () => {
 		let menuString = '관리자 권한 부여';
 		if (user.ID === nowUser?.ID) {
