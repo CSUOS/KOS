@@ -55,15 +55,18 @@ func GetWorksInByID(c *gin.Context) {
 
 // GetWorksInByUserID 유저와 프로젝트 아이디로 유저-프로젝트 관계를 가져온다.
 func GetWorksInByUserID(c *gin.Context) {
+	// project 정보만 받아오도록 수정
 	id := c.Params.ByName("id")
 	var worksIn []Models.WorksIn
+	var projects []Models.Project
 
-	err := Models.GetWorksInByUserID(&worksIn, id)
-
-	if err != nil {
+	if err := Models.GetWorksInByUserID(&worksIn, id); err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
-		c.JSON(http.StatusOK, worksIn)
+		for i := 0; i < len(worksIn); i++ {
+			projects = append(projects, worksIn[i].Project)
+		}
+		c.JSON(http.StatusOK, projects)
 	}
 }
 
