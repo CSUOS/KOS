@@ -79,7 +79,7 @@ func SetupRouter() *gin.Engine {
 		listRoutes.GET("lists", Controllers.GetAllLists)
 
 		// 프로젝트안에 리스트를 만든다.
-		listRoutes.POST("list", Controllers.AddList)
+		listRoutes.POST("add", Controllers.AddList)
 
 		// 리스트 생성(테스트 API)
 		// listRoutes.POST("list", Controllers.CreateList)
@@ -110,7 +110,7 @@ func SetupRouter() *gin.Engine {
 		taskRoutes.GET("tasks", Controllers.GetAllTasks)
 
 		// 리스트안에 태스크 생성
-		taskRoutes.POST("task", Controllers.AddTask)
+		taskRoutes.POST("add", Controllers.AddTask)
 
 		// 태스크 생성(테스트 API)
 		// taskRoutes.POST("task", Controllers.CreateTask)
@@ -146,7 +146,7 @@ func SetupRouter() *gin.Engine {
 
 		// 유저의 프로젝트 정보를 가져온다.
 		worksInRoutes.GET("works-in-user/:id", Controllers.GetWorksInByUserID)
-		
+
 		// 프로젝트에 속해있는 유저들 정보를 가져온다.
 		worksInRoutes.GET("works-in-project/:id", Controllers.GetWorksInByProjectID)
 
@@ -156,15 +156,14 @@ func SetupRouter() *gin.Engine {
 		// 프로젝트에서 나간다.
 		worksInRoutes.DELETE("exit", Controllers.ExitUserFromProject)
 
-		// 모든 프로젝트 - 유저 관계를 가져온다.
+		// 모든 프로젝트 - 유저 관계를 가져온다.(테스트 API?)
 		worksInRoutes.GET("works-ins", Controllers.GetAllWorksIn)
 
 		// 프로젝트 - 유저 관계 생성(테스트 API)
 		worksInRoutes.POST("works-in", Controllers.CreateWorksIn)
 
-		// 아이디에 매칭되는 프로젝트 - 유저 관계를 가져온다.
+		// 아이디에 매칭되는 프로젝트 - 유저 관계를 가져온다.(테스트 API?)
 		worksInRoutes.GET("works-in/:id", Controllers.GetWorksInByID)
-
 
 		// 프로젝트 권한 부여
 		worksInRoutes.POST("works-in/setAuth", Controllers.UpdateWorksIn)
