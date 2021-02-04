@@ -14,11 +14,23 @@ var err error
 
 func main() {
 	Config.DB, err = gorm.Open(mysql.Open(Config.DBURL(Config.BuildDBConfig())), &gorm.Config{})
+	if err != nil {
+		fmt.Println("Status: ", err)
+		return
+	}
+	db, err := Config.DB.DB()
+	if err != nil {
+		fmt.Println("Status: ", err)
+		return
+	}
+	db.SetMaxOpenConns(1)
+
 	// 서버 실행시 kos DB가 없으면 DB 생성
 	Config.DB.Exec("Create Database if not exists kos")
 	Config.DB.Exec("Use kos")
 	if err != nil {
 		fmt.Println("Status: ", err)
+		return
 	}
 
 	allModels := []interface{}{&Models.User{}, &Models.Project{}, &Models.Task{}, &Models.List{}, &Models.WorksIn{}}
