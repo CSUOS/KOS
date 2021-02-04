@@ -1,5 +1,5 @@
 import React, {
-	forwardRef, createRef, useState, useEffect
+	forwardRef, createRef, useState, useEffect,
 } from 'react';
 
 import { Grid } from '@material-ui/core';
@@ -59,8 +59,13 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 		<>
 			<Grid ref={ref} className="windowheader">
 				<Grid className="windowheader-main" container>
-					<h1>{taskTitle}</h1>
-					{/* <input type="text" /> */}
+					<Grid className="windowheader-tasktitle">
+						<input
+							size={taskTitle ? taskTitle.length : 1}
+							value={taskTitle}
+							onChange={handleTitleChange}
+						/>
+					</Grid>
 					<Grid className="windowheader-task">
 						<Button
 							classList={['task-pin']}

@@ -1,4 +1,6 @@
-import React, { forwardRef, useState, useEffect } from 'react';
+import React, {
+	forwardRef, useState, useEffect, ChangeEvent
+} from 'react';
 
 import { Grid } from '@material-ui/core';
 
@@ -35,15 +37,26 @@ const pairTempData = [{ type: 'checkbox', name: '체크박스', value: true }, {
 const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 	open, task, handleTaskWindowClose
 }, ref) => {
+	// parsed data
+	// const taskTitle
+	const attributes = task?.attribute;
+	const created = task?.createdAt;
+	const updated = task?.updatedAt;
+
+	// =================[ 임시 값 ]============================
+	const currentDate = new Date().toString();
+	const parsedDate = currentDate.split(' ');
+	const tempTaskTitle = parsedDate.slice(0, 5).join('-');
+	// ======================================================
+
+	const [taskTitle, setTaskTitle] = useState(tempTaskTitle);
 	const [pin, setPin] = useState(false);
 	const [emojis, setEmojis] = useState(emojisTempData);
 	const [pairs, setPairs] = useState(pairTempData as any);
 
-	// parsed data
-	const mainTitle = `TASK #${task?.taskID}`;
-	const attributes = task?.attribute;
-	const created = task?.createdAt;
-	const updated = task?.updatedAt;
+	const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setTaskTitle(e.target.value);
+	};
 
 	const handlePin = () => {
 		setPin(!pin);
@@ -96,7 +109,7 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 
 	// TODO: 주석 달기
 	// TODO: pair의 name이 unique해야함
-	const reorderPairs = (list:any, startIndex:number, endIndex:number) => {
+	const reorderPairs = (list: any, startIndex: number, endIndex: number) => {
 		const result = Array.from(list);
 		const [removed] = result.splice(startIndex, 1);
 		result.splice(endIndex, 0, removed);
@@ -104,7 +117,7 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 		return result;
 	};
 
-	const onDragEnd = (result:DropResult) => {
+	const onDragEnd = (result: DropResult) => {
 		if (result.destination) {
 			const reorderedPairs = reorderPairs(pairs, result.source.index, result.destination.index);
 			console.log(reorderedPairs);
@@ -122,8 +135,8 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 				handleWindowClose={handleTaskWindowClose}
 			>
 				<TaskTitle
-					taskTitle={mainTitle}
-					handleTitleChange={() => { }}
+					taskTitle={taskTitle}
+					handleTitleChange={handleTitleChange}
 					pin={pin}
 					handlePin={handlePin}
 					emojis={emojis}
