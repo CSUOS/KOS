@@ -10,11 +10,13 @@ import (
 // SetupRouter 경로를 정의
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
-	
+
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://localhost:3000", "http://127.0.0.1:3000"}
-	r.Use(cors.New(config))
+	config.AllowCredentials = true
 	
+	r.Use(cors.New(config))
+
 	// postman 에서 계속 403 나시면 origin모두 허용하는 아래 코드 사용하세요! 
 	// r.Use(cors.Default())
 
@@ -158,7 +160,7 @@ func SetupRouter() *gin.Engine {
 		worksInRoutes.POST("invite", Controllers.InviteUser)
 
 		// 프로젝트에서 나간다.
-		worksInRoutes.DELETE("exit", Controllers.ExitUserFromProject)
+		worksInRoutes.POST("exit", Controllers.ExitUserFromProject)
 
 		// 모든 프로젝트 - 유저 관계를 가져온다.
 		worksInRoutes.GET("works-ins", Controllers.GetAllWorksIn)
