@@ -128,6 +128,9 @@ func CountCommits(c *gin.Context) {
 // CopyProject 프로젝트를 복사한다.
 func CopyProject(c *gin.Context) {
 	// 리퀘스트 바디에서 아이디 1개를 가져온다.\
+	// todo : 해당 유저가 copy할 project에 권한이 있는지 확인, 
+	// 프로젝트 생성 후에 해당 유저와 project의 관계 생성
+	
 	type reqBody struct {
 		ProjectID string `json:"ProjectID"`
 	}
