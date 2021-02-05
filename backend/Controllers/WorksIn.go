@@ -120,6 +120,22 @@ func GetWorksInByProjectID(c *gin.Context) {
 	}
 }
 
+// GetWorksInByBothID 유저, 프로젝트 id로 관계를 가져온다.
+func GetWorksInByBothID(c *gin.Context) {
+	id := c.Params.ByName("id")
+	pid := c.Params.ByName("pid")
+
+	var worksIn Models.WorksIn
+	
+	if err := Models.GetWorksInByUserNProjectID(&worksIn, id, pid); err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	} else {
+		c.JSON(http.StatusOK, worksIn.AuthLVL)
+	}
+
+}
+
 // UpdateWorksIn 유저 - 프로젝트 관계를 업데이트
 func UpdateWorksIn(c *gin.Context) {
 	// todo : 유저가 AuthLvL이 2인 유저인지 확인

@@ -171,6 +171,8 @@ func SetupRouter() *gin.Engine {
 		// 아이디에 매칭되는 프로젝트 - 유저 관계를 가져온다.
 		worksInRoutes.GET("works-in/:id", Controllers.GetWorksInByID)
 
+		// 프로젝트 아이디, 유저 아이디로 관계를 가져온다.
+		worksInRoutes.GET("works-in/:id/:pid", Controllers.GetWorksInByBothID)
 
 		// 프로젝트 권한 부여
 		worksInRoutes.POST("works-in/setAuth", Controllers.UpdateWorksIn)
