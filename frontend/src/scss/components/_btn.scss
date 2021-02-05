@@ -1,26 +1,20 @@
 .btn{
 	border-radius: $radius;
     display: inline-block;
+	background-color: white;
 	button{
-		border : 1px solid $gray;
-		background-color: white;
 		cursor : pointer;
 		&:hover, &:active, &:focus{
 			outline: none;
-			box-shadow: 0 0 3px $shadow-color;
+			box-shadow: 0 0 1px $shadow-color;
 		}
 	}
-}
-
-.sidebar-btn{
-    display: flex;
-	height: 100%;
-	button{
+	&.trans{
 		background-color: transparent;
-		border: none;
-		svg{
-			fill: white;
-			height: 100%;
+		button{
+			&:hover, &:active, &:focus{
+				box-shadow: none;
+			}
 		}
 	}
 }

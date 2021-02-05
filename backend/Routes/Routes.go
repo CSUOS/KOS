@@ -10,8 +10,13 @@ import (
 // SetupRouter 경로를 정의
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
+
 	config := cors.DefaultConfig()
+	// postman 에서 계속 403 나시면 origin 모두 허용하는 아래 코드 사용하세요!
+	// config.AllowAllOrigins = true
 	config.AllowOrigins = []string{"http://localhost:3000", "http://127.0.0.1:3000"}
+	config.AllowCredentials = true
+	
 	r.Use(cors.New(config))
 
 	userRoutes := r.Group("/v1/user-api")
@@ -23,7 +28,7 @@ func SetupRouter() *gin.Engine {
 		userRoutes.POST("user", Controllers.CreateUser)
 
 		// 특정 사용자의 정보를 가져온다.
-		userRoutes.GET("user/:id", Controllers.GetUserByID)
+		userRoutes.GET("user", Controllers.GetUserByID)
 
 		// 사용자의 정보를 업데이트
 		userRoutes.PUT("user/:id", Controllers.UpdateUser)
@@ -145,7 +150,7 @@ func SetupRouter() *gin.Engine {
 	{
 
 		// 유저의 프로젝트 정보를 가져온다.
-		worksInRoutes.GET("works-in-user/:id", Controllers.GetWorksInByUserID)
+		worksInRoutes.GET("works-in-user", Controllers.GetWorksInByUser)
 		
 		// 프로젝트에 속해있는 유저들 정보를 가져온다.
 		worksInRoutes.GET("works-in-project/:id", Controllers.GetWorksInByProjectID)
@@ -154,7 +159,7 @@ func SetupRouter() *gin.Engine {
 		worksInRoutes.POST("invite", Controllers.InviteUser)
 
 		// 프로젝트에서 나간다.
-		worksInRoutes.DELETE("exit", Controllers.ExitUserFromProject)
+		worksInRoutes.POST("exit", Controllers.ExitUserFromProject)
 
 		// 모든 프로젝트 - 유저 관계를 가져온다.
 		worksInRoutes.GET("works-ins", Controllers.GetAllWorksIn)
@@ -165,10 +170,11 @@ func SetupRouter() *gin.Engine {
 		// 아이디에 매칭되는 프로젝트 - 유저 관계를 가져온다.
 		worksInRoutes.GET("works-in/:id", Controllers.GetWorksInByID)
 
+		worksInRoutes.GET("works-in/:id/:pid", Controllers.GetWorksInByBothID)
 
 		// 프로젝트 권한 부여
 		worksInRoutes.POST("works-in/setAuth", Controllers.UpdateWorksIn)
-
+    
 		// 프로젝트 - 유저 관계 삭제.
 		worksInRoutes.DELETE("works-in/:id", Controllers.DeleteWorksIn)
 	}

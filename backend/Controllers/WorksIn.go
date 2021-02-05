@@ -40,7 +40,7 @@ func CreateWorksIn(c *gin.Context) {
 	c.JSON(http.StatusOK, worksIn)
 }
 
-// GetWorksInByID 유저 - 프로젝트 관계를 아이디로 가져온다
+// GetWorksInByID 유저 - 프로젝트 관계를 works_in 아이디로 가져온다
 func GetWorksInByID(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var worksIn Models.WorksIn
@@ -53,21 +53,41 @@ func GetWorksInByID(c *gin.Context) {
 	}
 }
 
-// GetWorksInByUserID 유저와 프로젝트 아이디로 유저-프로젝트 관계를 가져온다.
-func GetWorksInByUserID(c *gin.Context) {
-	id := c.Params.ByName("id")
-	var worksIn []Models.WorksIn
+// GetWorksInByUser 유저 토큰으로 유저-프로젝트들 관계를 가져온다.
+func GetWorksInByUser(c *gin.Context) {
+	// project 정보와 해당 유저의 auth까지 전달
+	type resBody struct {
+		Project []Models.Project `json:"projects"`
+		AuthLVL []uint `json:"auths"`
+	}
 
-	err := Models.GetWorksInByUserID(&worksIn, id)
-
+	// 로그인되어있는지 확인
+	claims, err := ParseValidAuthToken(c.Request)
 	if err != nil {
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+	
+	// 토큰으로부터 id 추출
+	id := claims["id"].(string)
+
+	// project 정보만 받아오도록 수정
+	var worksIn []Models.WorksIn
+	var res resBody
+
+	if err := Models.GetWorksInByUserID(&worksIn, id); err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
+		return
 	} else {
-		c.JSON(http.StatusOK, worksIn)
+		for i := 0; i < len(worksIn); i++ {
+			res.Project = append(res.Project, worksIn[i].Project)
+			res.AuthLVL = append(res.AuthLVL, worksIn[i].AuthLVL)
+		}
+		c.JSON(http.StatusOK, res)
 	}
 }
 
-// 특정 프로젝트에 속해있는 유저 받아오기
+// GetWorksInByProjectID 특정 프로젝트에 속해있는 유저를 반환한다.
 func GetWorksInByProjectID(c *gin.Context) {
 	// 유저 정보는 Password 빼고 보내기
 	type resBody struct {
@@ -83,29 +103,42 @@ func GetWorksInByProjectID(c *gin.Context) {
 	var res []resBody
 
 	// 우선 worksIn으로 가져오고,
-	err := Models.GetWorksInByProjectID(&worksIn, id)
-	fmt.Println(worksIn)
-	
-	for i := 0; i < len(worksIn); i++ {
-		fmt.Println(worksIn[i].User)
-		var tmp resBody
-		tmp.ID = worksIn[i].User.ID
-		tmp.Name = worksIn[i].User.Name
-		tmp.Icon = worksIn[i].User.Icon
-		tmp.GitID = worksIn[i].User.GitID
-		tmp.AuthLVL = worksIn[i].AuthLVL
-		res = append(res, tmp)
-	}
-	if err != nil {
+	if err := Models.GetWorksInByProjectID(&worksIn, id); err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
+		return
 	} else {
+		for i := 0; i < len(worksIn); i++ {
+			var tmp resBody
+			tmp.ID = worksIn[i].User.ID
+			tmp.Name = worksIn[i].User.Name
+			tmp.Icon = worksIn[i].User.Icon
+			tmp.GitID = worksIn[i].User.GitID
+			tmp.AuthLVL = worksIn[i].AuthLVL
+			res = append(res, tmp)
+		}
 		c.JSON(http.StatusOK, res)
 	}
 }
 
+// GetWorksInByBothID 유저, 프로젝트 id로 관계를 가져온다.
+func GetWorksInByBothID(c *gin.Context) {
+	id := c.Params.ByName("id")
+	pid := c.Params.ByName("pid")
+
+	var worksIn Models.WorksIn
+	
+	if err := Models.GetWorksInByUserNProjectID(&worksIn, id, pid); err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	} else {
+		c.JSON(http.StatusOK, worksIn.AuthLVL)
+	}
+
+}
+
 // UpdateWorksIn 유저 - 프로젝트 관계를 업데이트
 func UpdateWorksIn(c *gin.Context) {
-	// todo : 유저가 AuthLvL이 3인 유저인지 확인
+	// todo : 유저가 AuthLvL이 2인 유저인지 확인
 	type reqBody struct {
 		UserID    string `json:"UserID"`
 		ProjectID string `json:"ProjectID"`
@@ -115,7 +148,6 @@ func UpdateWorksIn(c *gin.Context) {
 	var worksIn Models.WorksIn
 	
 	if err := c.BindJSON(&req); err != nil {
-		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
@@ -198,6 +230,8 @@ func InviteUser(c *gin.Context) {
 
 // ExitUserFromProject 프로젝트에 유저 이탈
 func ExitUserFromProject(c *gin.Context) {
+	// pid만 받고 세션으로 처리하면 되지 않을까?
+
 	type reqBody struct {
 		UserID    string `json:"UserID"`
 		ProjectID string `json:"ProjectID"`
@@ -205,7 +239,10 @@ func ExitUserFromProject(c *gin.Context) {
 
 	var req reqBody
 
-	c.BindJSON(&req)
+	if err := c.BindJSON(&req); err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
 
 	var worksIn Models.WorksIn
 

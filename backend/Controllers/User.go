@@ -33,12 +33,19 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "At least one parameter is not valid."})
 		return
 	}
-
 	if ValidateByRabums(req) {
+		// 입력한 id로 유저 찾기
+		var user Models.User
+		if err := Models.GetUserByName(&user, req.ID); err != nil {
+			// 회원이 등록되어있지 않은 경우
+			c.JSON(http.StatusBadRequest, gin.H{"message": "No contents matched"})
+			return
+		}
+
 		// 로그인이 성공하면 JWT 토큰 발급
 		secret := GetSecret()
 		atClaims := jwt.MapClaims{}
-		atClaims["id"] = req.ID
+		atClaims["id"] = fmt.Sprint(user.ID)
 		atClaims["exp"] = time.Now().Add(time.Hour).Unix()
 		accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
 
@@ -51,7 +58,7 @@ func Login(c *gin.Context) {
 		}
 
 		c.SetCookie("access-token", signed, 60*60, "/", "", false, false)
-		c.JSON(http.StatusOK, gin.H{"id": req.ID})
+		c.JSON(http.StatusOK, gin.H{"id": fmt.Sprint(user.ID)})
 		return
 	} else {
 		// 그 어떤 이유로든 로그인이 실패하면
@@ -151,13 +158,22 @@ func CreateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-// GetUserByID 파라미터로 전달된 아이디와 매칭되는 유저를 하나 반환한다.
+// GetUserByID 토큰과 매칭되는 유저를 하나 반환한다.
 func GetUserByID(c *gin.Context) {
-	id := c.Params.ByName("id")
-	var user Models.User
-	err := Models.GetUserByID(&user, id)
-
+	// 로그인되어있는지 확인
+	claims, err := ParseValidAuthToken(c.Request)
 	if err != nil {
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+
+	// 토큰으로부터 id 추출
+	id := claims["id"].(string)
+	fmt.Println(id)
+
+	// id로부터 User 정보 추출
+	var user Models.User
+	if err = Models.GetUserByID(&user, id); err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
 		c.JSON(http.StatusOK, user)

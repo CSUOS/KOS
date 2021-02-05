@@ -23,11 +23,21 @@ func GetAllLists(c *gin.Context) {
 
 // AddList 프로젝트안에 리스트를 추가한다.
 func AddList(c *gin.Context) {
-	id := c.Params.ByName("id")
+	type reqBody struct {
+		ProjectID string `json:"ProjectID"`
+	}
+	var req reqBody
+
+	if err:= c.BindJSON(&req); err != nil {
+		fmt.Println(err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
 	var Project Models.Project
 	var list Models.List
 
-	err := Models.GetProjectByID(&Project, id)
+	err := Models.GetProjectByID(&Project, req.ProjectID)
 
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
@@ -37,7 +47,7 @@ func AddList(c *gin.Context) {
 
 	Project.Lists = append(Project.Lists, list)
 
-	err = Models.UpdateProject(&Project, id)
+	err = Models.UpdateProject(&Project, req.ProjectID)
 
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)

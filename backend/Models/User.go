@@ -31,6 +31,14 @@ func GetUserByID(user *User, id string) (err error) {
 	return nil
 }
 
+// GetUserByName 유저가 입력한 아이디에 매칭되는 유저를 반환
+func GetUserByName(user *User, name string) (err error) {
+	if err = Config.DB.Where("name = ?", name).First(user).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 // UpdateUser 아이디에 매칭되는 유저 정보 업데이트
 func UpdateUser(user *User, id string) (err error) {
 	fmt.Println(user)
