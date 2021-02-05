@@ -1,6 +1,7 @@
 package Controllers
 
 import (
+	"container/ring"
 	"fmt"
 	"net/http"
 	"sort"
@@ -239,6 +240,18 @@ func GetTasksBySortedOrder(c *gin.Context) {
 		}
 
 		return tasks[i].Rank < tasks[j].Rank
+	})
+
+	// 가져온 태스크들로 링을 만든다. (원형 리스트)
+	Models.TaskRing = ring.New(len(tasks))
+	for i := 0; i < len(tasks); i++ {
+		Models.TaskRing.Value = tasks[i]
+		Models.TaskRing = Models.TaskRing.Next()
+	}
+
+	// 테스트 출력.
+	Models.TaskRing.Do(func(p interface{}) {
+		fmt.Println(p.(Models.Task))
 	})
 
 	// 정렬되어진 태스크드들을 반환.

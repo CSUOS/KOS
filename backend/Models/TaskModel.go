@@ -1,6 +1,8 @@
 package Models
 
 import (
+	"container/ring"
+
 	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
@@ -32,3 +34,6 @@ type Task struct {
 	    }
 	*/
 }
+
+// TaskRing 태스크 원형 리스트
+var TaskRing = ring.New(0)
