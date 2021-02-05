@@ -158,13 +158,22 @@ func CreateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-// GetUserByID 파라미터로 전달된 아이디와 매칭되는 유저를 하나 반환한다.
+// GetUserByID 토큰과 매칭되는 유저를 하나 반환한다.
 func GetUserByID(c *gin.Context) {
-	id := c.Params.ByName("id")
-	var user Models.User
-	err := Models.GetUserByID(&user, id)
-
+	// 로그인되어있는지 확인
+	claims, err := ParseValidAuthToken(c.Request)
 	if err != nil {
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+
+	// 토큰으로부터 id 추출
+	id := claims["id"].(string)
+	fmt.Println(id)
+
+	// id로부터 User 정보 추출
+	var user Models.User
+	if err = Models.GetUserByID(&user, id); err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
 		c.JSON(http.StatusOK, user)

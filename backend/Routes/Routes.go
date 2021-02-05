@@ -29,7 +29,7 @@ func SetupRouter() *gin.Engine {
 		userRoutes.POST("user", Controllers.CreateUser)
 
 		// 특정 사용자의 정보를 가져온다.
-		userRoutes.GET("user/:id", Controllers.GetUserByID)
+		userRoutes.GET("user", Controllers.GetUserByID)
 
 		// 사용자의 정보를 업데이트
 		userRoutes.PUT("user/:id", Controllers.UpdateUser)
@@ -151,7 +151,7 @@ func SetupRouter() *gin.Engine {
 	{
 
 		// 유저의 프로젝트 정보를 가져온다.
-		worksInRoutes.GET("works-in-user/:id", Controllers.GetWorksInByUserID)
+		worksInRoutes.GET("works-in-user", Controllers.GetWorksInByUser)
 		
 		// 프로젝트에 속해있는 유저들 정보를 가져온다.
 		worksInRoutes.GET("works-in-project/:id", Controllers.GetWorksInByProjectID)
