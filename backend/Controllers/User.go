@@ -33,12 +33,19 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "At least one parameter is not valid."})
 		return
 	}
-
 	if ValidateByRabums(req) {
+		// 입력한 id로 유저 찾기
+		var user Models.User
+		if err := Models.GetUserByName(&user, req.ID); err != nil {
+			// 회원이 등록되어있지 않은 경우
+			c.JSON(http.StatusBadRequest, gin.H{"message": "No contents matched"})
+			return
+		}
+
 		// 로그인이 성공하면 JWT 토큰 발급
 		secret := GetSecret()
 		atClaims := jwt.MapClaims{}
-		atClaims["id"] = req.ID
+		atClaims["id"] = fmt.Sprint(user.ID)
 		atClaims["exp"] = time.Now().Add(time.Hour).Unix()
 		accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
 
@@ -51,7 +58,7 @@ func Login(c *gin.Context) {
 		}
 
 		c.SetCookie("access-token", signed, 60*60, "/", "", false, false)
-		c.JSON(http.StatusOK, gin.H{"id": req.ID})
+		c.JSON(http.StatusOK, gin.H{"id": fmt.Sprint(user.ID)})
 		return
 	} else {
 		// 그 어떤 이유로든 로그인이 실패하면
