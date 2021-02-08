@@ -14,9 +14,10 @@ import {
 	Button, SubMenu, SideMenu, Member
 } from '../Shared';
 import {
-	ProjectObj, ProjectTeamObj, ProjectUserObj, useUserState, useProjectState, usePIDState, useTeamState
+	ProjectMap, ProjectTeamObj, UserObj, useUserState, useProjectState, usePIDState, useTeamState
 } from '../Model';
 import { useInviteDispatch, InviteWindow } from './InviteWindow';
+import { returnIcon } from '../../function/Icon';
 
 const buttonRef = createRef<HTMLDivElement>();
 const searchInputRef = createRef<HTMLDivElement>();
@@ -29,10 +30,10 @@ type ProjectHeadProps = {
 const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 	sideBarOpen, handleSideBarOpen
 }, ref) => {
-	const project : ProjectObj | undefined = useProjectState();
+	const project : ProjectMap | undefined = useProjectState();
 	const team : ProjectTeamObj | undefined = useTeamState();
 	const pid : number = usePIDState();
-	const nowUser : ProjectUserObj | undefined = useUserState();
+	const nowUser : UserObj | undefined = useUserState();
 
 	const setInviteOpen : Dispatch<number> = useInviteDispatch();
 
@@ -62,7 +63,7 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 						<Grid className="info-con">
 							<Grid className="border-con">
 								<Grid className="info">
-									<Grid className="project-name">{project[pid].name}</Grid>
+									<Grid className="project-name">{project[pid].Name}</Grid>
 									<SideMenu
 										open={open}
 										setOpen={setOpen}

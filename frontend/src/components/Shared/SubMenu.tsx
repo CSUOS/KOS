@@ -13,7 +13,7 @@ import {
 	Window, WindowHeader, Button
 } from '.';
 import {
-	useProjectState, useUserState, ProjectUserObj, ProjectObj, useProjectDelete, useProjectCopy, useProjectUpdate, useExitProject
+	useProjectState, useUserState, UserObj, ProjectMap, useProjectDelete, useProjectCopy, useProjectUpdate, useExitProject
 } from '../Model';
 import { useInviteDispatch } from '../Sub/InviteWindow';
 import { checkIsStringEmpty } from '../../function/FunctionManager';
@@ -28,10 +28,10 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 	const [proBackUpOpen, setProBackUpOpen] = useState<boolean>(false); // 프로젝트 백업창 오픈
 	const setInviteOpen : Dispatch<number> = useInviteDispatch();
 
-	const user : ProjectUserObj | undefined = useUserState();
-	const project : ProjectObj | undefined = useProjectState();
+	const user : UserObj | undefined = useUserState();
+	const project : ProjectMap | undefined = useProjectState();
 	const deleteProject : (id : number) => void = useProjectDelete();
-	const setProject : (id : number, p : ProjectObj) => void = useProjectUpdate();
+	const setProject : (id : number, p : ProjectMap) => void = useProjectUpdate();
 	const copyProject : Dispatch<number> = useProjectCopy();
 	const exitProject : (projectID : number, uid: number) => void = useExitProject();
 
@@ -49,8 +49,8 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 
 	useEffect(() => {
 		if (project !== undefined) {
-			setName(project[pid].name);
-			setColor(project[pid].bgColor);
+			setName(project[pid].Name);
+			setColor(project[pid].BGColor);
 		}
 	}, [pid]);
 
@@ -68,8 +68,8 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 			return;
 		}
 		const tmp = project;
-		tmp[pid].name = name;
-		tmp[pid].bgColor = color;
+		tmp[pid].Name = name;
+		tmp[pid].BGColor = color;
 		setProject(pid, tmp);
 		setProSetOpen(false);
 	};
@@ -172,16 +172,13 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 							<p>백업</p>
 						</Grid>
 						{
-							/*
-								todo : model에 저장된 user 정보를 받아와서 구현
-							*/
-							user?.AuthLVL === 2 &&
+							project[pid].Auth &&
 							<Grid className="delete">
 								<Button
 									classList={[]}
 									value={<DeleteIcon />}
 									onClickFun={() => {
-										if (window.confirm(`[${project[pid].name}] 프로젝트를 정말로 삭제하시겠습니까?`)) {
+										if (window.confirm(`[${project[pid].Name}] 프로젝트를 정말로 삭제하시겠습니까?`)) {
 											deleteProject(pid);
 										}
 									}}
@@ -202,7 +199,7 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 								classList={[]}
 								value={<ExitToAppIcon />}
 								onClickFun={() => {
-									if (window.confirm(`[${project[pid].name}] 프로젝트에서 정말로 나가시겠습니까?`)) {
+									if (window.confirm(`[${project[pid].Name}] 프로젝트에서 정말로 나가시겠습니까?`)) {
 										hangUpProject();
 									}
 								}}

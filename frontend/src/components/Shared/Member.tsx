@@ -15,7 +15,7 @@ import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import CallMissedOutgoingIcon from '@material-ui/icons/CallMissedOutgoing';
 
 import {
-	useUserState, usePIDState, ProjectUserObj, useUserAuthDispatch, useExitProject
+	useUserState, useProjectState, ProjectMap, usePIDState, ProjectUserObj, UserObj, useUserAuthDispatch, useExitProject
 } from '../Model';
 
 const returnIcon = (text : string) => {
@@ -54,8 +54,9 @@ type MemberProps = {
 }
 
 const Member = ({ user } : MemberProps) => {
+	const project : ProjectMap | undefined = useProjectState();
 	const pid : number = usePIDState();
-	const nowUser : ProjectUserObj | undefined = useUserState();
+	const nowUser : UserObj | undefined = useUserState();
 	const setUserAuth : (uid: number, auth: number) => void = useUserAuthDispatch();
 	const exitProject : (projectID : number, uid: number) => void = useExitProject();
 	const [anchorEl, setAnchorEl] = useState<EventTarget & Element | null>(null);
@@ -74,12 +75,13 @@ const Member = ({ user } : MemberProps) => {
 	};
 	const returnMenu = () => {
 		let menuString = '관리자 권한 부여';
-		if (user.ID === nowUser?.ID) {
+		if (user.ID === nowUser?.ID || project === undefined) {
 			// 본인 프로필이라면, 메뉴 노출 x
 			return undefined;
 		}
 		if (user.AuthLVL === 2) {
 			// 관리자 권한의 유저라면, '유저 권한으로 되돌리기' 사용
+			// todo: 관리자 권한의 유저에게 표시하기
 			menuString = '유저 권한으로 되돌리기';
 		}
 		return (
@@ -119,8 +121,7 @@ const Member = ({ user } : MemberProps) => {
 				</Avatar>
 			</Tooltip>
 			{
-				nowUser && nowUser.AuthLVL === 2 && returnMenu()
-				// 현재 유저가 관리자이면 메뉴 노출
+				nowUser && project && project[pid].Auth === 2 && returnMenu()
 			}
 		</>
 	);

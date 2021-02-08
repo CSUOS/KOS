@@ -56,3 +56,17 @@
 > 특정 컴포넌트에서 해당 색상을 불러오고 싶을 때, bg-color와 (색상) 클래스를 동시에 주면 된다.
 >
 > 이렇게 하면 나중에 border나 box-shadow에 대해 정의할 때도 간단히 추가할 수 있다.
+
+
+
+### 흐름 정리
+
+1. user가 login 페이지에서 로그인
+   * 토큰 발급 `login`
+2. 메인화면 접속
+   * 토큰으로 user 정보 받아오기 `getUserInfo`
+   * user 정보가 바뀌면 해당 user의 project 정보 받아오기 `getProject`
+3. 프로젝트 클릭 시
+   * 클릭된 pid에 해당하는 project의 list, task 저장 `getListTask`
+   * team도 저장 `getTeam`
+
