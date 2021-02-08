@@ -89,7 +89,11 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 									</Tooltip>
 								</Grid>
 								<Grid className="my-icon">
-									<Member user={nowUser} />
+									<Tooltip placement="bottom" title="My Profile" arrow>
+										<Avatar className="member">
+											{returnIcon(nowUser.Icon)}
+										</Avatar>
+									</Tooltip>
 								</Grid>
 							</Grid>
 						}
