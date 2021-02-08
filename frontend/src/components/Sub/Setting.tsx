@@ -1,33 +1,52 @@
 import React, { useState } from 'react';
-import Backdrop from '@material-ui/core/Backdrop';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import axios from 'axios';
+import {
+	Backdrop, Paper, Grid, Box, Avatar, Icon
+} from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 import CropDinIcon from '@material-ui/icons/CropDin';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import Icon from '@material-ui/core/Icon';
+import 'emoji-mart/css/emoji-mart.css';
+import { Picker, Emoji, EmojiData } from 'emoji-mart';
 
-import { Button } from '../Shared';
+import { Button, EmojiPicker } from '../Shared';
 
 type SettingProps = {
 	open: boolean;
 }
 
-const Setting = ({ open }: SettingProps) => {
+const Setting = ({
+	open
+}: SettingProps) => {
+	const [openPicker, setOpenPicker] = useState(false);
+	const [selectedEmoji, setSelectedEmoji] = useState('santa');
 	const [category, setCategory] = useState(0);
-	const test1 = () => {
+	const selectUserInfoSetting = () => {
 		setCategory(0);
 	};
-	const test2 = () => {
+	const selectSystemSetting = () => {
 		setCategory(1);
+	};
+	const handlePickerOpen = () => {
+		setOpenPicker(true);
+	};
+
+	const handlePickerClose = () => {
+		setOpenPicker(false);
+	};
+
+	const selectEmoji = (emoji: EmojiData) => {
+		if (emoji.id !== undefined) {
+			setSelectedEmoji(emoji.id);
+			handlePickerClose();
+		}
 	};
 	return (
 		<Grid container className="settingwindowbackground">
 			<Box className="settingwindowbackground-header" />
 			<Backdrop className="settingwindowbackground-backrop" open={open}>
 				<Paper className="settingwindow">
-					<Grid container>
+					<Grid container className="settingwindow-container">
 						<Grid item xs={3} className="settingwindowsidebar">
 							<header className="settingwindowsidebar-header">
 								<Grid className="settingwindowsidebar-header-title">
@@ -36,11 +55,11 @@ const Setting = ({ open }: SettingProps) => {
 								</Grid>
 							</header>
 							<Grid className="settingwindowsidebar-content">
-								<Grid className="settingwindowsidebar-item" onClick={test1}>
+								<Grid className="settingwindowsidebar-item" onClick={selectUserInfoSetting}>
 									<CropDinIcon fontSize="large" />
 									<h3>회원정보 설정</h3>
 								</Grid>
-								<Grid className="settingwindowsidebar-item" onClick={test2}>
+								<Grid className="settingwindowsidebar-item" onClick={selectSystemSetting}>
 									<CropDinIcon fontSize="large" />
 									<h3>시스템 설정</h3>
 								</Grid>
@@ -96,6 +115,35 @@ const Setting = ({ open }: SettingProps) => {
 												<Grid className="settingwindow-item">
 													<Grid className="settingwindow-itemname">
 														<FiberManualRecordIcon fontSize="small" className="settingwindow-icon" />
+														<h4>아이콘</h4>
+													</Grid>
+													<Grid className="add-button">
+														<Avatar variant="rounded">
+															<Button
+																classList={[]}
+																value={<Emoji emoji={selectedEmoji} size={32} />}
+																tooltip="select icon"
+																ttside="bottom"
+																transparent={true}
+																onClickFun={
+																	openPicker
+																		? handlePickerClose
+																		: handlePickerOpen
+																}
+															/>
+														</Avatar>
+														{openPicker
+															&&
+																<Grid className="emojipicker">
+																	<Picker
+																		onSelect={selectEmoji}
+																	/>
+																</Grid>}
+													</Grid>
+												</Grid>
+												<Grid className="settingwindow-item">
+													<Grid className="settingwindow-itemname">
+														<FiberManualRecordIcon fontSize="small" className="settingwindow-icon" />
 														<h4>Github ID</h4>
 													</Grid>
 													<input type="text" className="settingwindow-kosinfo" />
@@ -108,13 +156,7 @@ const Setting = ({ open }: SettingProps) => {
 													<input type="text" className="settingwindow-kosinfo" />
 												</Grid>
 												<Grid className="settingwindow-item">
-													<Grid className="settingwindow-itemname">
-														<FiberManualRecordIcon fontSize="small" className="settingwindow-icon" />
-														<h4>아이콘</h4>
-													</Grid>
-													<Grid className="settingwindow-kosicon">
-														<Icon fontSize="large" className="icon">add_circle</Icon>
-													</Grid>
+													<Grid className="settingwindow-deleteaccount">회원탈퇴</Grid>
 												</Grid>
 											</Grid>
 										</Grid>
