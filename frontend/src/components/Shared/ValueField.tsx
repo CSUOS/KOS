@@ -88,18 +88,20 @@ const ValueField = ({
 		case 'single-select':
 		case 'multi-select':
 		case 'state':
-			return value.map((option: string) => (
+			return value.filter((option: any) => option.selected === true).map((selectedOption: any) => (
 				<SelectItem
-					value={option}
+					value={selectedOption.name}
 					hasCloseBtn={true}
 					handleSelectedDelete={deleteSelectedOption}
-				/>));
+				/>
+			));
 		case 'member':
-			return value.map((option: string) => (
+			return value.filter((option: any) => option.selected === true).map((selectedOption: any) => (
 				<Tag
-					value={option}
+					value={selectedOption.name}
 					handleTagDelete={deleteSelectedOption}
-				/>));
+				/>
+			));
 		default:
 			return undefined;
 		}

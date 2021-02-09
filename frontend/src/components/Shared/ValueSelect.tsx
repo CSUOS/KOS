@@ -14,7 +14,7 @@ const settingWindowRef = createRef<HTMLDivElement>();
 
 type ValueSelectProps = {
 	type: string,
-	options?: Array<string> | undefined,
+	options?: Array<any> | undefined,
 	creatable: boolean,
 	newOption?: string | undefined,
 	selectOption: (arg: string) => void,
@@ -28,7 +28,6 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 	type, options, creatable, newOption, selectOption, createOption, handleSelectClose
 }, ref) => {
 	const [settingWindowOpen, setSettingWindowOpen] = useState(Array(options?.length).fill(false));
-
 	const handleSettingWindowOpen = (index:number) => {
 		const editedOpen = settingWindowOpen.slice();
 		editedOpen[index] = true;
@@ -42,7 +41,8 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 	};
 
 	const onOptionClick = (e: any) => {
-		selectOption(e.target.value);
+		const clickedOption = e.target.value;
+		if (clickedOption !== undefined) selectOption(clickedOption);
 		handleSelectClose();
 	};
 
@@ -73,15 +73,15 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 								className="selectbtn"
 								type="button"
 								onClick={onOptionClick}
-								value={option}
+								value={option.name}
 							>
 								{type === 'member'
 									? (
 										<Tag
-											value={option}
+											value={option.name}
 											hasCloseBtn={false}
 										/>)
-									: <SelectItem value={option} />}
+									: <SelectItem value={option.name} />}
 							</button>
 							{type !== 'member' &&
 								<Button

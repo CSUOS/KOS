@@ -7,7 +7,8 @@ import { Grid } from '@material-ui/core';
 import {
 	AttributeSelect as Menu, AttributeButton as Attribute, ValueField as Value, ValueSelect as Select
 } from '.';
-import { handleOutsideClick, checkIsStringEmpty } from '../../function/FunctionManager';
+import { handleOutsideClick, checkIsStringEmpty, getRandomInt } from '../../function/FunctionManager';
+import { COLORS } from '../../function/PairManager';
 
 const getmodifiable = (type: string) => {
 	if (type === 'creator' ||
@@ -38,20 +39,12 @@ const getMultiSelectable = (type: string, selectable: boolean) => {
 	return undefined;
 };
 
-const getCreatable = (type:string, selectable: boolean) => {
+const getCreatable = (type: string, selectable: boolean) => {
 	if (selectable) {
 		if (type === 'member') return false;
 		return true;
 	}
 	return false;
-};
-
-const getClass = (modifiable: boolean, creatable: boolean) => {
-	if (modifiable) {
-		if (creatable) return 1;	// [1] 수정 가능, 옵션 선택 가능, 옵션 추가 가능
-		return 2;					// [2] 수정 가능, 옵션 선택 가능, 옵션 추가 불가능
-	}
-	return 3;						// [3] 수정 불가능
 };
 
 type AttributeValuePairProps = {
@@ -81,11 +74,10 @@ const AttributeValuePair = ({
 
 	// for selectable
 	const [selectOpen, setSelectOpen] = useState(false);
-	const [options, setOptions] = useState(selectable && value.options);
-	const [selectedOptions, setSelectedOptions] = useState(selectable && value.selectedOptions);
+	const [options, setOptions] = useState(selectable && value);
 
 	// for creatable
-	const [newOption, setNewOption] = useState('');
+	const [newOptionName, setNewOptionName] = useState('');
 
 	// for not creatable
 	const [singleValue, setSingleValue] = useState(!selectable && value);
@@ -108,7 +100,7 @@ const AttributeValuePair = ({
 	};
 
 	const handleSelectInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setNewOption(e.target.value);
+		setNewOptionName(e.target.value);
 	};
 
 	const handleSelectOpen = () => {
@@ -117,32 +109,60 @@ const AttributeValuePair = ({
 
 	const handleSelectClose = () => {
 		setSelectOpen(false);
-		setNewOption('');
+		setNewOptionName('');
+	};
+
+	const getOptionIndexByName = (optionNameToFind: string) => {
+		const clickedIndex = options.findIndex((option: any) => option.name === optionNameToFind);
+		return clickedIndex;
 	};
 
 	const deleteSelectedOption = (optionToDelete: string) => {
-		const edited =
-			selectedOptions.filter((selectedOption: string) => selectedOption !== optionToDelete);
-		setSelectedOptions(edited);
+		const editedOptionIndex = getOptionIndexByName(optionToDelete);
+		const editedOptions = options.slice();
+		const editedOption = { ...editedOptions[editedOptionIndex], selected: false };
+		editedOptions[editedOptionIndex] = editedOption;
+
+		setOptions(editedOptions);
 	};
 
 	const selectOption = (selectedValue: string) => {
-		if (!selectedOptions.includes(selectedValue)) {
-			if (multiSelectable) setSelectedOptions([...selectedOptions, selectedValue]);
-			else setSelectedOptions([selectedValue]);
+		const selectedOptionIndex = getOptionIndexByName(selectedValue);
+		const selectedOption = options[selectedOptionIndex];
+		const isSelectedBefore = selectedOption.selected;
+
+		if (!isSelectedBefore) {
+			if (multiSelectable) {
+				const editedOptions = options.map((option: any, optionIndex: number) => {
+					if (optionIndex === selectedOptionIndex) return { ...option, selected: true };
+					return option;
+				});
+				setOptions(editedOptions);
+			} else {
+				const editedOptions = options.map((option: any, optionIndex: number) => {
+					if (optionIndex === selectedOptionIndex) return { ...option, selected: true };
+					return { ...option, selected: false };
+				});
+				setOptions(editedOptions);
+			}
 		}
 	};
 
 	const createOption = () => {
-		const isNewOptionTextEmpty = checkIsStringEmpty(newOption);
+		const isNewOptionTextEmpty = checkIsStringEmpty(newOptionName);
 		if (!isNewOptionTextEmpty) {
-			if (!options.includes(newOption)) {
-				if (multiSelectable) setSelectedOptions([...selectedOptions, newOption]);
-				else setSelectedOptions([newOption]);
+			const optionIndex = getOptionIndexByName(newOptionName);
+			if (optionIndex === -1) {
+				const newOption = { name: newOptionName, selected: false, color: COLORS[0] };
 				setOptions([...options, newOption]);
+				// selectOption(newOptionName)
 			}
 		}
 	};
+
+	useEffect(() => {
+		console.log(options);
+	}, [options]);
 
 	useEffect(() => {
 		document.addEventListener('mousedown',
@@ -177,11 +197,11 @@ const AttributeValuePair = ({
 				<Grid className="value">
 					<Value
 						type={type}
-						value={selectable ? selectedOptions : singleValue}
+						value={selectable ? options : singleValue}
 						modifiable={modifiable}
 						selectable={selectable}
 						creatable={creatable}
-						newOption={newOption}
+						newOption={newOptionName}
 						selectOpen={selectOpen}
 						createOption={createOption}
 						deleteSelectedOption={deleteSelectedOption}
@@ -196,7 +216,7 @@ const AttributeValuePair = ({
 							type={type}
 							options={options}
 							creatable={creatable}
-							newOption={newOption}
+							newOption={newOptionName}
 							selectOption={selectOption}
 							createOption={createOption}
 							handleSelectClose={handleSelectClose}

@@ -13,6 +13,7 @@ import {
 } from '../Shared';
 import { TaskObj } from '../Model';
 import { getClickedEmojiIndex } from '../Shared/EmojiList';
+import { DEFAULT_PAIRS } from '../../function/PairManager';
 
 type TaskViewProps = {
 	open: boolean;
@@ -32,7 +33,6 @@ Senectus et netus et malesuada. Nunc pulvinar sapien et ligula ullamcorper males
 const emojisTempData = [
 	{ id: 'woman-gesturing-ok', users: [userName] },
 	{ id: 'heart_eyes', users: ['김철수'] }];
-const pairTempData = [{ type: 'checkbox', name: '체크박스', value: true }, { type: 'state', name: 'State', value: { options: ['시작전', '진행중', '완료'], selectedOptions: ['시작전'] } }];
 
 const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 	open, task, handleTaskWindowClose
@@ -52,7 +52,7 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 	const [taskTitle, setTaskTitle] = useState(tempTaskTitle);
 	const [pin, setPin] = useState(false);
 	const [emojis, setEmojis] = useState(emojisTempData);
-	const [pairs, setPairs] = useState(pairTempData as any);
+	const [pairs, setPairs] = useState(DEFAULT_PAIRS as Array<any>);
 
 	const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setTaskTitle(e.target.value);
