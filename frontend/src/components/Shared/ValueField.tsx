@@ -67,7 +67,7 @@ const ValueField = ({
 	const getValueComponent = (attributeType:string) => {
 		switch (attributeType) {
 		case 'creator':
-		case 'editor':
+		case 'modifier':
 			return value;
 		case 'text-field':
 			return <TextField value={value} handleValueChange={handleSingleValueChange} />;
