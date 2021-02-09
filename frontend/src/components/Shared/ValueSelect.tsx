@@ -9,6 +9,7 @@ import {
 	SelectItem, Tag, Button, ValueSelectOptionSetting as SettingWindow
 } from '.';
 import { handleOutsideClick } from '../../function/FunctionManager';
+import { COLORS } from '../../function/PairManager';
 
 const settingWindowRef = createRef<HTMLDivElement>();
 
@@ -19,13 +20,16 @@ type ValueSelectProps = {
 	newOption?: string | undefined,
 	selectOption: (arg: string) => void,
 	createOption: () => void,
+	changeOptionColor: (optionToChange:string, colorToChange:string) => void;
 	handleSelectClose: () => void,
 };
 
 const buttonName = '추가하기';
 const tooltip = '옵션 설정하기';
 const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
-	type, options, creatable, newOption, selectOption, createOption, handleSelectClose
+	type, options, creatable, newOption,
+	selectOption, createOption, changeOptionColor,
+	handleSelectClose
 }, ref) => {
 	const [settingWindowOpen, setSettingWindowOpen] = useState(Array(options?.length).fill(false));
 	const handleSettingWindowOpen = (index:number) => {
@@ -81,7 +85,11 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 											value={option.name}
 											hasCloseBtn={false}
 										/>)
-									: <SelectItem value={option.name} />}
+									: (
+										<SelectItem
+											value={option.name}
+											color={option.color}
+										/>)}
 							</button>
 							{type !== 'member' &&
 								<Button
@@ -99,7 +107,8 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 								className="optionsettingwindow"
 							>
 								<SettingWindow
-									handleOptionColor={() => { }}
+									optionName={option.name}
+									handleOptionColor={changeOptionColor}
 									handleSettingWindowClose={() => handleSettingWindowClose(index)}
 								/>
 							</Grid>}
@@ -114,7 +123,7 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 								onClick={onAddOptionClick}
 								value={newOption}
 							>
-								<SelectItem value={newOption} />
+								<SelectItem value={newOption} color={COLORS[0]} />
 								{buttonName}
 							</button>
 						</Grid>

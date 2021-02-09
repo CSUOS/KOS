@@ -4,7 +4,24 @@
 	padding: 3px;
 	margin-right: 10px;
 	border-radius: $radius;
-	background-color: #ffcd77;
+	&.yellow{
+		background-color: $bg-yellow;
+	}
+	&.mint{
+		background-color: $bg-mint;
+	}
+	&.green{
+		background: $bg-green;
+	}
+	&.pink{
+		background: $bg-pink;
+	}
+	&.purple{
+		background: $bg-purple;
+	}
+	&.blue{
+		background-color: $bg-blue;
+	}
 	button{
 		max-height: 1.0rem;
 		padding: 0;

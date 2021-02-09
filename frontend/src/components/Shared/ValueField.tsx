@@ -91,6 +91,7 @@ const ValueField = ({
 			return value.filter((option: any) => option.selected === true).map((selectedOption: any) => (
 				<SelectItem
 					value={selectedOption.name}
+					color={selectedOption.color}
 					hasCloseBtn={true}
 					handleSelectedDelete={deleteSelectedOption}
 				/>

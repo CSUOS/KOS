@@ -27,7 +27,7 @@ export const DEFAULT_PAIRS = [
 		value: [
 			{ name: '시작전', selected: true, color: COLORS[0] },
 			{ name: '진행중', selected: false, color: COLORS[1] },
-			{ name: '완료', selected: false, color: COLORS[2] }]
+			{ name: '완료', selected: false, color: COLORS[3] }]
 	},
 ];
 export const CREATE_PAIRS = [

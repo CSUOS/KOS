@@ -153,11 +153,23 @@ const AttributeValuePair = ({
 		if (!isNewOptionTextEmpty) {
 			const optionIndex = getOptionIndexByName(newOptionName);
 			if (optionIndex === -1) {
-				const newOption = { name: newOptionName, selected: false, color: COLORS[0] };
+				const newOption = {
+					name: newOptionName,
+					selected: false,
+					color: COLORS[getRandomInt(0, COLORS.length)]
+				};
 				setOptions([...options, newOption]);
 				// selectOption(newOptionName)
 			}
 		}
+	};
+
+	const changeOptionColor = (optionToChange:string, colorToChange:string) => {
+		const editedOptions = options.map((option:any) => {
+			if (option.name === optionToChange) return { ...option, color: colorToChange };
+			return option;
+		});
+		setOptions(editedOptions);
 	};
 
 	useEffect(() => {
@@ -219,6 +231,7 @@ const AttributeValuePair = ({
 							newOption={newOptionName}
 							selectOption={selectOption}
 							createOption={createOption}
+							changeOptionColor={changeOptionColor}
 							handleSelectClose={handleSelectClose}
 						/>}
 				</Grid>
