@@ -1,0 +1,44 @@
+.moveto-container{
+	padding-top: 2.0rem;
+	.dropdown-container{
+		display: flex;
+		width: 100%;
+		margin-bottom: 10px;
+		.dropdown{
+			min-width: 8.0rem;
+		}
+		.dropdown-label{
+			display: flex;
+			margin-right: 1.0rem;
+			width: 10.0rem;
+			justify-content: center;
+			align-items: center;
+			font-size: 1.125rem;
+			color: white;
+			background-color: $sub-color;
+			border-radius: $radius;
+		}
+	}
+	.moveto-helper{
+		padding-top: 10px;
+		span{
+			padding: 5px;
+			margin: 0px 5px;
+			font-weight: bold;
+			background-color: $bg-yellow;
+		}
+	}
+	.moveto-btn-container{
+		display: flex;
+		width: 100%;
+		justify-content: flex-end;
+		padding-top: 10px;
+		.moveto-btn{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 7px 3px;
+			border: 1px solid $light-gray;
+		}
+	}
+}

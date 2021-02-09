@@ -10,11 +10,14 @@ import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
 import { ReactComponent as PinIcon } from '../../images/pin.svg';
 
 type TaskCardMenuProps = {
+	handleMoveToWindowOpen: () => void;
 	handleMenuClose: () => void;
 	handleEmojiPickerOpen: () => void;
 }
 
-const TaskCardMenu = ({ handleMenuClose, handleEmojiPickerOpen }: TaskCardMenuProps) => {
+const TaskCardMenu = ({
+	handleMoveToWindowOpen, handleMenuClose, handleEmojiPickerOpen
+}: TaskCardMenuProps) => {
 	const onCopyButtonClick = () => {
 		handleMenuClose();
 	};
@@ -32,6 +35,7 @@ const TaskCardMenu = ({ handleMenuClose, handleEmojiPickerOpen }: TaskCardMenuPr
 	};
 
 	const onMoveToButtonClick = () => {
+		handleMoveToWindowOpen();
 		handleMenuClose();
 	};
 
