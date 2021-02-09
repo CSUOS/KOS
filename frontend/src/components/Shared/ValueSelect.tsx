@@ -20,6 +20,7 @@ type ValueSelectProps = {
 	newOption?: string | undefined,
 	selectOption: (arg: string) => void,
 	createOption: () => void,
+	deleteOption: (optionNameToDelete:string) => void;
 	changeOptionColor: (optionToChange:string, colorToChange:string) => void;
 	handleSelectClose: () => void,
 };
@@ -28,8 +29,8 @@ const buttonName = '추가하기';
 const tooltip = '옵션 설정하기';
 const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 	type, options, creatable, newOption,
-	selectOption, createOption, changeOptionColor,
-	handleSelectClose
+	selectOption, createOption, deleteOption,
+	changeOptionColor, handleSelectClose
 }, ref) => {
 	const [settingWindowOpen, setSettingWindowOpen] = useState(Array(options?.length).fill(false));
 	const handleSettingWindowOpen = (index:number) => {
@@ -53,6 +54,10 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 	const onAddOptionClick = () => {
 		createOption();
 		handleSelectClose();
+	};
+
+	const handleOptionDelete = (optionNameToDelete:string) => {
+		deleteOption(optionNameToDelete);
 	};
 
 	// useEffect(() => {
@@ -109,6 +114,7 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 								<SettingWindow
 									optionName={option.name}
 									handleOptionColor={changeOptionColor}
+									handleOptionDelete={() => handleOptionDelete(option.name)}
 									handleSettingWindowClose={() => handleSettingWindowClose(index)}
 								/>
 							</Grid>}

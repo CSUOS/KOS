@@ -117,8 +117,8 @@ const AttributeValuePair = ({
 		return clickedIndex;
 	};
 
-	const deleteSelectedOption = (optionToDelete: string) => {
-		const editedOptionIndex = getOptionIndexByName(optionToDelete);
+	const deleteSelectedOption = (optionNameToDelete: string) => {
+		const editedOptionIndex = getOptionIndexByName(optionNameToDelete);
 		const editedOptions = options.slice();
 		const editedOption = { ...editedOptions[editedOptionIndex], selected: false };
 		editedOptions[editedOptionIndex] = editedOption;
@@ -159,9 +159,15 @@ const AttributeValuePair = ({
 					color: COLORS[getRandomInt(0, COLORS.length)]
 				};
 				setOptions([...options, newOption]);
+				// TODO: 생성된 옵션 즉시 선택된 것으로 띄워주기
 				// selectOption(newOptionName)
 			}
 		}
+	};
+
+	const deleteOption = (optionNameToDelete:string) => {
+		const editedOptions = options.filter((option:any) => option.name !== optionNameToDelete);
+		setOptions(editedOptions);
 	};
 
 	const changeOptionColor = (optionToChange:string, colorToChange:string) => {
@@ -231,6 +237,7 @@ const AttributeValuePair = ({
 							newOption={newOptionName}
 							selectOption={selectOption}
 							createOption={createOption}
+							deleteOption={deleteOption}
 							changeOptionColor={changeOptionColor}
 							handleSelectClose={handleSelectClose}
 						/>}

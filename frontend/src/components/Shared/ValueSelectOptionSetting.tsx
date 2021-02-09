@@ -36,14 +36,16 @@ const ColorButton = ({ color, onColorButtonClick }: ColorButtonProps) => (
 
 type ValueSelectOptionSettingProps = {
 	optionName: string;
+	handleOptionDelete: () => void;
 	handleOptionColor: (optionToChange:string, colorToChange:string) => void;
 	handleSettingWindowClose: () => void;
 }
 
 const ValueSelectOptionSetting = ({
-	optionName, handleOptionColor, handleSettingWindowClose
+	optionName, handleOptionDelete, handleOptionColor, handleSettingWindowClose
 }: ValueSelectOptionSettingProps) => {
 	const onDeleteButtonClick = () => {
+		handleOptionDelete();
 		handleSettingWindowClose();
 	};
 
