@@ -33,13 +33,18 @@
 			justify-content: space-between;
 			align-items: center;
 			.task-pin {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 2.0rem;
+				height: 2.0rem;
 				button{
-					padding: 0px;
-					margin: 0px;
+					margin: 0;
+					padding: 0;
 				}
-				svg {
-					font-size: 3.0rem;
-					color: $gray;
+				svg{
+					width: 2.0rem;
+					height: 2.0rem;
 				}
 			}
 			.windowheader-emojilist{

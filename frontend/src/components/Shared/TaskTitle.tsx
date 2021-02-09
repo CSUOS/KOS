@@ -4,9 +4,8 @@ import React, {
 } from 'react';
 
 import { Grid } from '@material-ui/core';
-import StarIcon from '@material-ui/icons/Star';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
 
+import { ReactComponent as PinIcon } from '../../images/pin.svg';
 import { Button, EmojiPicker, EmojiList } from '.';
 import { handleOutsideClick } from '../../function/FunctionManager';
 
@@ -62,7 +61,7 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 				<Grid className="windowheader-main" container>
 					<Grid className="windowheader-tasktitle">
 						<input
-							size={taskTitle ? taskTitle.length : 1}
+							size={taskTitle ? taskTitle.length + 2 : 1}
 							value={taskTitle}
 							onChange={handleTitleChange}
 						/>
@@ -70,7 +69,7 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 					<Grid className="windowheader-task">
 						<Button
 							classList={['task-pin']}
-							value={pin ? <StarIcon /> : <StarBorderIcon />}
+							value={<PinIcon />}
 							tooltip={pin ? '고정 해제하기' : '상단에 고정하기'}
 							ttside="right"
 							transparent={true}

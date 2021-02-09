@@ -95,7 +95,7 @@ const TaskCard = ({
 				<Grid className="title-container">
 					<Button
 						classList={['pin']}
-						value={pin ? <PinIcon /> : <StarBorderIcon />}
+						value={<PinIcon />}
 						tooltip={pin ? '고정 해제하기' : '상단에 고정하기'}
 						ttside="right"
 						transparent={true}
