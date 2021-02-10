@@ -3,6 +3,9 @@ import React, { createRef, forwardRef, ReactFragment } from 'react';
 import { Grid, Paper } from '@material-ui/core';
 
 import { checkIsStringEmpty, handleScrollToTop } from '../../function/FunctionManager';
+import {
+	SUBJECTS, DEFAULT_MENUS, CREATE_MENUS, DEFAULT_PAIRS, CREATE_PAIRS
+} from '../../function/PairManager';
 
 const nameInputRef = createRef<HTMLInputElement>();
 const containerRef = createRef<HTMLDivElement>();
@@ -49,7 +52,7 @@ type AttributeSelectProps = {
 	text: string | undefined,
 	handleNameInputChange: (e: any) => void,
 	handleMenuClose: () => void,
-	handlePairAdd?: (pairToAdd: any) => void | undefined;
+	handlePairAdd?: (pairToAdd: any) => void;
 };
 
 const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
@@ -57,7 +60,7 @@ const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 }, ref) => {
 	// TODO : 함수 개선하기
 	const onDefaultOptionClick = (e:any) => {
-		const pairToAdd = defaultPairs[e.target.value];
+		const pairToAdd = DEFAULT_PAIRS[e.target.value];
 		if (handlePairAdd) handlePairAdd(pairToAdd);
 		handleMenuClose();
 	};
@@ -68,7 +71,7 @@ const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 			handleScrollToTop(containerRef);
 			nameInputRef.current?.focus();
 		} else {
-			const pairToAdd = createPairs[e.target.value];
+			const pairToAdd = CREATE_PAIRS[e.target.value];
 			const newPair = { ...pairToAdd, name: text };
 			if (handlePairAdd) handlePairAdd(newPair);
 			handleMenuClose();
@@ -79,7 +82,7 @@ const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 		<Grid ref={ref} className="attriselect">
 			<Paper className="container" elevation={5}>
 				<div ref={containerRef}>
-					<Part subject={subjects[0]}>
+					<Part subject={SUBJECTS[0]}>
 						<input
 							ref={nameInputRef}
 							type="text"
@@ -89,8 +92,8 @@ const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 							value={text}
 						/>
 					</Part>
-					<Part subject={subjects[1]}>
-						{defaultMenus.map((menu, index) => (
+					<Part subject={SUBJECTS[1]}>
+						{DEFAULT_MENUS.map((menu, index) => (
 							<button
 								type="button"
 								onClick={onDefaultOptionClick}
@@ -100,8 +103,8 @@ const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 							</button>
 						))}
 					</Part>
-					<Part subject={subjects[2]}>
-						{createMenus.map((menu, index) => (
+					<Part subject={SUBJECTS[2]}>
+						{CREATE_MENUS.map((menu, index) => (
 							<button
 								type="button"
 								onClick={onCreateOptionClick}

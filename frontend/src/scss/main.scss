@@ -22,7 +22,8 @@
 @import './components/selectitem';
 @import './components/datepicker';
 @import './components/tag';
-@import './components/task';
+@import './components/taskwindow';
+@import './components/taskcard';
 @import './components/textfield';
 @import './components/url';
 @import './components/attriselect';
@@ -30,6 +31,8 @@
 @import './components/emojipicker';
 @import './components/settingwindow';
 @import './components/valueselectoptionsetting';
+@import './components/taskcardmenu';
+@import './components/moveto';
 
 //layout
 @import './layout/grid';

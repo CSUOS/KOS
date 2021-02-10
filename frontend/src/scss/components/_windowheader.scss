@@ -16,19 +16,44 @@
 				outline: none;
 			}
 		}
+		.windowheader-tasktitle{
+			textarea{
+			resize: none;
+			border: none;
+			font-weight: bold;
+			font-size: 2.0rem;
+			&:focus, &:active, &:hover{
+				outline: 0;
+			}
+		}
+		}
 		.windowheader-task{
 			flex: 1;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
 			.task-pin {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 2.0rem;
+				height: 2.0rem;
 				button{
-					padding: 0px;
+					margin: 0;
+					padding: 0;
 				}
-				svg {
-					font-size: 3.0rem;
-					color: $gray;
+				svg{
+					width: 2.0rem;
+					height: 2.0rem;
 				}
+			}
+			.windowheader-emojilist{
+				display: flex;
+				width: 100%;
+				height: 100%;
+				justify-content: flex-end;
+				align-items: flex-end;
+				margin-bottom: 0.8rem;
 			}
 		}
 	}
@@ -44,10 +69,19 @@
 		font-size: 1.3em;
 		}
 	}
+	.task-update{
+		display: flex;
+		width: 100%;
+		justify-content: flex-end;
+		color: $gray;
+		font-size: 1.2rem;
+	}
 }
 
 .picker{
 	display: flex;
 	width: 100%;
-	justify-content: flex-end;
+	&.taskwindow{
+		justify-content: flex-end;
+	}
 }

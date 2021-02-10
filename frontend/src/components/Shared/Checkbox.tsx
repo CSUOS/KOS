@@ -1,30 +1,29 @@
 import React from 'react';
+
 import {
-	Grid, Checkbox as Check, FormGroup, FormControlLabel
+	Checkbox as Check, FormControlLabel
 } from '@material-ui/core';
 
 type CheckboxProps = {
 	value?: boolean | undefined;
-	handleValueChange: (arg: any) => void;
+	label?: string | undefined;
+	handleValueChange: (isChecked: boolean) => void;
 }
-const Checkbox = ({ value, handleValueChange }: CheckboxProps) => (
-	<Grid className="checkboxs">
-		<FormGroup row>
-			<FormControlLabel
-				control={
-					<Check
-						checked={value}
-						onChange={(e) => handleValueChange(e.target.checked)}
-					/>
-				}
-				label={undefined}
+const Checkbox = ({ value, label, handleValueChange }: CheckboxProps) => (
+	<FormControlLabel
+		control={
+			<Check
+				checked={value}
+				onChange={(e) => handleValueChange(e.target.checked)}
 			/>
-		</FormGroup>
-	</Grid>
+		}
+		label={label}
+	/>
 );
 
 Checkbox.defaultProps = {
 	value: undefined,
+	label: undefined,
 };
 
 export default Checkbox;

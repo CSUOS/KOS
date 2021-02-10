@@ -1,0 +1,76 @@
+.taskcard{
+	width: 100%;
+	margin-top: 2.0rem;
+	border-radius: $radius + 7;
+	border: 1.5px solid $light-gray;
+	.taskcard-title{
+		display: flex;
+		padding: 7px;
+		border-bottom: 1.5px solid $light-gray;
+		justify-content: space-between;
+		.title-container{
+			display: flex;
+			align-items: center;
+		}
+		.warning{
+			display: flex;
+			width: 1.4rem;
+			height: 1.4rem;
+			margin-right: 7px;
+			background-color: $sub-color;
+			border-radius: $radius;
+			justify-content: center;
+			align-items: center;
+			svg{
+				font-size: 1.1rem;
+				color: white;
+			}
+		}
+		.pin{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 1.4rem;
+			height: 1.4rem;
+			padding-right: 15px;
+			button{
+				margin: 0;
+				padding: 0;
+			}
+			svg{
+				width: 1.4rem;
+				height: 1.4rem;
+				color: $sub-color;
+			}
+		}
+		.more{
+			display: flex;
+			width: 1.6rem;
+			height: 1.6rem;
+			justify-content: center;
+			align-items: center;
+			svg{
+				font-size: 1.2rem;
+			}
+		}
+	}
+	.taskcard-content{
+		padding: 7px;
+		.deadline{
+			margin-bottom: 1.0rem;
+			span{
+				padding: 3px;
+				background-color: $base-color;
+				font-size: 0.8rem;
+				font-weight: bold;
+				border-radius: $radius;
+			}
+		}
+		.emojis{
+			display: flex;
+			width: 100%;
+			justify-content: flex-end;
+			align-items: center;
+		}
+	}
+}

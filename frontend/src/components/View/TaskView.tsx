@@ -1,12 +1,19 @@
-import React, { forwardRef, useState, useEffect } from 'react';
+import React, {
+	forwardRef, useState, useEffect, ChangeEvent
+} from 'react';
 
 import { Grid } from '@material-ui/core';
+
+import {
+	DragDropContext, Droppable, Draggable, DropResult
+} from 'react-beautiful-dnd';
 
 import {
 	Window, TaskTitle, AttributeValuePair as Pair
 } from '../Shared';
 import { TaskObj } from '../Model';
 import { getClickedEmojiIndex } from '../Shared/EmojiList';
+import { DEFAULT_PAIRS } from '../../function/PairManager';
 
 type TaskViewProps = {
 	open: boolean;
@@ -26,20 +33,30 @@ Senectus et netus et malesuada. Nunc pulvinar sapien et ligula ullamcorper males
 const emojisTempData = [
 	{ id: 'woman-gesturing-ok', users: [userName] },
 	{ id: 'heart_eyes', users: ['김철수'] }];
-const pairTempData = [{ type: 'checkbox', name: '체크박스', value: true }];
 
 const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 	open, task, handleTaskWindowClose
 }, ref) => {
-	const [pin, setPin] = useState(false);
-	const [emojis, setEmojis] = useState(emojisTempData);
-	const [pairs, setPairs] = useState(pairTempData as any);
-
 	// parsed data
-	const mainTitle = `TASK #${task?.taskID}`;
+	// const taskTitle
 	const attributes = task?.attribute;
 	const created = task?.createdAt;
 	const updated = task?.updatedAt;
+
+	// =================[ 임시 값 ]============================
+	const currentDate = new Date().toString();
+	const parsedDate = currentDate.split(' ');
+	const tempTaskTitle = parsedDate.slice(0, 5).join('-');
+	// ======================================================
+
+	const [taskTitle, setTaskTitle] = useState(tempTaskTitle);
+	const [pin, setPin] = useState(false);
+	const [emojis, setEmojis] = useState(emojisTempData);
+	const [pairs, setPairs] = useState(DEFAULT_PAIRS as Array<any>);
+
+	const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setTaskTitle(e.target.value);
+	};
 
 	const handlePin = () => {
 		setPin(!pin);
@@ -90,6 +107,29 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 		console.log(pairs);
 	}, [pairs]);
 
+	// TODO: list에도 쓰게 스크립트 분리하기
+	// TODO: pair의 name이 unique해야함
+	const reorderPairs = (list: Array<any>, sourceIndex: number, destinationIndex: number) => {
+		// copy original to "reorderedArray"
+		const reorderedArray = Array.from(list);
+		// delete reordered element at source index
+		// return type of splice is array, so using destructing assignment
+		const [reorderedElement] = reorderedArray.splice(sourceIndex, 1);
+		// add moved element at destination index
+		reorderedArray.splice(destinationIndex, 0, reorderedElement);
+
+		// return reoredered pairs
+		return reorderedArray;
+	};
+
+	const onDragEnd = (result: DropResult) => {
+		if (result.destination) {
+			const reorderedPairs = reorderPairs(pairs, result.source.index, result.destination.index);
+
+			setPairs(reorderedPairs);
+		}
+	};
+
 	return (
 		<Grid ref={ref} className="taskview">
 			<Window
@@ -100,15 +140,48 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 				handleWindowClose={handleTaskWindowClose}
 			>
 				<TaskTitle
-					taskTitle={mainTitle}
-					handleTitleChange={() => { }}
+					taskTitle={taskTitle}
+					handleTitleChange={handleTitleChange}
 					pin={pin}
 					handlePin={handlePin}
 					emojis={emojis}
 					handleEmojis={handleEmojis}
 				/>
 				<Grid className="task-attributes">
-					{pairs.map((pair: any, index: number) => (
+					<DragDropContext
+						onDragEnd={onDragEnd}
+					>
+						<Droppable droppableId="0">
+							{(provided) => (
+								<Grid
+									innerRef={provided.innerRef}
+									{...provided.droppableProps}
+								>
+									{pairs.map((pair: any, index: number) => (
+										<Draggable key={pair.name} draggableId={pair.name} index={index}>
+											{(itemProvided) => (
+												<Grid
+													ref={itemProvided.innerRef}
+													{...itemProvided.draggableProps}
+													{...itemProvided.dragHandleProps}
+												>
+													<Pair
+														index={index}
+														type={pair.type}
+														name={pair.name}
+														value={pair.value}
+														handlePairDelete={handlePairDelete}
+													/>
+												</Grid>
+											)}
+										</Draggable>
+									))}
+									{provided.placeholder}
+								</Grid>
+							)}
+						</Droppable>
+					</DragDropContext>
+					{/* {pairs.map((pair: any, index: number) => (
 						<Pair
 							index={index}
 							type={pair.type}
@@ -116,7 +189,7 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 							value={pair.value}
 							handlePairDelete={handlePairDelete}
 						/>
-					))}
+					))} */}
 					<Pair
 						index={pairs.length + 1}
 						type={addButtonType}

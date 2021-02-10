@@ -9,26 +9,30 @@ import {
 	SelectItem, Tag, Button, ValueSelectOptionSetting as SettingWindow
 } from '.';
 import { handleOutsideClick } from '../../function/FunctionManager';
+import { COLORS } from '../../function/PairManager';
 
 const settingWindowRef = createRef<HTMLDivElement>();
 
 type ValueSelectProps = {
-	type?: string | undefined,
-	options?: Array<string> | undefined,
+	type: string,
+	options?: Array<any> | undefined,
 	creatable: boolean,
 	newOption?: string | undefined,
 	selectOption: (arg: string) => void,
 	createOption: () => void,
+	deleteOption: (optionNameToDelete:string) => void;
+	changeOptionColor: (optionToChange:string, colorToChange:string) => void;
 	handleSelectClose: () => void,
 };
 
 const buttonName = '추가하기';
 const tooltip = '옵션 설정하기';
 const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
-	type, options, creatable, newOption, selectOption, createOption, handleSelectClose
+	type, options, creatable, newOption,
+	selectOption, createOption, deleteOption,
+	changeOptionColor, handleSelectClose
 }, ref) => {
 	const [settingWindowOpen, setSettingWindowOpen] = useState(Array(options?.length).fill(false));
-
 	const handleSettingWindowOpen = (index:number) => {
 		const editedOpen = settingWindowOpen.slice();
 		editedOpen[index] = true;
@@ -42,13 +46,18 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 	};
 
 	const onOptionClick = (e: any) => {
-		selectOption(e.target.value);
+		const clickedOption = e.target.value;
+		if (clickedOption !== undefined) selectOption(clickedOption);
 		handleSelectClose();
 	};
 
 	const onAddOptionClick = () => {
 		createOption();
 		handleSelectClose();
+	};
+
+	const handleOptionDelete = (optionNameToDelete:string) => {
+		deleteOption(optionNameToDelete);
 	};
 
 	// useEffect(() => {
@@ -73,15 +82,19 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 								className="selectbtn"
 								type="button"
 								onClick={onOptionClick}
-								value={option}
+								value={option.name}
 							>
 								{type === 'member'
 									? (
 										<Tag
-											value={option}
+											value={option.name}
 											hasCloseBtn={false}
 										/>)
-									: <SelectItem value={option} />}
+									: (
+										<SelectItem
+											value={option.name}
+											color={option.color}
+										/>)}
 							</button>
 							{type !== 'member' &&
 								<Button
@@ -99,7 +112,9 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 								className="optionsettingwindow"
 							>
 								<SettingWindow
-									handleOptionColor={() => { }}
+									optionName={option.name}
+									handleOptionColor={changeOptionColor}
+									handleOptionDelete={() => handleOptionDelete(option.name)}
 									handleSettingWindowClose={() => handleSettingWindowClose(index)}
 								/>
 							</Grid>}
@@ -114,7 +129,7 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 								onClick={onAddOptionClick}
 								value={newOption}
 							>
-								<SelectItem value={newOption} />
+								<SelectItem value={newOption} color={COLORS[0]} />
 								{buttonName}
 							</button>
 						</Grid>
@@ -125,7 +140,6 @@ const ValueSelect = forwardRef<HTMLDivElement, ValueSelectProps>(({
 });
 
 ValueSelect.defaultProps = {
-	type: undefined,
 	options: undefined,
 	newOption: undefined,
 };
