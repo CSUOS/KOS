@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/CSUOS/KOS/backend/Models"
+	"github.com/CSUOS/KOS/backend/GitHubInteraction"
 
 	"github.com/gin-gonic/gin"
 )
@@ -107,22 +108,97 @@ func DeleteProject(c *gin.Context) {
 
 // GetBranches 프로젝트에 연결된 GitHub 리포지토리의 브랜치 목록을 가져온다.
 func GetBranches(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "Not Implemented"})
+	var project Models.Project
+	pid := c.Params.ByName("pid")
+
+	if Models.GetProjectByID(&project, pid) != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	branches, err := GitHubInteraction.GetBranches(project.RepoOwner, project.RepoName)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+			"message": "Failed to find branches, the error was " + err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"branches" : branches})
 }
 
-// GetContributionsOfID 특정 Github ID의, 프로젝트에 연결된 GitHub 리포지토리의 기여도를 가져온다.
-func GetContributionsOfID(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "Not Implemented"})
-}
-
-// GetContributions 모든 멤버의, 프로젝트에 연결된 GitHub 리포지토리의 기여도를 가져온다. (GitHub ID가 등록되지 않은 멤버는 제외)
+// GetContributions 모든 멤버의, 프로젝트에 연결된 GitHub 리포지토리의 각 브랜치에 커밋된 커밋 목록을 가져온다.
 func GetContributions(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "Not Implemented"})
+	var project Models.Project
+	pid := c.Params.ByName("pid")
+	
+	if Models.GetProjectByID(&project, pid) != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": "The project is not found"})
+		return
+	}
+
+	branches, err := GitHubInteraction.GetBranches(project.RepoOwner, project.RepoName)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+			"message": "Failed to find branches, the error was " + err.Error(),
+		})
+		return
+	}
+
+	commitMap := make(map[string][]GitHubInteraction.Commit)
+	for _, branch := range branches {
+		commits, err := GitHubInteraction.GetCommits(project.RepoOwner, project.RepoName, branch, 10000, 1)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+				"message": "Failed to get commits, the error was " + err.Error(),
+			})
+			return
+		} else {
+			commitMap[branch] = commits
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"branches": branches,
+		"commits": commitMap,
+	})
 }
 
-// CountCommits 프로젝트에 연결된 GitHub 리포지토리의 특정 브랜치에 커밋된 커밋 수를 가져온다.
+// CountCommits 모든 멤버의, 프로젝트에 연결된 GitHub 리포지토리의 각 브랜치에 커밋된 커밋 수를 가져온다.
 func CountCommits(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "Not Implemented"})
+	var project Models.Project
+	pid := c.Params.ByName("pid")
+	
+	if Models.GetProjectByID(&project, pid) != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": "The project is not found"})
+		return
+	}
+
+	branches, err := GitHubInteraction.GetBranches(project.RepoOwner, project.RepoName)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+			"message": "Failed to find branches, the error was " + err.Error(),
+		})
+		return
+	}
+
+	countMap := make(map[string]int)
+	for _, branch := range branches {
+		count, err := GitHubInteraction.CountAllCommits(project.RepoOwner, project.RepoName, branch)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+				"message": "Failed to count commits, the error was " + err.Error(),
+			})
+			return
+		} else {
+			countMap[branch] = *count
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"branches": branches,
+		"counts": countMap,
+	})
 }
 
 // CopyProject 프로젝트를 복사한다.
