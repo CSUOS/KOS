@@ -60,7 +60,7 @@ const PageView = forwardRef<HTMLDivElement, PageViewProps>(({
 				</>}
 			<List mainTitle="제목" /* for test only */ />
 			{
-				true &&
+				true &&		// 테스트를 위해서 task => true로 바꿔놓았음
 				<TaskView				/* for test only */
 					open={openTask}
 					handleTaskWindowClose={handleTaskWindowClose}

@@ -1,16 +1,18 @@
+import clsx from 'clsx';
 import React, { useState } from 'react';
 
 import CloseSharpIcon from '@material-ui/icons/CloseSharp';
 
-import { Button } from '.';
-
 type ItemProps = {
 	value: string;
+	color: string;
 	hasCloseBtn?: boolean | undefined;
 	handleSelectedDelete?: (selectedValue: string) => void | undefined;
 }
 
-const SelectItem = ({ value, hasCloseBtn, handleSelectedDelete }: ItemProps) => {
+const SelectItem = ({
+	value, color, hasCloseBtn, handleSelectedDelete
+}: ItemProps) => {
 	const [show, setShow] = useState(false);
 
 	const handleDeleteButtonShow = (visible: boolean) => {
@@ -18,7 +20,7 @@ const SelectItem = ({ value, hasCloseBtn, handleSelectedDelete }: ItemProps) => 
 	};
 	return (
 		<span
-			className="selectitem"
+			className={clsx('selectitem', color)}
 			onMouseEnter={() => handleDeleteButtonShow(true)}
 			onMouseLeave={() => handleDeleteButtonShow(false)}
 		>

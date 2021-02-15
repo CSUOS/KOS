@@ -14,9 +14,6 @@
 		.settingwindow-header{
 			font-size: 22px;
 		}
-		.settingwindow-subheader{
-			padding: 0 0 20px 0;
-		}
 		.settingwindow-item{
 			.settingwindow-itemname{
 				display: flex;
@@ -33,6 +30,9 @@
 					padding: 5px 0;
 					color: white;
 					border-radius: 5px;
+					&:hover{
+						cursor: pointer;
+					}
         }
       }
       .settingwindow-kosicon{
@@ -65,7 +65,20 @@
 				font-family: Times;
 				&:focus{
 					outline: none;
+				}
 			}
+			.settingwindow-deleteaccount{
+				margin: 20px 0;
+				background: $light-gray;
+				height: 30px;
+				width: 80px;
+				text-align: center;
+				padding: 5px 0;
+				color: white;
+				border-radius: 5px;
+				&:hover{
+					cursor: pointer;
+				}
 			}
 		}
 	}

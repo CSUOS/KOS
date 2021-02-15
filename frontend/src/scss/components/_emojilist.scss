@@ -1,14 +1,9 @@
 .emojilist{
 	display: flex;
-	width: 100%;
-	height: 100%;
-	margin-bottom: 15px;
-	justify-content: flex-end;
-	align-items: flex-end;
 	.emojilist-continer{
 		display: flex;
 		width: 100%;
-		height: 100%;
+		height: 100%;;
 	}
 	.emojiitem{
 		display: inline;
@@ -41,9 +36,6 @@
 		}
 	}
 	.add-button {
-		button{
-			padding: 0px;
-		}
 		svg {
 			font-size: 1.2rem;
 			color: $gray;

@@ -1,11 +1,11 @@
+import clsx from 'clsx';
 import React, {
-	forwardRef, createRef, useState, useEffect
+	forwardRef, createRef, useState, useEffect,
 } from 'react';
 
 import { Grid } from '@material-ui/core';
-import StarIcon from '@material-ui/icons/Star';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
 
+import { ReactComponent as PinIcon } from '../../images/pin.svg';
 import { Button, EmojiPicker, EmojiList } from '.';
 import { handleOutsideClick } from '../../function/FunctionManager';
 
@@ -19,18 +19,22 @@ type TaskTitleProps = {
 	emojis?: any | undefined;
 	handleEmojis: (emojiId: string) => void;
 }
+const modifier = '이준영';
+const updatedAt = '2021년 02월 04일';
 
 const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 	taskTitle, handleTitleChange, pin, handlePin, emojis, handleEmojis,
 }, ref) => {
-	const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
+	const updateRecord = `${modifier}님이 ${updatedAt}에 마지막으로 수정하셨습니다`;
+
+	const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
 
 	const handleEmojiPickerOpen = () => {
-		setOpenEmojiPicker(true);
+		setEmojiPickerOpen(true);
 	};
 
 	const handleEmojiPickerClose = () => {
-		setOpenEmojiPicker(false);
+		setEmojiPickerOpen(false);
 	};
 
 	const onEmojiSelect = (emoji: any) => {
@@ -55,37 +59,47 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 		<>
 			<Grid ref={ref} className="windowheader">
 				<Grid className="windowheader-main" container>
-					<h1>{taskTitle}</h1>
-					{/* <input type="text" /> */}
+					<Grid className="windowheader-tasktitle">
+						<input
+							size={taskTitle ? taskTitle.length + 2 : 1}
+							value={taskTitle}
+							onChange={handleTitleChange}
+						/>
+					</Grid>
 					<Grid className="windowheader-task">
 						<Button
 							classList={['task-pin']}
-							value={pin ? <StarIcon /> : <StarBorderIcon />}
-							tooltip="상단에 고정시키기"
+							value={<PinIcon />}
+							tooltip={pin ? '고정 해제하기' : '상단에 고정하기'}
 							ttside="right"
 							transparent={true}
 							onClickFun={handlePin}
 						/>
-						<EmojiList
-							emojis={emojis}
-							openEmojiPicker={openEmojiPicker}
-							onEmojiClick={onEmojiClick}
-							handleEmojiPickerOpen={handleEmojiPickerOpen}
-							handleEmojiPickerClose={handleEmojiPickerClose}
-						/>
+						<Grid className="windowheader-emojilist">
+							<EmojiList
+								emojis={emojis}
+								emojiPickerOpen={emojiPickerOpen}
+								onEmojiClick={onEmojiClick}
+								handleEmojiPickerOpen={handleEmojiPickerOpen}
+								handleEmojiPickerClose={handleEmojiPickerClose}
+							/>
+						</Grid>
 					</Grid>
 				</Grid>
-			</Grid>
-			{openEmojiPicker
+				{emojiPickerOpen
 				&&
 				<Grid
 					ref={emojiPickerRef}
-					className="picker"
+					className={clsx('picker', 'taskwindow')}
 				>
 					<EmojiPicker
 						onEmojiSelect={onEmojiSelect}
 					/>
 				</Grid>}
+				<Grid className="task-update">
+					{updateRecord}
+				</Grid>
+			</Grid>
 		</>
 	);
 });

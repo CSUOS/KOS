@@ -46,14 +46,15 @@ const EmojiItem = ({ emoji, onClickEmoji }: EmojiItemProps) => {
 
 type EmojiListProps = {
 	emojis: Array<EmojiItemObject> | undefined;
-	openEmojiPicker: boolean;
+	emojiPickerOpen: boolean;
 	onEmojiClick: (emojiId: string) => void;
 	handleEmojiPickerOpen: () => void;
 	handleEmojiPickerClose: () => void;
+	hasAddButton?: boolean;
 }
 
 const EmojiList = ({
-	emojis, openEmojiPicker, onEmojiClick, handleEmojiPickerOpen, handleEmojiPickerClose
+	emojis, emojiPickerOpen, onEmojiClick, handleEmojiPickerOpen, handleEmojiPickerClose, hasAddButton
 }: EmojiListProps) => (
 	<Grid className="emojilist">
 		<div className="emojilist-container">
@@ -62,32 +63,26 @@ const EmojiList = ({
 					emoji={emoji}
 					onClickEmoji={() => onEmojiClick(emoji.id)}
 				/>))}
-			<Button
+			{hasAddButton && <Button
 				classList={['add-button']}
-				value={<AddIcon />}
+				value={
+					<AddIcon />
+				}
 				tooltip="add reaction"
 				ttside="bottom"
 				transparent={true}
 				onClickFun={
-					openEmojiPicker
+					emojiPickerOpen
 						? handleEmojiPickerClose
 						: handleEmojiPickerOpen
 				}
-			/>
-			{/* <Button
-				classList={['add-button']}
-				value={<AddIcon />}
-				tooltip="add reaction"
-				ttside="bottom"
-				transparent={true}
-				onClickFun={
-					openEmojiPicker
-						? handleEmojiPickerClose
-						: handleEmojiPickerOpen
-				}
-			/> */}
+			/>}
 		</div>
 	</Grid>
 );
+
+EmojiList.defaultProps = {
+	hasAddButton: true,
+};
 
 export default EmojiList;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, KeyboardEvent } from 'react';
 import clsx from 'clsx';
 
 import { Grid } from '@material-ui/core';
@@ -7,92 +7,131 @@ import {
 	DatePicker, SelectItem, Checkbox, TextField, Tag, URL
 } from '.';
 
+// Get whether the component has hover event
 const getWhetherItHasHoverEvent = (
-	editable: boolean, selectable: boolean, selectOpen: boolean, type: string | undefined
+	modifiable: boolean,
+	selectable: boolean,
+	selectOpen: boolean,
+	type: string
 ) => {
-	if (editable && type !== 'checkbox') {
+	if (modifiable && type !== 'checkbox' && type !== 'description') {
 		if ((selectable && !selectOpen) || !selectable) return true;
 	}
 	return false;
 };
 
 type ValueFieldProps = {
-	type?: string | undefined;
+	type: string;
 	value?: any | undefined;
 	creatable: boolean;
-	editable: boolean;
+	modifiable: boolean;
 	selectable: boolean;
 	selectOpen: boolean;
 	newOption: string;
 	createOption: () => void;
 	deleteSelectedOption: (optionToDelete: string) => void;
-	handleSingleValueChange: (arg: any) => void;
-	handleSelectInputChange: (arg: string) => void;
+	handleSingleValueChange: (singleValue: any) => void;
+	handleSelectInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	handleSelectOpen: () => void;
 	handleSelectClose: () => void;
 }
 
 const ValueField = ({
-	type, value, creatable, selectable, editable, selectOpen, newOption, createOption, deleteSelectedOption, handleSingleValueChange, handleSelectInputChange, handleSelectOpen, handleSelectClose
+	type, value, creatable, selectable, modifiable, selectOpen,
+	newOption, createOption, deleteSelectedOption,
+	handleSingleValueChange, handleSelectInputChange,
+	handleSelectOpen, handleSelectClose
 }: ValueFieldProps) => {
-	const hasHoverEvent = getWhetherItHasHoverEvent(editable, selectable, selectOpen, type);
+	const hasHoverEvent = getWhetherItHasHoverEvent(modifiable, selectable, selectOpen, type);
 
+	// When button of value field is clicked
 	const onSelectOpenButtonClick = () => {
+		// if select is closed
 		if (!selectOpen) {
+			// open select
 			handleSelectOpen();
 		}
 	};
 
-	const handleSelectInputKeyPress = (e: any) => {
+	const handleSelectInputKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+		// if pressed key is 'Enter'
 		if (e.key === 'Enter') {
+			// create new option by input
 			createOption();
+			// and Close select
 			handleSelectClose();
 		}
 	};
+
+	// Return custom component corresponding to type of attribute
+	const getValueComponent = (attributeType:string) => {
+		switch (attributeType) {
+		case 'creator':
+		case 'modifier':
+			return value;
+		case 'text-field':
+			return <TextField value={value} handleValueChange={handleSingleValueChange} />;
+		case 'date-picker':
+		case 'deadline':
+		case 'createdAt':
+		case 'updatedAt':
+			return (
+				<DatePicker
+					value={value}
+					modifiable={modifiable}
+					handleValueChange={handleSingleValueChange}
+				/>);
+		case 'checkbox':
+			return <Checkbox value={value} handleValueChange={handleSingleValueChange} />;
+		case 'url':
+			return <URL value={value} handleValueChange={handleSingleValueChange} />;
+		case 'single-select':
+		case 'multi-select':
+		case 'state':
+			return value.filter((option: any) => option.selected === true).map((selectedOption: any) => (
+				<SelectItem
+					value={selectedOption.name}
+					color={selectedOption.color}
+					hasCloseBtn={true}
+					handleSelectedDelete={deleteSelectedOption}
+				/>
+			));
+		case 'member':
+			return value.filter((option: any) => option.selected === true).map((selectedOption: any) => (
+				<Tag
+					value={selectedOption.name}
+					handleTagDelete={deleteSelectedOption}
+				/>
+			));
+		default:
+			return undefined;
+		}
+	};
+
 	return (
 		<Grid className="valuefield">
-			{type !== 'description' && (
-				selectable ?
-					<button
-						type="button"
-						className={clsx('value', hasHoverEvent && 'editable')}
-						onClick={onSelectOpenButtonClick}
-					>
-						{(type === 'single-select' || type === 'multi-select' || type === 'state')
-							&& value.map((option: string) => (
-								<SelectItem value={option} hasCloseBtn={true} handleSelectedDelete={deleteSelectedOption} />))}
-						{type === 'member' && value.map((option: string) => <Tag value={option} handleTagDelete={deleteSelectedOption} />)}
-						<input
-							className="option-input"
-							type="text"
-							placeholder={value.length === 0 ? '옵션을 선택하세요' : ''}
-							readOnly={!selectOpen}
-							onKeyPress={creatable ? handleSelectInputKeyPress : undefined}
-							onChange={(e: any) => handleSelectInputChange(e.target.value)}
-							value={newOption}
-						/>
-					</button>
-					:
-					<button
-						type="button"
-						className={clsx('value', hasHoverEvent && 'editable')}
-					>
-						{type === 'add-button'}
-						{(type === 'creator' || type === 'editor') && value}
-						{type === 'text-field' && <TextField value={value} handleValueChange={handleSingleValueChange} />}
-						{type === 'url' && <URL value={value} handleValueChange={handleSingleValueChange} />}
-						{(type === 'date-picker' || type === 'deadline' || type === 'createdAt' || type === 'updatedAt')
-							&& <DatePicker value={value} editable={editable} handleValueChange={handleSingleValueChange} />}
-						{type === 'checkbox' && <Checkbox value={value} handleValueChange={handleSingleValueChange} />}
-					</button>
-			)}
-			{ type === 'description'}
+			<button
+				type="button"
+				className={clsx('value', hasHoverEvent && 'modifiable')}
+				onClick={selectable ? onSelectOpenButtonClick : undefined}
+			>
+				{getValueComponent(type)}
+				{selectable &&
+					<input
+						className="option-input"
+						type="text"
+						placeholder={value.length === 0 ? '옵션을 선택하세요' : ''}
+						readOnly={!selectOpen}
+						onKeyPress={creatable ? handleSelectInputKeyPress : undefined}
+						onChange={handleSelectInputChange}
+						value={newOption}
+					/>}
+			</button>
 		</Grid>
 	);
 };
 
 ValueField.defaultProps = {
-	type: 'add-button',
 	value: undefined,
 };
 

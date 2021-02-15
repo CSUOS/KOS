@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 import { Grid, Paper } from '@material-ui/core';
 
-const colorTexts = ['yellow', 'mint', 'pink', 'green', 'purple', 'blue'];
+import { COLORS } from '../../function/PairManager';
 
 const getColorText = (color:string) => {
 	switch (color) {
@@ -35,19 +35,22 @@ const ColorButton = ({ color, onColorButtonClick }: ColorButtonProps) => (
 );
 
 type ValueSelectOptionSettingProps = {
-	handleOptionColor: (e: any) => void;
+	optionName: string;
+	handleOptionDelete: () => void;
+	handleOptionColor: (optionToChange:string, colorToChange:string) => void;
 	handleSettingWindowClose: () => void;
 }
 
 const ValueSelectOptionSetting = ({
-	handleOptionColor, handleSettingWindowClose
+	optionName, handleOptionDelete, handleOptionColor, handleSettingWindowClose
 }: ValueSelectOptionSettingProps) => {
 	const onDeleteButtonClick = () => {
+		handleOptionDelete();
 		handleSettingWindowClose();
 	};
 
 	const onColorButtonClick = (e: any) => {
-		handleOptionColor(e.target.value);
+		handleOptionColor(optionName, e.target.value);
 		handleSettingWindowClose();
 	};
 
@@ -65,7 +68,7 @@ const ValueSelectOptionSetting = ({
 				<Grid className="palette">
 					<Grid className="subject">색깔 설정하기</Grid>
 					<Grid className="colors">
-						{colorTexts.map((color) => (
+						{COLORS.map((color) => (
 							<ColorButton
 								color={color}
 								onColorButtonClick={onColorButtonClick}

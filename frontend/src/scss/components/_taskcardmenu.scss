@@ -1,0 +1,30 @@
+.taskcardmenu{
+	position: absolute;
+	z-index: 1;
+	width: 7.5rem;
+	.container{
+		padding: 0.5rem;
+		align-items: center;
+		.taskcardmenu-button{
+			display: flex;
+			width: 100%;
+			margin: 0.3rem 0.0rem;
+			height: 1.4rem;
+			align-items: center;
+			color: $gray;		
+			font-size: 1.0rem;
+			svg{
+				font-size: 1.3rem;
+				width: 1.3rem;
+				height: 1.3rem;
+				color: $gray;
+				margin-right: 0.2rem;
+			}
+			&:focus, &:active, &:hover{
+				cursor: pointer;
+				outline: none;
+				background-color: beige;
+			}	
+		}
+	}
+}
