@@ -1,4 +1,6 @@
-import React, { useState, createRef, forwardRef } from 'react';
+import React, {
+	Dispatch, useState, createRef, forwardRef, useContext
+} from 'react';
 
 import {
 	Grid, Input, Tooltip, Avatar
@@ -12,8 +14,10 @@ import {
 	Button, SubMenu, SideMenu, Member
 } from '../Shared';
 import {
-	ProjectObj, ProjectTeamObj, ProjectUserObj, useUserState, useProjectState, usePIDState, useTeamState
+	ProjectMap, ProjectTeamObj, UserObj, useUserState, useProjectState, usePIDState, useTeamState
 } from '../Model';
+import { useInviteDispatch, InviteWindow } from './InviteWindow';
+import { returnIcon } from '../../function/Icon';
 
 const buttonRef = createRef<HTMLDivElement>();
 const searchInputRef = createRef<HTMLDivElement>();
@@ -26,10 +30,12 @@ type ProjectHeadProps = {
 const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 	sideBarOpen, handleSideBarOpen
 }, ref) => {
-	const project : ProjectObj | undefined = useProjectState();
+	const project : ProjectMap | undefined = useProjectState();
 	const team : ProjectTeamObj | undefined = useTeamState();
 	const pid : number = usePIDState();
-	const nowUser : ProjectUserObj | undefined = useUserState();
+	const nowUser : UserObj | undefined = useUserState();
+
+	const setInviteOpen : Dispatch<number> = useInviteDispatch();
 
 	const [open, setOpen] = useState(false);
 
@@ -57,14 +63,14 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 						<Grid className="info-con">
 							<Grid className="border-con">
 								<Grid className="info">
-									<Grid className="project-name">{project[pid].name}</Grid>
+									<Grid className="project-name">{project[pid].Name}</Grid>
 									<SideMenu
 										open={open}
 										setOpen={setOpen}
 										pid={pid}
 									/>
 								</Grid>
-								{ open && <SubMenu pid={pid} /> }
+								{ open && <InviteWindow><SubMenu pid={pid} /></InviteWindow> }
 							</Grid>
 						</Grid>
 						{
@@ -72,18 +78,22 @@ const ProjectHead = forwardRef<HTMLDivElement, ProjectHeadProps>(({
 							<Grid className="member-con">
 								<Grid className="all-member">
 									{
-										team.map((member) => <Member user={member} />)
+										team.map((member) => <Member key={member.ID} user={member} />)
 									}
 								</Grid>
 								<Grid className="plus-member">
 									<Tooltip placement="bottom" title="Add Member" arrow>
-										<Avatar className="member add-member">
+										<Avatar className="member add-member" onClick={() => setInviteOpen(pid)}>
 											<GroupAddIcon />
 										</Avatar>
 									</Tooltip>
 								</Grid>
 								<Grid className="my-icon">
-									<Member user={nowUser} />
+									<Tooltip placement="bottom" title="My Profile" arrow>
+										<Avatar className="member">
+											{returnIcon(nowUser.Icon)}
+										</Avatar>
+									</Tooltip>
 								</Grid>
 							</Grid>
 						}

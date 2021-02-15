@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, Dispatch, useEffect } from 'react';
+import clsx from 'clsx';
 
-import { Grid } from '@material-ui/core';
+import { Grid, Input, Menu } from '@material-ui/core';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import BackupIcon from '@material-ui/icons/Backup';
@@ -9,47 +9,119 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-import { Window, WindowHeader, Button } from '.';
-import { useProjectState, ProjectObj, useProjectDelete } from '../Model';
+import {
+	Window, WindowHeader, Button
+} from '.';
+import {
+	useProjectState, useUserState, UserObj, ProjectMap, useProjectDelete, useProjectCopy, useProjectUpdate, useExitProject
+} from '../Model';
+import { useInviteDispatch } from '../Sub/InviteWindow';
+import { checkIsStringEmpty } from '../../function/FunctionManager';
+import { color as colorArr } from '../../function/BGColor';
 
 type SubMenuProps = {
 	pid : number;
 };
 
 const SubMenu = ({ pid } : SubMenuProps) => {
-	const [proSetOpen, setProSetOpen] = useState(false); // 프로젝트 설정창 오픈
-	const [proCopyOpen, setProCopyOpen] = useState(false); // 프로젝트 복사창 오픈
-	const [proBackUpOpen, setProBackUpOpen] = useState(false); // 프로젝트 복사창 오픈
+	const [proSetOpen, setProSetOpen] = useState<boolean>(false); // 프로젝트 설정창 오픈
+	const [proBackUpOpen, setProBackUpOpen] = useState<boolean>(false); // 프로젝트 백업창 오픈
+	const setInviteOpen : Dispatch<number> = useInviteDispatch();
 
-	const userAuth = 2;
-	const project : ProjectObj | undefined = useProjectState();
+	const user : UserObj | undefined = useUserState();
+	const project : ProjectMap | undefined = useProjectState();
 	const deleteProject : (id : number) => void = useProjectDelete();
+	const setProject : (id : number, p : ProjectMap) => void = useProjectUpdate();
+	const copyProject : Dispatch<number> = useProjectCopy();
+	const exitProject : (projectID : number, uid: number) => void = useExitProject();
+
+	// 세팅 윈도우 이름 선택 시
+	const [name, setName] = useState('');
+	// 세팅 색 선택 메뉴
+	const [color, setColor] = useState('');
+	const [anchorEl, setAnchorEl] = useState<EventTarget & Element | null>(null);
+	const handleClick = (event : React.SyntheticEvent) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+	useEffect(() => {
+		if (project !== undefined) {
+			setName(project[pid].Name);
+			setColor(project[pid].BGColor);
+		}
+	}, [pid]);
+
+	const changeProject = () => {
+		// 프로젝트 update 전처리
+		if (project === undefined) {
+			return;
+		}
+		if (checkIsStringEmpty(name)) {
+			alert('프로젝트 이름을 입력해주세요.');
+			return;
+		}
+		if (checkIsStringEmpty(color)) {
+			alert('프로젝트 색을 선택해주세요.');
+			return;
+		}
+		const tmp = project;
+		tmp[pid].Name = name;
+		tmp[pid].BGColor = color;
+		setProject(pid, tmp);
+		setProSetOpen(false);
+	};
+
 	const windows =
 		<>
 			<Window
-				type="project-setting-con"
+				type="project-setting-con submenu-window-con"
 				open={proSetOpen}
 				hasCloseBtn={true}
 				handleWindowClose={() => setProSetOpen(false)}
 			>
 				<WindowHeader
 					mainTitle="Project Setting"
-					subTitle="프로젝트에 대한 여러 설정을 하는 곳입니다."
+					subTitle="프로젝트의 이름이나 색을 바꿔보세요."
 				/>
+				<Grid container className="p-contents-con">
+					<Grid container>
+						<Grid className="p-key-con">Project Name</Grid>
+						<Input className="p-value-con" placeholder="프로젝트 이름" value={name} onChange={(e) => setName(e.target.value)} />
+					</Grid>
+					<Grid container>
+						<Grid className="p-key-con">Project Color</Grid>
+						<Grid className={clsx('select-color-btn', 'bg-color', color)} onClick={handleClick} />
+						<Menu
+							anchorEl={anchorEl}
+							getContentAnchorEl={null}
+							keepMounted
+							anchorOrigin={{
+								vertical: 'bottom', // 이렇게 조정하려면 getContentAnchorEl을 setting해주어야함
+								horizontal: 'left',
+							}}
+							open={anchorEl !== null}
+							onClose={handleClose}
+							className="color-picker"
+						>
+							{
+								colorArr.map((c) => <Grid key={c} className={clsx('color-pick', 'bg-color', c)} onClick={() => { setColor(c); handleClose(); }} />)
+							}
+						</Menu>
+					</Grid>
+					<Grid className="p-btn-con">
+						<Button
+							classList={['save-btn']}
+							value="저장"
+							onClickFun={changeProject}
+						/>
+					</Grid>
+				</Grid>
 			</Window>
 			<Window
-				type="project-copy-con"
-				open={proCopyOpen}
-				hasCloseBtn={true}
-				handleWindowClose={() => setProCopyOpen(false)}
-			>
-				<WindowHeader
-					mainTitle="Project Copy"
-					subTitle="프로젝트를 복사하는 곳입니다."
-				/>
-			</Window>
-			<Window
-				type="project-backup-con"
+				type="project-backup-con submenu-window-con"
 				open={proBackUpOpen}
 				hasCloseBtn={true}
 				handleWindowClose={() => setProBackUpOpen(false)}
@@ -62,7 +134,10 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 		</>;
 
 	const hangUpProject = () => {
-		/* api 미구현 */
+		if (user === undefined) {
+			return;
+		}
+		exitProject(pid, user.ID);
 	};
 
 	return (
@@ -76,7 +151,7 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 							<Button
 								classList={[]}
 								value={<FileCopyIcon />}
-								onClickFun={() => { setProCopyOpen(true); }}
+								onClickFun={() => copyProject(pid)}
 							/>
 							<p>복사</p>
 						</Grid>
@@ -84,6 +159,7 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 							<Button
 								classList={[]}
 								value={<GroupAddIcon />}
+								onClickFun={() => setInviteOpen(pid)}
 							/>
 							<p>초대</p>
 						</Grid>
@@ -91,21 +167,18 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 							<Button
 								classList={[]}
 								value={<BackupIcon />}
-								onClickFun={() => { setProBackUpOpen(true); }}
+								onClickFun={() => setProBackUpOpen(true)}
 							/>
 							<p>백업</p>
 						</Grid>
 						{
-							/*
-								todo : model에 저장된 user 정보를 받아와서 구현
-							*/
-							userAuth === 2 &&
+							project[pid].Auth &&
 							<Grid className="delete">
 								<Button
 									classList={[]}
 									value={<DeleteIcon />}
 									onClickFun={() => {
-										if (window.confirm(`[${project[pid].name}] 프로젝트를 정말로 삭제하시겠습니까?`)) {
+										if (window.confirm(`[${project[pid].Name}] 프로젝트를 정말로 삭제하시겠습니까?`)) {
 											deleteProject(pid);
 										}
 									}}
@@ -117,7 +190,7 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 							<Button
 								classList={[]}
 								value={<SettingsIcon />}
-								onClickFun={() => { setProSetOpen(true); }}
+								onClickFun={() => setProSetOpen(true)}
 							/>
 							<p>설정</p>
 						</Grid>
@@ -126,7 +199,7 @@ const SubMenu = ({ pid } : SubMenuProps) => {
 								classList={[]}
 								value={<ExitToAppIcon />}
 								onClickFun={() => {
-									if (window.confirm(`[${project[pid].name}] 프로젝트에서 정말로 나가시겠습니까?`)) {
+									if (window.confirm(`[${project[pid].Name}] 프로젝트에서 정말로 나가시겠습니까?`)) {
 										hangUpProject();
 									}
 								}}

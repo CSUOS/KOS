@@ -3,11 +3,12 @@ import clsx from 'clsx';
 
 import { Grid } from '@material-ui/core';
 
-import { useProjectState, ProjectObj, usePIDDispatch } from '../Model';
+import { useProjectState, ProjectMap, usePIDDispatch } from '../Model';
 import { SubMenu, SideMenu } from '../Shared';
+import { InviteWindow } from './InviteWindow';
 
 type SideProjectProps = {
-	project: ProjectObj;
+	project: ProjectMap;
 	pid: number;
 }
 
@@ -15,11 +16,11 @@ const SideProject = forwardRef<HTMLDivElement, SideProjectProps>(({ project, pid
 	const [open, setOpen] = useState(false);
 	const setPID : Dispatch<number> = usePIDDispatch();
 	return (
-		<Grid ref={ref} className={clsx('side-project', project[pid].bookMark && 'bookmark')}>
+		<Grid ref={ref} className={clsx('side-project', project[pid].BookMark && 'bookmark')}>
 			<Grid className="project-info">
-				<Grid className="info">
-					<Grid className={clsx('bg-color', project[pid].bgColor)} />
-					<Grid className="project-name" onClick={() => setPID(pid)}><p>{project[pid].name.length > 14 ? `${project[pid].name.substr(0, 14)}...` : project[pid].name}</p></Grid>
+				<Grid className="info" onClick={() => setPID(pid)}>
+					<Grid className={clsx('bg-color', project[pid].BGColor)} />
+					<Grid className="project-name"><p>{project[pid].Name.length > 14 ? `${project[pid].Name.substr(0, 14)}...` : project[pid].Name}</p></Grid>
 				</Grid>
 				<SideMenu
 					open={open}
@@ -27,7 +28,7 @@ const SideProject = forwardRef<HTMLDivElement, SideProjectProps>(({ project, pid
 					pid={pid}
 				/>
 			</Grid>
-			{ open && <SubMenu pid={pid} /> }
+			{ open && <InviteWindow><SubMenu pid={pid} /></InviteWindow> }
 		</Grid>
 	);
 });

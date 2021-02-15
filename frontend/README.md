@@ -30,25 +30,24 @@
 
 
 
-### 프로젝트 별 사용 색상
+### 색상 관리
 
 #### 사용하기
 
-1. `_backColor.scss`에 정의된 bgColor들을 살펴본다.
-
-2. 원하는 색상을 css에서 가져다가 변수로 사용한다. 
-
-   ex_) background-color : $bg-pink;
+1. function 폴더의 BGColor.tsx에 정의된 color를 사용한다.
+2. 원하는 색상을 bg-color와 함께 class로 주면 해당 색상이 노드에 적용된다.
 
 
 
 #### 추가하기
 
-1. `_backColor.scss`에 변수를 추가한다.
+1. function 폴더의 BGColor.tsx에 있는 color 변수에 색상을 추가한다.
+
+2. `_backColor.scss`에 변수를 추가한다.
 
    변수명은 $bg-(색상) 의 형태로 고정한다.
 
-2. `.bg-color`에 (색상) 클래스를 추가한다.
+3. `.bg-color`에 (색상) 클래스를 추가한다.
 
    `&.(색상)`으로 추가하면 된다.
 
@@ -57,3 +56,17 @@
 > 특정 컴포넌트에서 해당 색상을 불러오고 싶을 때, bg-color와 (색상) 클래스를 동시에 주면 된다.
 >
 > 이렇게 하면 나중에 border나 box-shadow에 대해 정의할 때도 간단히 추가할 수 있다.
+
+
+
+### 흐름 정리
+
+1. user가 login 페이지에서 로그인
+   * 토큰 발급 `login`
+2. 메인화면 접속
+   * 토큰으로 user 정보 받아오기 `getUserInfo`
+   * user 정보가 바뀌면 해당 user의 project 정보 받아오기 `getProject`
+3. 프로젝트 클릭 시
+   * 클릭된 pid에 해당하는 project의 list, task 저장 `getListTask`
+   * team도 저장 `getTeam`
+

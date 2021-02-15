@@ -5,8 +5,9 @@ import { Grid } from '@material-ui/core';
 import { Button } from '../Shared';
 import { ProjectHead, List } from '../Sub';
 import {
-	useProjectState, usePIDState, useTaskState, ProjectObj, ProjectTaskObj
+	useProjectState, usePIDState, useTaskState, ProjectMap, ProjectTaskObj
 } from '../Model';
+import { InviteWindow } from '../Sub/InviteWindow';
 import { TaskView } from '.';
 
 const taskRef = createRef<HTMLDivElement>();
@@ -20,7 +21,7 @@ const PageView = forwardRef<HTMLDivElement, PageViewProps>(({
 	open, handleSideBarOpen
 }, ref) => {
 	/* ============== 프로젝트 관련 데이터 ============== */
-	const project : ProjectObj | undefined = useProjectState();
+	const project : ProjectMap | undefined = useProjectState();
 	const pid : number = usePIDState();
 	const tasks : ProjectTaskObj | undefined = useTaskState();
 
@@ -45,10 +46,12 @@ const PageView = forwardRef<HTMLDivElement, PageViewProps>(({
 		<Grid ref={ref} className="page">
 			{!openTask &&
 				<>
-					<ProjectHead
-						sideBarOpen={open}
-						handleSideBarOpen={handleSideBarOpen}
-					/>
+					<InviteWindow>
+						<ProjectHead
+							sideBarOpen={open}
+							handleSideBarOpen={handleSideBarOpen}
+						/>
+					</InviteWindow>
 					<Button
 						classList={['']}
 						value={buttonName}

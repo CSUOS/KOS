@@ -9,7 +9,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-import { ProjectObj, useProjectState, useProjectUpdate } from '../Model';
+import { ProjectMap, useProjectState, useProjectUpdate } from '../Model';
 import { Button } from '.';
 
 type SideMenuProps = {
@@ -19,15 +19,15 @@ type SideMenuProps = {
 }
 
 const SideMenu = ({ open, setOpen, pid } : SideMenuProps) => {
-	const project : ProjectObj | undefined = useProjectState();
-	const setProject : (id: number, p: ProjectObj) => void = useProjectUpdate();
+	const project : ProjectMap | undefined = useProjectState();
+	const setProject : (id: number, p: ProjectMap) => void = useProjectUpdate();
 
 	const togglePrivate = () => {
 		if (project === undefined || pid === undefined) {
 			return;
 		}
 		const tmp = project;
-		tmp[pid].isPrivate = !tmp[pid].isPrivate;
+		tmp[pid].IsPrivate = !tmp[pid].IsPrivate;
 		setProject(pid, tmp);
 	};
 	const toggleMark = () => {
@@ -35,7 +35,7 @@ const SideMenu = ({ open, setOpen, pid } : SideMenuProps) => {
 			return;
 		}
 		const tmp = project;
-		tmp[pid].bookMark = !tmp[pid].bookMark;
+		tmp[pid].BookMark = !tmp[pid].BookMark;
 		setProject(pid, tmp);
 	};
 
@@ -48,7 +48,7 @@ const SideMenu = ({ open, setOpen, pid } : SideMenuProps) => {
 					<Grid className="private">
 						<Button
 							classList={[]}
-							value={project[pid].isPrivate ? <LockIcon /> : <LockOpenIcon />}
+							value={project[pid].IsPrivate ? <LockIcon /> : <LockOpenIcon />}
 							transparent={true}
 							onClickFun={() => togglePrivate()}
 						/>
@@ -56,7 +56,7 @@ const SideMenu = ({ open, setOpen, pid } : SideMenuProps) => {
 					<Grid className="book-mark">
 						<Button
 							classList={[]}
-							value={project[pid].bookMark ? <StarIcon /> : <StarBorderIcon />}
+							value={project[pid].BookMark ? <StarIcon /> : <StarBorderIcon />}
 							transparent={true}
 							onClickFun={() => toggleMark()}
 						/>
