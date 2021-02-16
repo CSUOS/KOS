@@ -10,7 +10,7 @@ import {
 import { handleOutsideClick, checkIsStringEmpty, getRandomInt } from '../../function/FunctionManager';
 import { COLORS } from '../../function/PairManager';
 
-const getmodifiable = (type: string) => {
+const getModifiable = (type: string) => {
 	if (type === 'creator' ||
 		type === 'createdAt' ||
 		type === 'updatedAt' ||
@@ -63,7 +63,7 @@ const AttributeValuePair = ({
 	index, type, name, value, handlePairAdd, handlePairDelete
 }: AttributeValuePairProps) => {
 	// Get modifiable, selectable, multiSelectable, creatable of attribute type
-	const modifiable = getmodifiable(type);
+	const modifiable = getModifiable(type);
 	const selectable = getSelectable(type);
 	const multiSelectable = getMultiSelectable(type, selectable);
 	const creatable = getCreatable(type, selectable);
