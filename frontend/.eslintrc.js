@@ -66,7 +66,8 @@ module.exports = {
 		"import/extensions": 0, // Turn off "Missing file extension for ..." error
 		'import/resolver': {
 			'node': {
-				'extensions': ['.js', '.jsx', '.ts', '.tsx']
+				paths: ['./src'],
+				'extensions': ['.js', '.jsx', '.ts', '.tsx'],
 			}
 		}
 	},
