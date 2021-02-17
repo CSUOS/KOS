@@ -25,6 +25,7 @@ const windowType = 'task';
 const descType = 'description';
 const descAttri = '설명';
 const addButtonType = 'add-button';
+const addAttri = '+';
 
 /* ==========[ 임시 값들 ]========== */
 const userName = '사용자';
@@ -193,6 +194,7 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 					<Pair
 						index={pairs.length + 1}
 						type={addButtonType}
+						name={addAttri}
 						handlePairAdd={handlePairAdd}
 					/>
 				</Grid>

@@ -50,7 +50,7 @@ const getCreatable = (type: string, selectable: boolean) => {
 type AttributeValuePairProps = {
 	index: number;
 	type: string;
-	name?: string | undefined;
+	name: string;
 	value?: any | undefined;
 	handlePairAdd?: (pairToAdd: any) => void | undefined;
 	handlePairDelete?: (indexToDelete: number) => void | undefined;
@@ -256,7 +256,6 @@ const AttributeValuePair = ({
 };
 
 AttributeValuePair.defaultProps = {
-	name: undefined,
 	value: undefined,
 	handlePairAdd: undefined,
 	handlePairDelete: undefined,
