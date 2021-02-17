@@ -7,6 +7,9 @@ export const SUBJECTS = ['속성 이름 지정', '기본', '생성'];
 export const DEFAULT_MENUS = ['작성자', '최근 수정자', '멤버', '생성일자', '최근 수정일자', '데드라인', '진행상태'];
 export const CREATE_MENUS = ['텍스트', '날짜', '단일 선택', '다중 선택', 'URL', '단일 체크박스'];
 
+export const DEFAULT_TYPES = ['creator', 'modifier', 'member', 'createdAt', 'updatedAt', 'deadline', 'state'];
+
+// TODO : 함수로 만들어서 value parameter로 전달받을 수 있도록 하기
 export const DEFAULT_PAIRS = [
 	{ type: 'creator', name: 'Creator', value: '김철수(kim)' },
 	{ type: 'modifier', name: 'Modifier', value: '김철수(kim)' },

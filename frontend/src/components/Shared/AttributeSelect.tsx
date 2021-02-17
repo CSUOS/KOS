@@ -1,4 +1,6 @@
-import React, { createRef, forwardRef, ReactFragment } from 'react';
+import React, {
+	createRef, forwardRef, ReactFragment, useState, useEffect
+} from 'react';
 
 import { Grid, Paper } from '@material-ui/core';
 
@@ -22,32 +24,10 @@ const Part = ({ subject, children }: PartProps) => (
 	</Grid>
 );
 
-// ======================================================================
-// =============== [ TODO : 리소스 스크립트 분리하기 ]  ===================
-const subjects = ['속성 이름 지정', '기본', '생성'];
-const defaultMenus = ['작성자', '최근 편집자', '멤버', '생성일자', '최근 수정일자', '데드라인', '진행 상태'];
-const createMenus = ['텍스트', '날짜', '단일 선택', '다중 선택', 'URL', '단일 체크박스'];
-const defaultPairs = [
-	{ type: 'creator', name: 'Creator', value: '김철수(kim)' },
-	{ type: 'editor', name: 'Editor', value: '김철수(kim)' },
-	{ type: 'member', name: 'Assign', value: { options: ['김철수(kim)', '우희은(hinge7)', '김정현(powergee)'], selectedOptions: ['김철수(kim)'] } },
-	{ type: 'createdAt', name: 'CreatedAt', value: new Date() },
-	{ type: 'updatedAt', name: 'UpdatedAt', value: new Date() },
-	{ type: 'deadline', name: 'Deadline', value: new Date('2021-01-30') },
-	{ type: 'state', name: 'State', value: { options: ['시작전', '진행중', '완료'], selectedOptions: ['시작전'] } },
-];
-const createPairs = [
-	{ type: 'text-field', name: '텍스트', value: '' },
-	{ type: 'date-picker', name: '날짜', value: new Date() },
-	{ type: 'single-select', name: '단일 선택', value: { options: [], selectedOptions: [] } },
-	{ type: 'multi-select', name: '다중 선택', value: { options: [], selectedOptions: [] } },
-	{ type: 'url', name: 'URL', value: '' },
-	{ type: 'checkbox', name: '체크박스', value: false },
-];
-// ======================================================================
-// ======================================================================
-
 const namePlaceholder = '속성 이름';
+const defaultHelperText = '기본 속성은 하나만 만들 수 있습니다';
+const createHelperText = '생성 속성의 이름을 지정해주세요';
+
 type AttributeSelectProps = {
 	text: string | undefined,
 	handleNameInputChange: (e: any) => void,
@@ -55,14 +35,26 @@ type AttributeSelectProps = {
 	handlePairAdd?: (pairToAdd: any) => void;
 };
 
+// TODO : PairManager 와 함께 스크립트 리팩토링하기
 const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 	text, handleNameInputChange, handleMenuClose, handlePairAdd
 }, ref) => {
+	const [helperText, setHelperText] = useState('');
+
 	// TODO : 함수 개선하기
 	const onDefaultOptionClick = (e:any) => {
 		const pairToAdd = DEFAULT_PAIRS[e.target.value];
 		if (handlePairAdd) handlePairAdd(pairToAdd);
 		handleMenuClose();
+		// TODO : 현재 추가하려는 pair의 type이 이미 있는 경우
+		// window의 scroll을 top으로 움직이고 helpertext를 설정한다.
+		// 아니라면 pair를 추가하고 menu를 닫는다. helpertext는 초기화한다.
+		// if (.includes(pairToAdd.type)) {
+		// 	handleScrollToTop(containerRef);
+		// } else {
+		// if (handlePairAdd) handlePairAdd(pairToAdd);
+		// handleMenuClose();
+		// }
 	};
 
 	const onCreateOptionClick = (e:any) => {
@@ -70,13 +62,19 @@ const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 		if (isNameEmpty) {
 			handleScrollToTop(containerRef);
 			nameInputRef.current?.focus();
+			setHelperText(createHelperText);
 		} else {
 			const pairToAdd = CREATE_PAIRS[e.target.value];
 			const newPair = { ...pairToAdd, name: text };
 			if (handlePairAdd) handlePairAdd(newPair);
+			setHelperText('');
 			handleMenuClose();
 		}
 	};
+
+	useEffect(() => {
+		if (!checkIsStringEmpty(text)) setHelperText('');
+	}, [text]);
 
 	return (
 		<Grid ref={ref} className="attriselect">
@@ -91,6 +89,9 @@ const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 							onChange={handleNameInputChange}
 							value={text}
 						/>
+						<div className="helperText">
+							{helperText}
+						</div>
 					</Part>
 					<Part subject={SUBJECTS[1]}>
 						{DEFAULT_MENUS.map((menu, index) => (

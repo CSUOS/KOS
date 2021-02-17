@@ -19,6 +19,10 @@
 		margin: 7px 0px;
 	}
 	.children{
+		.helperText{
+			color: red;
+			font-size: 0.88rem;
+		}
 		button{
 			width: 100%;
 			display: block;
