@@ -19,8 +19,11 @@ type TaskTitleProps = {
 	emojis?: any | undefined;
 	handleEmojis: (emojiId: string) => void;
 }
+
+// =========== [ 임시 데이터 ] =================
 const modifier = '이준영';
-const updatedAt = '2021년 02월 04일';
+const updatedAt = new Date();
+// ============================================
 
 const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 	taskTitle, handleTitleChange, pin, handlePin, emojis, handleEmojis,
@@ -61,7 +64,7 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 				<Grid className="windowheader-main" container>
 					<Grid className="windowheader-tasktitle">
 						<input
-							size={taskTitle ? taskTitle.length + 2 : 1}
+							size={taskTitle ? taskTitle.length + 1 : 1}
 							value={taskTitle}
 							onChange={handleTitleChange}
 						/>
@@ -86,16 +89,13 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 						</Grid>
 					</Grid>
 				</Grid>
-				{emojiPickerOpen
-				&&
-				<Grid
-					ref={emojiPickerRef}
-					className={clsx('picker', 'taskwindow')}
-				>
-					<EmojiPicker
-						onEmojiSelect={onEmojiSelect}
-					/>
-				</Grid>}
+				{emojiPickerOpen &&
+					<Grid
+						ref={emojiPickerRef}
+						className={clsx('picker', 'taskwindow')}
+					>
+						<EmojiPicker onEmojiSelect={onEmojiSelect} />
+					</Grid>}
 				<Grid className="task-update">
 					{updateRecord}
 				</Grid>
