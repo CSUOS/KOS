@@ -160,7 +160,7 @@ const AttributeValuePair = ({
 				};
 				setOptions([...options, newOption]);
 				// TODO: 생성된 옵션 즉시 선택된 것으로 띄워주기
-				// selectOption(newOptionName)
+				// selectOption(newOptionName);
 			}
 		}
 	};
