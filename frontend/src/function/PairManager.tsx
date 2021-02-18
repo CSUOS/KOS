@@ -8,6 +8,34 @@ export const DEFAULT_MENUS = ['작성자', '최근 수정자', '멤버', '생성
 export const CREATE_MENUS = ['텍스트', '날짜', '단일 선택', '다중 선택', 'URL', '단일 체크박스'];
 
 export const DEFAULT_TYPES = ['creator', 'modifier', 'member', 'createdAt', 'updatedAt', 'deadline', 'state'];
+export const CREATE_TYPES = ['text-field', 'date-picker', 'single-select', 'multi-select', 'url', 'checkbox'];
+
+export const getDefaultTypePair = (type:string | undefined, value: any | undefined) => {
+	switch (type) {
+	case 'creator': return { type: 'creator', name: 'Creator', value };
+	case 'modifier': return { type: 'modifier', name: 'Modifier', value };
+	case 'member': return {
+		type: 'member',
+		name: 'Assign',
+		value: [
+			{ name: '김철수(kim)', selected: true },
+			{ name: '김정현(powergee)', selected: false },
+			{ name: '우희은(hinge7)', selected: false }]
+	};
+	case 'createdAt': return { type: 'createdAt', name: 'CreatedAt', value };
+	case 'updatedAt': return { type: 'updatedAt', name: 'UpdatedAt', value };
+	case 'deadline': return { type: 'deadline', name: 'Deadline', value: new Date() };
+	case 'state': return 	{
+		type: 'state',
+		name: 'State',
+		value: [
+			{ name: '시작전', selected: true, color: COLORS[0] },
+			{ name: '진행중', selected: false, color: COLORS[1] },
+			{ name: '완료', selected: false, color: COLORS[3] }]
+	};
+	default: return value;
+	}
+};
 
 // TODO : 함수로 만들어서 value parameter로 전달받을 수 있도록 하기
 export const DEFAULT_PAIRS = [

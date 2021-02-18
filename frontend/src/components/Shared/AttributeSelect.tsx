@@ -50,6 +50,7 @@ const AttributeSelect = forwardRef<HTMLDivElement, AttributeSelectProps>(({
 		// window의 scroll을 top으로 움직이고 helpertext를 설정한다.
 		// 아니라면 pair를 추가하고 menu를 닫는다. helpertext는 초기화한다.
 		// if (.includes(pairToAdd.type)) {
+		//  setHelperText(defaultHelperText);
 		// 	handleScrollToTop(containerRef);
 		// } else {
 		// if (handlePairAdd) handlePairAdd(pairToAdd);
