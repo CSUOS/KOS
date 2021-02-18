@@ -137,7 +137,7 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 	};
 
 	const CustomEditor = () => {
-		const tempContent = `# ${tempTaskTitle}`;
+		const tempContent = `# ${tempTaskTitle}\n${descValue}\n\n`.repeat(3);
 		const height = '700px';
 
 		return (
