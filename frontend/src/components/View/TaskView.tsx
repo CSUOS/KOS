@@ -4,6 +4,11 @@ import React, {
 
 import { Grid } from '@material-ui/core';
 
+import 'codemirror/lib/codemirror.css';
+import '@toast-ui/editor/dist/toastui-editor.css';
+
+import { Editor } from '@toast-ui/react-editor';
+
 import {
 	DragDropContext, Droppable, Draggable, DropResult
 } from 'react-beautiful-dnd';
@@ -131,6 +136,20 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 		}
 	};
 
+	const CustomEditor = () => {
+		const tempContent = `# ${tempTaskTitle}`;
+		const height = '700px';
+
+		return (
+			<Editor
+				initialValue={tempContent}
+				previewStyle="vertical"
+				height={height}
+				initialEditType="markdown"
+				useCommandShortcut={true}
+			/>
+		);
+	};
 	return (
 		<Grid ref={ref} className="taskview">
 			<Window
@@ -200,7 +219,7 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 				</Grid>
 				<Grid className="task-description">
 					<Pair index={-1} type={descType} name={descAttri} />
-					{descValue}
+					<CustomEditor />
 				</Grid>
 			</Window>
 		</Grid>
