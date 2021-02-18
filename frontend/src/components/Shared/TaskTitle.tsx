@@ -72,7 +72,7 @@ const TaskTitle = forwardRef<HTMLDivElement, TaskTitleProps>(({
 					<Grid className="windowheader-task">
 						<Button
 							classList={['task-pin']}
-							value={<PinIcon />}
+							value={<PinIcon className={clsx(pin ? 'pinned' : 'unpin')} />}
 							tooltip={pin ? '고정 해제하기' : '상단에 고정하기'}
 							ttside="right"
 							transparent={true}

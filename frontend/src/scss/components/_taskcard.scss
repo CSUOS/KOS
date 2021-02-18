@@ -40,7 +40,6 @@
 			svg{
 				width: 1.4rem;
 				height: 1.4rem;
-				color: $sub-color;
 			}
 		}
 		.more{
@@ -73,4 +72,12 @@
 			align-items: center;
 		}
 	}
+}
+
+.unpin>path{
+	fill: gray !important;
+}
+
+.pinned>path{
+	fill: $sub-color !important;
 }
