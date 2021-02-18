@@ -118,34 +118,30 @@ const AttributeValuePair = ({
 	};
 
 	const deleteSelectedOption = (optionNameToDelete: string) => {
-		const editedOptionIndex = getOptionIndexByName(optionNameToDelete);
-		const editedOptions = options.slice();
-		const editedOption = { ...editedOptions[editedOptionIndex], selected: false };
-		editedOptions[editedOptionIndex] = editedOption;
-
+		const editedOptions = options.map((option:any) => {
+			if (option.name === optionNameToDelete) return { ...option, selected: false };
+			return option;
+		});
 		setOptions(editedOptions);
+	};
+
+	const selectOptionByWhetherIsSelectedBefore = (sourceOptions: Array<any>, selectedOption: any) => {
+		const isSelectedBefore = selectedOption.selected;
+
+		if (!isSelectedBefore) {
+			const editedOptions = sourceOptions.map((option: any) => {
+				if (option === selectedOption) return { ...option, selected: true };
+				return multiSelectable ? option : { ...option, selected: false };
+			});
+			setOptions(editedOptions);
+		}
 	};
 
 	const selectOption = (selectedValue: string) => {
 		const selectedOptionIndex = getOptionIndexByName(selectedValue);
 		const selectedOption = options[selectedOptionIndex];
-		const isSelectedBefore = selectedOption.selected;
 
-		if (!isSelectedBefore) {
-			if (multiSelectable) {
-				const editedOptions = options.map((option: any, optionIndex: number) => {
-					if (optionIndex === selectedOptionIndex) return { ...option, selected: true };
-					return option;
-				});
-				setOptions(editedOptions);
-			} else {
-				const editedOptions = options.map((option: any, optionIndex: number) => {
-					if (optionIndex === selectedOptionIndex) return { ...option, selected: true };
-					return { ...option, selected: false };
-				});
-				setOptions(editedOptions);
-			}
-		}
+		selectOptionByWhetherIsSelectedBefore(options, selectedOption);
 	};
 
 	const createOption = () => {
@@ -158,9 +154,7 @@ const AttributeValuePair = ({
 					selected: false,
 					color: COLORS[getRandomInt(0, COLORS.length)]
 				};
-				setOptions([...options, newOption]);
-				// TODO: 생성된 옵션 즉시 선택된 것으로 띄워주기
-				// selectOption(newOptionName);
+				selectOptionByWhetherIsSelectedBefore([...options, newOption], newOption);
 			}
 		}
 	};
