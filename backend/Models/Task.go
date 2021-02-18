@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/CSUOS/KOS/backend/Config"
+	"gorm.io/datatypes"
 )
 
 // GetAllTasks 모든 태스크를 반환
@@ -76,6 +77,14 @@ func GetTaskByListID(task *Task, taskID string, listID string) (err error) {
 // GetNTasksByListID 해당 리스트 아이디에 몇개의 태스크가 속해있는지 반환
 func GetNTasksByListID(id uint, count *int64) (err error) {
 	if err = Config.DB.Model(&Task{}).Where("list_id = ?", id).Count(count).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// GetReaction 리액션을 가져온다.
+func GetReaction(task *Task, emoji string) (err error) {
+	if err = Config.DB.First(&task, datatypes.JSONQuery("Reactions").HasKey(emoji)).Error; err != nil {
 		return err
 	}
 	return nil

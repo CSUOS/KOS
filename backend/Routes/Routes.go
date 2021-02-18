@@ -16,7 +16,7 @@ func SetupRouter() *gin.Engine {
 	// config.AllowAllOrigins = true
 	config.AllowOrigins = []string{"http://localhost:3000", "http://127.0.0.1:3000"}
 	config.AllowCredentials = true
-	
+
 	r.Use(cors.New(config))
 
 	userRoutes := r.Group("/v1/user-api")
@@ -143,7 +143,6 @@ func SetupRouter() *gin.Engine {
 
 		// 아이디에 매칭되는 태스크 삭제.
 		taskRoutes.DELETE("task/:id", Controllers.DeleteTask)
-
 	}
 
 	worksInRoutes := r.Group("/v1/works-in-api")
@@ -151,7 +150,7 @@ func SetupRouter() *gin.Engine {
 
 		// 유저의 프로젝트 정보를 가져온다.
 		worksInRoutes.GET("works-in-user", Controllers.GetWorksInByUser)
-		
+
 		// 프로젝트에 속해있는 유저들 정보를 가져온다.
 		worksInRoutes.GET("works-in-project/:id", Controllers.GetWorksInByProjectID)
 
@@ -174,7 +173,7 @@ func SetupRouter() *gin.Engine {
 
 		// 프로젝트 권한 부여
 		worksInRoutes.POST("works-in/setAuth", Controllers.UpdateWorksIn)
-    
+
 		// 프로젝트 - 유저 관계 삭제.
 		worksInRoutes.DELETE("works-in/:id", Controllers.DeleteWorksIn)
 	}
