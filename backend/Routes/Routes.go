@@ -133,6 +133,9 @@ func SetupRouter() *gin.Engine {
 		taskRoutes.PUT("reaction", Controllers.AddReaction)
 
 		// 태스크 속성 수정
+		taskRoutes.PUT("attribute", Controllers.Attribute)
+
+		// 태스크 속성 수정
 		taskRoutes.PUT("modify", Controllers.ModifyTaskProp)
 
 		// 태스크들을 일정한 순서로 가져온다.
