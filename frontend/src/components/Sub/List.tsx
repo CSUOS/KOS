@@ -1,7 +1,11 @@
 import React, { useState, useEffect, createRef } from 'react';
 import Grid from '@material-ui/core/Grid';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { Button, ListMenu, TaskCard as Task } from '../Shared';
+import {
+	Edit, Add, FileCopy, Delete, ArrowRightAlt, MoreHoriz
+} from '@material-ui/icons';
+import {
+	Button, Menu, TaskCard as Task
+} from '../Shared';
 import { handleOutsideClick } from '../../function/FunctionManager';
 /* ====[List 사용 예시]========
 mainTitle: 리스트 이름
@@ -44,7 +48,6 @@ const menuRef = createRef<HTMLDivElement>();
 const List = ({ mainTitle }: ListProps) => {
 	const [tasks, setTasks] = useState(testValue);
 	const [menuOpen, setMenuOpen] = useState(false);
-
 	const handleMenuOpen = () => {
 		setMenuOpen(true);
 	};
@@ -53,6 +56,43 @@ const List = ({ mainTitle }: ListProps) => {
 		setMenuOpen(false);
 	};
 
+	const menuContents = [
+		{
+			icon: <Edit />,
+			name: 'edit',
+			onClickFunc: () => {
+				handleMenuClose();
+			},
+		},
+		{
+			icon: <Add />,
+			name: 'add',
+			onClickFunc: () => {
+				handleMenuClose();
+			},
+		},
+		{
+			icon: <FileCopy />,
+			name: 'copy',
+			onClickFunc: () => {
+				handleMenuClose();
+			},
+		},
+		{
+			icon: <Delete />,
+			name: 'delete',
+			onClickFunc: () => {
+				handleMenuClose();
+			},
+		},
+		{
+			icon: <ArrowRightAlt />,
+			name: 'moveTo',
+			onClickFunc: () => {
+				handleMenuClose();
+			}
+		},
+	];
 	useEffect(() => {
 		document.addEventListener('mousedown',
 			(e: any) => handleOutsideClick(e, menuRef, handleMenuClose), true);
@@ -69,14 +109,14 @@ const List = ({ mainTitle }: ListProps) => {
 					<Grid className="list-menu">
 						<Button
 							classList={['more']}
-							value={<MoreHorizIcon />}
-							tooltip="리스트 메뉴보기"
+							value={<MoreHoriz />}
+							tooltip={!menuOpen ? '리스트 메뉴보기' : undefined}
 							onClickFun={menuOpen ? handleMenuClose : handleMenuOpen}
 						/>
 						{menuOpen &&
 							<Grid ref={menuRef}>
-								<ListMenu
-									handleMenuClose={handleMenuClose}
+								<Menu
+									contents={menuContents}
 								/>
 							</Grid>}
 					</Grid>

@@ -23,3 +23,4 @@ export { default as ValueSelectOptionSetting } from './ValueSelectOptionSetting'
 export { default as TaskCardMenu } from './TaskCardMenu';
 export { default as MoveTo } from './MoveTo';
 export { default as ListMenu } from './ListMenu';
+export { default as Menu } from './Menu';
