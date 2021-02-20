@@ -10,8 +10,6 @@ $bg-yellow: #ffcd77;
 .bg-color{
 	width: 40px;
 	height: 40px;
-	border-radius: $radius;
-	border: 2px solid white;
 	&.white{
 		background-color: $bg-white;
 	}

@@ -4,7 +4,7 @@ import React, {
 import axios from 'axios';
 
 /*
-	todo : user 정보를 쿠키에서 받아와서 model에 저장, 바꿀 수 있는 함수는 x
+	todo : model에서 reducer로 관리하기
 */
 
 /* open context */
@@ -39,18 +39,20 @@ export function useOpenDispatch() {
 }
 
 /* project context */
-type UserObj = {
-	userID : number;
-	userName: string;
-	userIcon: string;
-	gitID: string;
+
+export type UserObj = {
+	ID : number;
+	Name : string;
+	Icon : string;
+	GitID : string;
 }
+
 export type ProjectUserObj = {
 	ID : number;
 	Name : string;
 	Icon : string;
 	GitID : string;
-	AuthLVL : number;
+	AuthLVL: number;
 }
 
 type Attribute = {
@@ -82,12 +84,15 @@ type ListObj = {
 	index: number;
 }
 
-export type ProjectObj = {
+export type ProjectMap = {
 	[projectID : number] : {
-		isPrivate: boolean;
-		bookMark: boolean;
-		bgColor: string;
-		name: string;
+		BGColor: string;
+		IsPrivate: boolean;
+		BookMark: boolean;
+		Name: string;
+		RepoOwner: string;
+		RepoName: string;
+		Auth: number;
 	}
 }
 
@@ -126,24 +131,38 @@ type ImportListObj = {
 }
 
 type ImportProjectObj = {
-	BGColor: string;
-	BookMark: boolean;
 	ID: number;
-	IsPrivate: boolean;
-	Lists: Array<ImportListObj>;
-	Name: string;
 	CreatedAt: string;
 	DeletedAt: null;
 	UpdatedAt: string | null;
+	Lists: Array<ImportListObj>;
+	BGColor: string;
+	IsPrivate: boolean;
+	BookMark: boolean;
+	Name: string;
+	RepoOwner: string;
+	RepoName: string;
 }
 
-const ProjectDataContext = createContext<ProjectObj | undefined>(undefined);
-const ProjectUpdateContext = createContext<(id: number, p: ProjectObj) => void>(() => {});
+type ProjectObj = {
+	BGColor: string;
+	IsPrivate: boolean;
+	BookMark: boolean;
+	Name: string;
+	RepoOwner: string;
+	RepoName: string;
+	Auth: number;
+}
+
+const ProjectDataContext = createContext<ProjectMap | undefined>(undefined);
+const ProjectUpdateContext = createContext<(id: number, p: ProjectMap) => void>(() => {});
 const ProjectAddContext = createContext<(name : string, pri : boolean) => void>(() => {});
 const ProjectDeleteContext = createContext<(id: number) => void>(() => {});
+const ProjectCopyContext = createContext<(id: number) => void>(() => {});
 const TeamContext = createContext<ProjectTeamObj | undefined>(undefined);
 const TeamDispatchContext = createContext<Dispatch<ProjectTeamObj>>(() => {});
 const UserAuthChangeContext = createContext<(uid: number, auth: number) => void>(() => {});
+const ExitProjectContext = createContext<(projectID : number, uid: number) => void>(() => {});
 const ListContext = createContext<ProjectListObj | undefined>(undefined);
 const ListDispatchContext = createContext<Dispatch<ProjectListObj>>(() => {});
 const TaskContext = createContext<ProjectTaskObj | undefined>(undefined);
@@ -152,138 +171,67 @@ const TaskDispatchContext = createContext<Dispatch<ProjectTaskObj>>(() => {});
 export const ProjectContextProvider = ({ children } : childrenObj) => {
 	const [update, forceUpdate] = useState(true);
 
-	const [project, setProject] = useState<ProjectObj>({});
+	const [project, setProject] = useState<ProjectMap>({});
 
 	const [team, setTeam] = useState<ProjectTeamObj>([]);
 
 	const [list, setList] = useState<ProjectListObj>([]);
 
 	const [task, setTask] = useState<ProjectTaskObj>({});
-	/*
-	// backend를 안켰을 때를 위해 남겨두는 test data
-	const [project, setProject] = useState<ProjectObj>({
-		1: {
-			isPrivate: false,
-			bookMark: true,
-			bgColor: 'pink',
-			name: 'KOS'
-		},
-		2: {
-			isPrivate: false,
-			bookMark: true,
-			bgColor: 'green',
-			name: 'NERA'
-		},
-		3: {
-			isPrivate: false,
-			bookMark: true,
-			bgColor: 'purple',
-			name: 'HHsadfasdfasdfasdfsdafsadf'
-		}
-	});
 
-	const [team, setTeam] = useState<ProjectTeamObj>(
-		[
-			{
-				ID: 1,
-				Icon: 'pet',
-				Name: 'heeeun',
-				GitID: 'gmldms784@naver.com',
-				AuthLVL: 1
-			},
-			{
-				ID: 2,
-				Icon: 'apple',
-				Name: 'taejin',
-				GitID: 'thereisnotruth12@gmail.com',
-				AuthLVL: 2
-			}
-		]
-	);
+	// todo : test data 다시 생성
 
-	const [list, setList] = useState<ProjectListObj>([
-		{
-			listID: 1,
-			name: '할 일',
-			index: 0
-		},
-		{
-			listID: 2,
-			name: '끝난 일',
-			index: 1
-		}
-	]);
-	const [task, setTask] = useState<ProjectTaskObj>();
-	*/
-
-	const a = 1;
 	const pid = usePIDState();
+	const user = useUserState();
 
 	useEffect(() => {
-		// pid와 세션 정보가 바뀔 때마다 project 정보 다시 받아오기
-		axios.get('http://localhost:8080/v1/project-api/projects')
+		// 선택한 project가 바뀌면 project, 팀 정보 다시 받아오기
+		if (user === undefined || pid < 0) {
+			return;
+		}
+		getTeam();
+		getListTask();
+	}, [pid]);
+
+	useEffect(() => {
+		// user가 바뀌면 project 다시 받아오기
+		getProject();
+	}, [user]);
+
+	/* project api 함수 */
+
+	const getProject = () => {
+		// 현재 user의 project 정보 받아오기
+		// list, task를 제외한 project 정보 + 해당 project에 대한 user의 auth 저장
+		if (user === undefined) {
+			return;
+		}
+		axios.get('http://localhost:8080/v1/works-in-api/works-in-user', { withCredentials: true })
 			.then(async (res) => {
-				console.log(res);
-				const tmpProject : ProjectObj = {};
-				const tmpList : ProjectListObj = [];
-				const tmpTask : ProjectTaskObj = {};
-				res.data.forEach((data : ImportProjectObj) => {
-					tmpProject[data.ID] = {
-						isPrivate: data.IsPrivate,
-						bookMark: data.BookMark,
-						bgColor: data.BGColor,
-						name: data.Name
+				const data = res.data;
+				const tmpProjectMap : ProjectMap = {};
+				for (let i = 0; i < data.auths.length; i += 1) {
+					const tmpProject : ProjectObj = {
+						BGColor: data.projects[i].BGColor,
+						IsPrivate: data.projects[i].IsPrivate,
+						BookMark: data.projects[i].BookMark,
+						Name: data.projects[i].Name,
+						RepoOwner: data.projects[i].RepoOwner,
+						RepoName: data.projects[i].RepoName,
+						Auth: data.auths[i]
 					};
-
-					if (data.ID === pid) {
-						// 현재 선택된 project의 list와 task, team 받아오기
-						data.Lists.sort((x : ImportListObj, y: ImportListObj) => {
-							// index 순으로 list 정렬
-							if (x.Rank > y.Rank) {
-								return -1;
-							}
-							return 0;
-						}).forEach((listData: ImportListObj) => {
-							tmpList.push({
-								listID: listData.ID,
-								name: listData.Name,
-								index: listData.Rank
-							});
-							listData.Tasks.sort((x : ImportTaskObj, y: ImportTaskObj) => {
-								// index 순으로 task 정렬
-								if (x.Rank > y.Rank) {
-									return -1;
-								}
-								return 0;
-							}).forEach((taskData : ImportTaskObj) => {
-								if (listData.ID !== taskData.ListID) {
-									throw new Error('task가 할당된 list의 id와 다릅니다.');
-								}
-								tmpTask[taskData.ListID] = [];
-								tmpTask[taskData.ListID].push({
-									taskID: taskData.ID,
-									attribute: taskData.Attribute,
-									reactions: taskData.Reactions,
-									index: taskData.Rank,
-									createdAt: new Date(taskData.CreatedAt),
-									updatedAt: new Date(taskData.UpdatedAt)
-								});
-							});
-						});
-
-						// team은 따로 api로 받아와야 함 => api 수정 후
-					}
-				});
-
-				setProject(tmpProject);
-				setList(tmpList);
-				setTask(tmpTask);
+					tmpProjectMap[data.projects[i].ID] = tmpProject;
+				}
+				setProject(tmpProjectMap);
 			})
 			.catch((e) => {
 				console.dir(e);
 			});
-		/*
-		자꾸 DB 에러남 => 고쳐야함
+	};
+
+	const getTeam = () => {
+		// 현재 pid에 해당하는 team 정보 받아오기
+
 		axios.get(`http://localhost:8080/v1/works-in-api/works-in-project/${pid}`)
 			.then((res) => {
 				console.log(res);
@@ -292,12 +240,47 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			.catch((e) => {
 				console.dir(e);
 			});
-		*/
-	}, [a, pid]); // 나중에는 a를 대체하여 쿠키/세션 정보가 바뀌면 다시 받아오도록 하기
+	};
 
-	/* project api 함수 */
+	const getListTask = () => {
+		// 현재 pid에 해당하는 task, list 정보 받아오기
 
-	const changeProject = (id : number, p : ProjectObj) => {
+		axios.get(`http://localhost:8080/v1/project-api/project/${pid}`)
+			.then((res) => {
+				console.log(res);
+				const tmpList : ProjectListObj = [];
+				const tmpTask : ProjectTaskObj = {};
+
+				res.data.Lists.forEach((listData: ImportListObj) => {
+					tmpList.push({
+						listID: listData.ID,
+						name: listData.Name,
+						index: listData.Rank
+					});
+					listData.Tasks.forEach((taskData : ImportTaskObj) => {
+						if (listData.ID !== taskData.ListID) {
+							throw new Error('task가 할당된 list의 id와 다릅니다.');
+						}
+						tmpTask[taskData.ListID] = [];
+						tmpTask[taskData.ListID].push({
+							taskID: taskData.ID,
+							attribute: taskData.Attribute,
+							reactions: taskData.Reactions,
+							index: taskData.Rank,
+							createdAt: new Date(taskData.CreatedAt),
+							updatedAt: new Date(taskData.UpdatedAt)
+						});
+					});
+				});
+				setList(tmpList);
+				setTask(tmpTask);
+			})
+			.catch((e) => {
+				console.dir(e);
+			});
+	};
+
+	const changeProject = (id : number, p : ProjectMap) => {
 		if (p === undefined) return;
 
 		setProject(p);
@@ -325,12 +308,7 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 				// 추가한 프로젝트 정보 받아서 project에 넣기
 				const { data } = res;
 				const tmpProject = project;
-				tmpProject[data.ID] = {
-					isPrivate: data.IsPrivate,
-					bookMark: data.BookMark,
-					bgColor: data.BGColor,
-					name: data.Name
-				};
+				tmpProject[data.ID] = data;
 				setProject(tmpProject);
 				forceUpdate(!update);
 			})
@@ -343,9 +321,25 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 		axios.delete(`http://localhost:8080/v1/project-api/project/${id}`)
 			.then((res) => {
 				console.dir(res);
-				// pid에 해당하는 프로젝트 삭제
+				// id에 해당하는 프로젝트 삭제
 				const tmpProject = project;
 				delete tmpProject[id];
+				setProject(tmpProject); // 다시 받아오기
+				forceUpdate(!update);
+			})
+			.catch((e) => {
+				console.dir(e);
+			});
+	};
+
+	const copyProject = (id : number) => {
+		axios.post('http://localhost:8080/v1/project-api/copy', {
+			ProjectID: id.toString()
+		})
+			.then((res) => {
+				console.dir(res);
+				const data : ProjectObj = res.data;
+				const tmpProject : ProjectMap = project;
 				setProject(tmpProject);
 				forceUpdate(!update);
 			})
@@ -354,6 +348,9 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			});
 	};
 
+	/*
+		todo : project 랑 works-in api 분리하기
+	*/
 	/* team api 함수 */
 	const userAuthChange = (uid: number, auth: number) => {
 		// 관리자는 유저로, 유저는 관리자로
@@ -361,10 +358,31 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 		axios.post('http://localhost:8080/v1/works-in-api/works-in/setAuth', {
 			'ProjectID': pid.toString(),
 			'UserID': uid.toString(),
-			'AuthLVL': auth.toString()
+			'AuthLVL': resultAuth.toString()
 		})
 			.then((res) => {
 				console.dir(res);
+				getTeam();
+				// forceUpdate(!update);
+			})
+			.catch((err) => {
+				console.dir(err);
+			});
+	};
+
+	const exitProject = (projectID : number, uid: number) => {
+		if (user === undefined) {
+			return;
+		}
+
+		axios.post('http://localhost:8080/v1/works-in-api/exit', {
+			'UserID': uid.toString(),
+			'ProjectID': projectID.toString()
+		})
+			.then((res) => {
+				console.dir(res);
+				getTeam();
+				forceUpdate(!update);
 			})
 			.catch((err) => {
 				console.dir(err);
@@ -376,21 +394,25 @@ export const ProjectContextProvider = ({ children } : childrenObj) => {
 			<ProjectUpdateContext.Provider value={changeProject}>
 				<ProjectAddContext.Provider value={addProject}>
 					<ProjectDeleteContext.Provider value={deleteProject}>
-						<TeamContext.Provider value={team}>
-							<TeamDispatchContext.Provider value={setTeam}>
-								<UserAuthChangeContext.Provider value={userAuthChange}>
-									<ListContext.Provider value={list}>
-										<ListDispatchContext.Provider value={setList}>
-											<TaskContext.Provider value={task}>
-												<TaskDispatchContext.Provider value={setTask}>
-													{children}
-												</TaskDispatchContext.Provider>
-											</TaskContext.Provider>
-										</ListDispatchContext.Provider>
-									</ListContext.Provider>
-								</UserAuthChangeContext.Provider>
-							</TeamDispatchContext.Provider>
-						</TeamContext.Provider>
+						<ProjectCopyContext.Provider value={copyProject}>
+							<TeamContext.Provider value={team}>
+								<TeamDispatchContext.Provider value={setTeam}>
+									<UserAuthChangeContext.Provider value={userAuthChange}>
+										<ExitProjectContext.Provider value={exitProject}>
+											<ListContext.Provider value={list}>
+												<ListDispatchContext.Provider value={setList}>
+													<TaskContext.Provider value={task}>
+														<TaskDispatchContext.Provider value={setTask}>
+															{children}
+														</TaskDispatchContext.Provider>
+													</TaskContext.Provider>
+												</ListDispatchContext.Provider>
+											</ListContext.Provider>
+										</ExitProjectContext.Provider>
+									</UserAuthChangeContext.Provider>
+								</TeamDispatchContext.Provider>
+							</TeamContext.Provider>
+						</ProjectCopyContext.Provider>
 					</ProjectDeleteContext.Provider>
 				</ProjectAddContext.Provider>
 			</ProjectUpdateContext.Provider>
@@ -414,6 +436,10 @@ export function useProjectDelete() {
 	const context = useContext(ProjectDeleteContext);
 	return context;
 }
+export function useProjectCopy() {
+	const context = useContext(ProjectCopyContext);
+	return context;
+}
 export function useTeamState() {
 	const context = useContext(TeamContext);
 	return context;
@@ -424,6 +450,10 @@ export function useTeamDispatch() {
 }
 export function useUserAuthDispatch() {
 	const context = useContext(UserAuthChangeContext);
+	return context;
+}
+export function useExitProject() {
+	const context = useContext(ExitProjectContext);
 	return context;
 }
 export function useListState() {
@@ -445,11 +475,11 @@ export function useTaskDispatch() {
 
 /* projectID context */
 
-export const PIDContext = createContext<number>(0);
+export const PIDContext = createContext<number>(-1);
 export const PIDDispatchContext = createContext<Dispatch<number>>(() => {});
 
 export const PIDContextProvider = ({ children } : childrenObj) => {
-	const [pid, setPID] = useState<number>(0);
+	const [pid, setPID] = useState<number>(-1);
 
 	return (
 		<PIDContext.Provider value={pid}>
@@ -472,31 +502,58 @@ export function usePIDDispatch() {
 
 /* user context */
 
-export const userContext = createContext<ProjectUserObj | undefined>(undefined);
-const userDispatchContext = createContext<Dispatch<ProjectUserObj>>(() => {});
+export const userContext = createContext<UserObj | undefined>(undefined);
+const userDispatchContext = createContext<Dispatch<UserObj>>(() => {});
+const loginContext = createContext<() => void>(() => {});
 
 export const UserContextProvider = ({ children } : childrenObj) => {
-	const [id, setUserID] = useState<ProjectUserObj>({
-		ID: 1,
-		Name: 'heeeun',
-		Icon: 'pet',
-		GitID: 'gmldms784@naver.com',
-		AuthLVL: 2
-	});
-	/*
-	const a = 1;
-	const pid = usePIDState();
+	const [user, setUser] = useState<UserObj | undefined>(undefined);
 
 	useEffect(() => {
-		// pid와 세션 정보가 바뀔 때마다 user 정보 다시 받아오기
-		// 세션 정보 없으면 로그인 페이지로
-		axios.
-	}, [a, pid]);
-	*/
+		// 페이지가 변환될 때마다 user 정보 다시 저장하기
+		getUserInfo();
+	}, [window.location.href]);
+
+	const login = () => {
+		// 로그인
+		axios.post('http://localhost:8080/v1/user-api/login', {
+			ID: 'heejin',
+			Password: '1234'
+		}, { withCredentials: true })
+			.then((res) => {
+				// 토큰 발급됨
+				console.dir(res);
+				window.location.href = `${window.origin}/home`; // home으로 redirect
+			})
+			.catch((e) => {
+				console.dir(e);
+			});
+	};
+
+	const getUserInfo = () => {
+		// 새로고침, 토큰으로 user 정보 받아오기
+		axios.get('http://localhost:8080/v1/user-api/user', { withCredentials: true })
+			.then((res) => {
+				const tmpUser : UserObj = {
+					ID: res.data.ID,
+					Name: res.data.Name,
+					Icon: res.data.Icon,
+					GitID: res.data.GitID
+				};
+				setUser(tmpUser);
+			})
+			.catch((e) => {
+				console.dir(e);
+				// window.location.href = `${window.origin}`; // login으로 redirect
+			});
+	};
+
 	return (
-		<userContext.Provider value={id}>
-			<userDispatchContext.Provider value={setUserID}>
-				{children}
+		<userContext.Provider value={user}>
+			<userDispatchContext.Provider value={setUser}>
+				<loginContext.Provider value={login}>
+					{children}
+				</loginContext.Provider>
 			</userDispatchContext.Provider>
 		</userContext.Provider>
 	);
@@ -506,8 +563,11 @@ export function useUserState() {
 	const context = useContext(userContext);
 	return context;
 }
-
 function useUserDispatch() {
 	const context = useContext(userDispatchContext);
+	return context;
+}
+export function useLogin() {
+	const context = useContext(loginContext);
 	return context;
 }

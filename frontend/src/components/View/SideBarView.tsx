@@ -8,7 +8,7 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 
 import { Button, Window, WindowHeader } from '../Shared';
 import { SideProject } from '../Sub';
-import { useProjectState, ProjectObj, useProjectAdd } from '../Model';
+import { useProjectState, ProjectMap, useProjectAdd } from '../Model';
 import { checkIsStringEmpty } from '../../function/FunctionManager';
 
 const buttonRef = createRef<HTMLDivElement>();
@@ -22,7 +22,7 @@ type SideBarViewProps = {
 const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 	type, handleSideBarClose
 }, ref) => {
-	const project : ProjectObj | undefined = useProjectState();
+	const project : ProjectMap | undefined = useProjectState();
 	const addProject : (name: string, pri: boolean) => void = useProjectAdd();
 	const [modalOpen, setModalOpen] = useState(false);
 	const [pri, setPrivate] = useState(true);
@@ -72,7 +72,7 @@ const SideBarView = forwardRef<HTMLDivElement, SideBarViewProps>(({
 							/>
 						</Grid>
 						<Button
-							classList={['project-add-btn']}
+							classList={['save-btn']}
 							value="프로젝트 생성"
 							onClickFun={makeProject}
 						/>

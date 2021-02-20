@@ -62,14 +62,16 @@
 				}
 				.info{
 					width: 65%;
+					cursor: pointer;
 					.project-name{
 						font-size: $md-font;
 						flex-shrink: 1!important;
 						word-break: break-all;
-						cursor: pointer;
 					}
 					.bg-color{
 						margin-right: 10px;
+						border : 2px solid white;
+						border-radius: $radius;
 					}
 					&>div{
 						margin-right: 3px;
@@ -128,30 +130,6 @@
 
 /*project-modal-con*/
 .project-modal-con{
-	.p-contents-con{
-		margin-top: 2rem;
-		&>div{
-			flex-wrap: nowrap;
-			margin-bottom: 20px;
-		}
-	}
-	.p-key-con{
-		width: 130px;
-		text-align: center;
-		background-color: $sub-color;
-		color: white;
-		border-radius: $radius;
-		display: flex;
-		align-items: center;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin-right: 1rem;
-		flex-shrink: 0;
-	}
-	.p-value-con{
-		width: 100%;
-	}
 	.pm-btn-con{
 		width: auto;
 		.pm-private-btn{
@@ -176,10 +154,40 @@
 			}
 		}
 	}
-	.project-add-btn{
+}
+
+/* use in sideMenu too */
+.submenu-window-con {
+	.p-contents-con{
+		margin-top: 2rem;
+		&>div{
+			flex-wrap: nowrap;
+			margin-bottom: 20px;
+		}
+	}
+	.p-key-con{
+		width: 130px;
+		text-align: center;
+		background-color: $sub-color;
+		color: white;
+		border-radius: $radius;
 		display: flex;
-		justify-content: center;
 		align-items: center;
-		border: 1px solid $light-gray;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-right: 1rem;
+		flex-shrink: 0;
+	}
+	.p-value-con{
+		width: 100%;
+	}
+	.p-btn-con{
+		display: flex;
+		justify-content: flex-end;
+		width: 100%;
+		.save-btn{
+			padding: 5px 10px;
+		}
 	}
 }

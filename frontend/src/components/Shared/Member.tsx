@@ -1,62 +1,27 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import axios from 'axios';
 
 import {
 	Tooltip, Avatar, Menu, MenuItem, ListItemIcon
 } from '@material-ui/core';
-import MoodIcon from '@material-ui/icons/Mood';
-import PetsIcon from '@material-ui/icons/Pets';
-import AppleIcon from '@material-ui/icons/Apple';
-import AudiotrackIcon from '@material-ui/icons/Audiotrack';
-import BeachAccessIcon from '@material-ui/icons/BeachAccess';
-import CakeIcon from '@material-ui/icons/Cake';
-import ChildCareIcon from '@material-ui/icons/ChildCare';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import CallMissedOutgoingIcon from '@material-ui/icons/CallMissedOutgoing';
 
 import {
-	useUserState, ProjectUserObj, useUserAuthDispatch
+	useUserState, useProjectState, ProjectMap, usePIDState, ProjectUserObj, UserObj, useUserAuthDispatch, useExitProject
 } from '../Model';
-
-const returnIcon = (text : string) => {
-	let icon = <MoodIcon />;
-	switch (text) {
-	case 'smile':
-		icon = <MoodIcon />;
-		break;
-	case 'pet':
-		icon = <PetsIcon />;
-		break;
-	case 'apple':
-		icon = <AppleIcon />;
-		break;
-	case 'audio':
-		icon = <AudiotrackIcon />;
-		break;
-	case 'beach':
-		icon = <BeachAccessIcon />;
-		break;
-	case 'cake':
-		icon = <CakeIcon />;
-		break;
-	case 'child':
-		icon = <ChildCareIcon />;
-		break;
-	default:
-		icon = <MoodIcon />;
-	}
-
-	return icon;
-};
+import { returnIcon } from '../../function/Icon';
 
 type MemberProps = {
 	user: ProjectUserObj
 }
 
 const Member = ({ user } : MemberProps) => {
-	const nowUser : ProjectUserObj | undefined = useUserState();
+	const project : ProjectMap | undefined = useProjectState();
+	const pid : number = usePIDState();
+	const nowUser : UserObj | undefined = useUserState();
 	const setUserAuth : (uid: number, auth: number) => void = useUserAuthDispatch();
+	const exitProject : (projectID : number, uid: number) => void = useExitProject();
 	const [anchorEl, setAnchorEl] = useState<EventTarget & Element | null>(null);
 	const handleClick = (event : React.SyntheticEvent) => {
 		setAnchorEl(event.currentTarget);
@@ -68,23 +33,28 @@ const Member = ({ user } : MemberProps) => {
 		// 유저 권한 변경
 		setUserAuth(user.ID, auth);
 	};
+	const makeUserOut = () => {
+		exitProject(pid, user.ID);
+	};
 	const returnMenu = () => {
 		let menuString = '관리자 권한 부여';
-		if (user.ID === nowUser?.ID) {
+		if (user.ID === nowUser?.ID || project === undefined) {
 			// 본인 프로필이라면, 메뉴 노출 x
 			return undefined;
 		}
-		if (user.AuthLVL === 1) {
+		if (user.AuthLVL === 2) {
 			// 관리자 권한의 유저라면, '유저 권한으로 되돌리기' 사용
+			// todo: 관리자 권한의 유저에게 표시하기
 			menuString = '유저 권한으로 되돌리기';
 		}
 		return (
 			<Menu
 				anchorEl={anchorEl}
+				getContentAnchorEl={null}
 				keepMounted
 				anchorOrigin={{
 					vertical: 'bottom',
-					horizontal: 'center',
+					horizontal: 'left',
 				}}
 				open={anchorEl !== null}
 				onClose={handleClose}
@@ -96,7 +66,7 @@ const Member = ({ user } : MemberProps) => {
 					</ListItemIcon>
 					{menuString}
 				</MenuItem>
-				<MenuItem>
+				<MenuItem onClick={makeUserOut}>
 					<ListItemIcon>
 						<CallMissedOutgoingIcon />
 					</ListItemIcon>
@@ -114,8 +84,7 @@ const Member = ({ user } : MemberProps) => {
 				</Avatar>
 			</Tooltip>
 			{
-				nowUser && nowUser.AuthLVL === 2 && returnMenu()
-				// 현재 유저가 관리자이면 메뉴 노출
+				nowUser && project && project[pid].Auth === 2 && returnMenu()
 			}
 		</>
 	);

@@ -53,3 +53,34 @@
 		}
 	}
 }
+.submenu-window-con{
+	.select-color-btn{
+		border : 2px solid $base-color;
+		border-radius: $radius;
+		cursor: pointer;
+	}
+}
+.color-picker{
+	display: flex;
+	.MuiMenu-paper{
+		margin-left: 1rem;
+	}
+	ul{
+		display: flex;
+	}
+	.color-pick{
+		cursor: pointer;
+		margin: 0 5px;
+		border : 2px solid $base-color;
+		border-radius: $radius;
+		&:first-of-type{
+			margin-left: 10px;
+		}
+		&:last-of-type{
+			margin-right: 10px;
+		}
+		&:active, &:focus{
+			outline: none;
+		}
+	}
+}
