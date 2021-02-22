@@ -2,12 +2,13 @@ import clsx from 'clsx';
 import React, { useState, createRef, useEffect } from 'react';
 
 import { Grid } from '@material-ui/core';
-import PriorityHighRoundedIcon from '@material-ui/icons/PriorityHighRounded';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import {
+	FileCopy, Edit, Delete, ArrowRightAlt, SentimentSatisfied, PriorityHighRounded, MoreHoriz
+} from '@material-ui/icons';
 
 import { ReactComponent as PinIcon } from '../../images/pin.svg';
 import {
-	Button, EmojiPicker, EmojiList, TaskCardMenu, MoveTo
+	Button, EmojiPicker, EmojiList, MoveTo, Menu
 } from '.';
 import { handleOutsideClick } from '../../function/FunctionManager';
 
@@ -68,7 +69,52 @@ const TaskCard = ({
 	const handleMoveToWindowClose = () => {
 		setMoveToOpen(false);
 	};
-
+	const menuContents = [
+		{
+			icon: <FileCopy />,
+			name: 'copy',
+			onClickFunc: () => {
+				handleMenuClose();
+			}
+		},
+		{
+			icon: <Edit />,
+			name: 'edit',
+			onClickFunc: () => {
+				handleMenuClose();
+			}
+		},
+		{
+			icon: <Delete />,
+			name: 'delete',
+			onClickFunc: () => {
+				handleMenuClose();
+			}
+		},
+		{
+			icon: <PinIcon />,
+			name: 'pin',
+			onClickFunc: () => {
+				handleMenuClose();
+			}
+		},
+		{
+			icon: <ArrowRightAlt />,
+			name: 'moveTo',
+			onClickFunc: () => {
+				handleMoveToWindowOpen();
+				handleMenuClose();
+			}
+		},
+		{
+			icon: <SentimentSatisfied />,
+			name: 'add react',
+			onClickFunc: () => {
+				handleEmojiPickerOpen();
+				handleMenuClose();
+			}
+		}
+	];
 	useEffect(() => {
 		document.addEventListener('mousedown',
 			(e: any) => handleOutsideClick(e, menuRef, handleMenuClose), true);
@@ -95,7 +141,7 @@ const TaskCard = ({
 						{isCloseToTheDeadline &&
 							<Button
 								classList={['warning']}
-								value={<PriorityHighRoundedIcon />}
+								value={<PriorityHighRounded />}
 								tooltip="데드라인이 얼마 남지 않았어요!"
 								transparent={true}
 							/>}
@@ -114,17 +160,15 @@ const TaskCard = ({
 						/>
 						<Button
 							classList={['more']}
-							value={<MoreHorizIcon />}
-							tooltip="테스크 설정하기"
+							value={<MoreHoriz />}
+							tooltip={!menuOpen ? '테스크 설정하기' : undefined}
 							ttside="right"
 							onClickFun={menuOpen ? handleMenuClose : handleMenuOpen}
 						/>
 						{menuOpen &&
 							<Grid ref={menuRef}>
-								<TaskCardMenu
-									handleMoveToWindowOpen={handleMoveToWindowOpen}
-									handleMenuClose={handleMenuClose}
-									handleEmojiPickerOpen={handleEmojiPickerOpen}
+								<Menu
+									contents={menuContents}
 								/>
 							</Grid>}
 						{emojiPickerOpen &&
