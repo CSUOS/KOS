@@ -1,11 +1,14 @@
+import clsx from 'clsx';
 import React, { useState, createRef, useEffect } from 'react';
 
 import { Grid } from '@material-ui/core';
+
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import {
 	FileCopy, Edit, Delete, ArrowRightAlt, SentimentSatisfied, PriorityHighRounded, MoreHoriz
 } from '@material-ui/icons';
+
 import { ReactComponent as PinIcon } from '../../images/pin.svg';
 import {
 	Button, EmojiPicker, EmojiList, MoveTo, Menu
@@ -43,6 +46,8 @@ const TaskCard = ({
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
 	const [moveToOpen, setMoveToOpen] = useState(false);
+	// 임시
+	const [pinned, setPinned] = useState(false);
 
 	const handleMenuOpen = () => {
 		setMenuOpen(true);
@@ -151,10 +156,11 @@ const TaskCard = ({
 					<Grid className="title-container">
 						<Button
 							classList={['pin']}
-							value={<PinIcon />}
-							tooltip={pin ? '고정 해제하기' : '상단에 고정하기'}
+							value={<PinIcon className={clsx(pinned ? 'pinned' : 'unpin')} />}
+							tooltip={pinned ? '고정 해제하기' : '상단에 고정하기'}
 							ttside="right"
 							transparent={true}
+							onClickFun={() => setPinned(!pinned)}
 						/>
 						<Button
 							classList={['more']}

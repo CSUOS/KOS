@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Grid } from '@material-ui/core';
 import CloseSharpIcon from '@material-ui/icons/CloseSharp';
 
 import {
@@ -10,7 +9,7 @@ import {
 type AttributeButtonProps = {
 	index: number;
 	type: string;
-	name?: string | undefined;
+	name: string;
 	menuOpen: boolean;
 	handleMenuOpen: () => void;
 	handleMenuClose: () => void;
@@ -20,50 +19,46 @@ type AttributeButtonProps = {
 const AttributeButton = ({
 	index, type, name, menuOpen, handleMenuOpen, handleMenuClose, handlePairDelete
 }: AttributeButtonProps) => {
-	const [show, setShow] = useState(false);
-
-	const handleDeleteButtonShow = (visible: boolean) => {
-		setShow(visible);
+	const getAttributeButtonContent = () => {
+		switch (type) {
+		case 'add-button':
+			return (
+				<Button
+					classList={['add-button']}
+					value="+"
+					tooltip="속성 추가하기"
+					transparent={true}
+					onClickFun={menuOpen ? handleMenuClose : handleMenuOpen}
+				/>
+			);
+		case 'description':
+			return '설명';
+		default:
+			return (
+				<>
+					<div className="attribute">
+						{name}
+					</div>
+					<Button
+						classList={['delete-button']}
+						value={<CloseSharpIcon />}
+						tooltip="속성 삭제하기"
+						transparent={true}
+						onClickFun={handlePairDelete && (() => handlePairDelete(index))}
+					/>
+				</>
+			);
+		}
 	};
 
 	return (
-		<Grid className="attributebutton">
-			<div className="attribute">
-				{type === 'add-button' && (
-					<Button
-						classList={['add']}
-						value="+"
-						transparent={true}
-						onClickFun={menuOpen ? handleMenuClose : handleMenuOpen}
-					/>
-				)}
-				{type === 'description' && '설명'}
-				{(type !== 'description' && type !== 'add-button') &&
-					(
-						<div
-							onMouseEnter={() => handleDeleteButtonShow(true)}
-							onMouseLeave={() => handleDeleteButtonShow(false)}
-						>
-							{name}
-							{show &&
-								(
-									<Button
-										classList={['delete']}
-										value={<CloseSharpIcon />}
-										tooltip="속성 삭제하기"
-										transparent={true}
-										onClickFun={handlePairDelete && (() => handlePairDelete(index))}
-									/>
-								)}
-						</div>
-					)}
-			</div>
-		</Grid>
+		<div className="attributebutton">
+			{getAttributeButtonContent()}
+		</div>
 	);
 };
 
 AttributeButton.defaultProps = {
-	name: undefined,
 	handlePairDelete: undefined,
 };
 
