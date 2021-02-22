@@ -48,16 +48,13 @@ func SetupRouter() *gin.Engine {
 		projectRoutes.POST("project", Controllers.CreateProject)
 
 		// 프로젝트에 연결된 GitHub 리포지토리의 브랜치 목록을 가져온다.
-		projectRoutes.GET("contribution/branches", Controllers.GetBranches)
+		projectRoutes.GET("contribution/:pid/branches", Controllers.GetBranches)
 
 		// 특정 Github ID의, 프로젝트에 연결된 GitHub 리포지토리의 커밋 목록을 가져온다.
-		projectRoutes.GET("contribution/commits/list/:id", Controllers.GetContributionsOfID)
-
-		// 모든 멤버의, 프로젝트에 연결된 GitHub 리포지토리의 커밋 목록을 가져온다.
-		projectRoutes.GET("contribution/commits/list/", Controllers.GetContributions)
+		projectRoutes.GET("contribution/:pid/commits/list/", Controllers.GetContributions)
 
 		// 프로젝트에 연결된 GitHub 리포지토리의 특정 브랜치에 커밋된 커밋 수를 가져온다.
-		projectRoutes.GET("contribution/commits/count", Controllers.CountCommits)
+		projectRoutes.GET("contribution/:pid/commits/count", Controllers.CountCommits)
 
 		// 프로젝트를 카피한다.
 		projectRoutes.POST("copy", Controllers.CopyProject)
