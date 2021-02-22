@@ -22,9 +22,19 @@
 				font-weight: bold;
 				font-size: 2.0em;
 			}
-			Button{
+			.list-menu{
+				display: flex;
+				align-items: center;
+			}
+			.more{
+				display: flex;
 				width: 40px;
 				height: 40px;
+				justify-content: center;
+				align-items: center;
+				svg{
+					font-size: 32px;
+				}
 			}
 		}
 		.list-main{
