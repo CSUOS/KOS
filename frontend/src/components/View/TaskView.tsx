@@ -4,6 +4,11 @@ import React, {
 
 import { Grid } from '@material-ui/core';
 
+import 'codemirror/lib/codemirror.css';
+import '@toast-ui/editor/dist/toastui-editor.css';
+
+import { Editor } from '@toast-ui/react-editor';
+
 import {
 	DragDropContext, Droppable, Draggable, DropResult
 } from 'react-beautiful-dnd';
@@ -25,6 +30,7 @@ const windowType = 'task';
 const descType = 'description';
 const descAttri = '설명';
 const addButtonType = 'add-button';
+const addAttri = '+';
 
 /* ==========[ 임시 값들 ]========== */
 const userName = '사용자';
@@ -130,6 +136,20 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 		}
 	};
 
+	const CustomEditor = () => {
+		const tempContent = `# ${tempTaskTitle}\n${descValue}\n\n`.repeat(3);
+		const height = '700px';
+
+		return (
+			<Editor
+				initialValue={tempContent}
+				previewStyle="vertical"
+				height={height}
+				initialEditType="markdown"
+				useCommandShortcut={true}
+			/>
+		);
+	};
 	return (
 		<Grid ref={ref} className="taskview">
 			<Window
@@ -193,12 +213,13 @@ const TaskView = forwardRef<HTMLDivElement, TaskViewProps>(({
 					<Pair
 						index={pairs.length + 1}
 						type={addButtonType}
+						name={addAttri}
 						handlePairAdd={handlePairAdd}
 					/>
 				</Grid>
 				<Grid className="task-description">
 					<Pair index={-1} type={descType} name={descAttri} />
-					{descValue}
+					<CustomEditor />
 				</Grid>
 			</Window>
 		</Grid>

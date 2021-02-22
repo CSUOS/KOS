@@ -80,7 +80,7 @@ const TaskCardMenu = ({
 					className="taskcardmenu-button"
 					onClick={onPinButtonClick}
 				>
-					<PinIcon />
+					<PinIcon className="unpin" />
 					pin
 				</button>
 				<button
