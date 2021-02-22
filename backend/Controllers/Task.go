@@ -370,15 +370,32 @@ func AddReaction(c *gin.Context) {
 
 		m := f.(map[string]interface{})
 
-		var targetMap []interface{} = m[req.Emoji].([]interface{})
+		var at []interface{} = m[req.Emoji].([]interface{})
 
-		// 만약 유저 아이디가 이미 존재하는 경우 제거해야함 (TO DO)...
+		// 만약 유저 아이디가 이미 존재하는 경우 제거해야함
+		found := false
 
-		targetMap = append(targetMap, req.UserID)
+		list := m[req.Emoji].([]interface{})
 
-		m[req.Emoji] = targetMap
+		for i := 0; i < len(list); i++ {
+			if list[i] == req.UserID {
+				list[i] = list[len(list)-1]
+				list[len(list)-1] = ""
+				list = list[:len(list)-1]
+				fmt.Println(list)
+				found = true
+				break
+			}
+		}
 
-		fmt.Println(m)
+		if found {
+			m[req.Emoji] = list
+		}
+
+		if !found {
+			at = append(at, req.UserID)
+			m[req.Emoji] = at
+		}
 
 		b, err := json.Marshal(m)
 
@@ -400,5 +417,63 @@ func AddReaction(c *gin.Context) {
 
 // Attribute 태스크의 속성을 수정한다.
 func Attribute(c *gin.Context) {
+
+	type reqBody struct {
+		TaskID     string `json:"TaskID"`
+		Type       string `json:"Type"` // 어트리뷰트 타입.
+		Key        string `json:"Key"`  // 어트리뷰트 이름.
+		Modifiable bool   `json:"Modifiable"`
+		Selectable bool   `json:"Selectable"`
+		Creatable  bool   `json:"Creatable"`
+	}
+
+	var req reqBody
+
+	c.BindJSON(&req)
+
+	var task Models.Task
+
+	err := Models.GetTaskByID(&task, req.TaskID)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	err = Models.GetAttr(&task, req.Type)
+
+	type Attrtemplate struct {
+		Type      string `json:"type"`
+		Attribute []struct {
+			Key   string          `json:"key"`
+			Value [][]interface{} `json:"value"`
+		} `json:"attribute"`
+	}
+
+	// 어트리뷰트가 없는 상태, 추가한다.
+	if err != nil {
+		data := "{" + "\"type\"" + ":\"" + req.Type + "\"," + "\"attribute\"" + ":" + "[{" + "\"key\"" + ":\"" + req.Key + "\"," + "\"value\"" + ":" + "[[" + strconv.FormatBool(req.Modifiable) + "," + "\"modifiable\"" + "]," + "[" + strconv.FormatBool(req.Selectable) + "," + "\"selectable\"" + "]," + "[" + strconv.FormatBool(req.Creatable) + "," + "\"creatable\"" + "]]" + "}]}"
+
+		var newAttr Attrtemplate
+
+		fmt.Println(data)
+
+		err = json.Unmarshal([]byte(data), &newAttr)
+
+		if err != nil {
+			fmt.Println("Attribute JSON Unmarshal fail")
+		}
+
+		b, err := json.Marshal(newAttr)
+
+		if err != nil {
+			fmt.Println("Attribute Marshal fail")
+		} else {
+			task.Attribute = b
+			Models.UpdateTask(&task, req.TaskID)
+			c.JSON(http.StatusOK, task)
+		}
+	} else {
+		// 같은 어트리뷰트가 존재
+	}
 
 }

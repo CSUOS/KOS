@@ -82,6 +82,14 @@ func GetNTasksByListID(id uint, count *int64) (err error) {
 	return nil
 }
 
+// GetAttr 어트리뷰트를 가져온다.(타입)
+func GetAttr(task *Task, attrType string) (err error) {
+	if err = Config.DB.First(&task, datatypes.JSONQuery("Attribute").HasKey(attrType)).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 // GetReaction 리액션을 가져온다.
 func GetReaction(task *Task, emoji string) (err error) {
 	if err = Config.DB.First(&task, datatypes.JSONQuery("Reactions").HasKey(emoji)).Error; err != nil {
