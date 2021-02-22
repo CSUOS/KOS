@@ -418,4 +418,62 @@ func AddReaction(c *gin.Context) {
 // Attribute 태스크의 속성을 수정한다.
 func Attribute(c *gin.Context) {
 
+	type reqBody struct {
+		TaskID     string `json:"TaskID"`
+		Type       string `json:"Type"` // 어트리뷰트 타입.
+		Key        string `json:"Key"`  // 어트리뷰트 이름.
+		Modifiable bool   `json:"Modifiable"`
+		Selectable bool   `json:"Selectable"`
+		Creatable  bool   `json:"Creatable"`
+	}
+
+	var req reqBody
+
+	c.BindJSON(&req)
+
+	var task Models.Task
+
+	err := Models.GetTaskByID(&task, req.TaskID)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	err = Models.GetAttr(&task, req.Type)
+
+	type Attrtemplate struct {
+		Type      string `json:"type"`
+		Attribute []struct {
+			Key   string          `json:"key"`
+			Value [][]interface{} `json:"value"`
+		} `json:"attribute"`
+	}
+
+	// 어트리뷰트가 없는 상태, 추가한다.
+	if err != nil {
+		data := "{" + "\"type\"" + ":\"" + req.Type + "\"," + "\"attribute\"" + ":" + "[{" + "\"key\"" + ":\"" + req.Key + "\"," + "\"value\"" + ":" + "[[" + strconv.FormatBool(req.Modifiable) + "," + "\"modifiable\"" + "]," + "[" + strconv.FormatBool(req.Selectable) + "," + "\"selectable\"" + "]," + "[" + strconv.FormatBool(req.Creatable) + "," + "\"creatable\"" + "]]" + "}]}"
+
+		var newAttr Attrtemplate
+
+		fmt.Println(data)
+
+		err = json.Unmarshal([]byte(data), &newAttr)
+
+		if err != nil {
+			fmt.Println("Attribute JSON Unmarshal fail")
+		}
+
+		b, err := json.Marshal(newAttr)
+
+		if err != nil {
+			fmt.Println("Attribute Marshal fail")
+		} else {
+			task.Attribute = b
+			Models.UpdateTask(&task, req.TaskID)
+			c.JSON(http.StatusOK, task)
+		}
+	} else {
+		// 같은 어트리뷰트가 존재
+	}
+
 }
