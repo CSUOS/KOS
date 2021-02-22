@@ -1,6 +1,8 @@
 package Controllers
 
 import (
+	"container/ring"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"sort"
@@ -241,6 +243,18 @@ func GetTasksBySortedOrder(c *gin.Context) {
 		return tasks[i].Rank < tasks[j].Rank
 	})
 
+	// 가져온 태스크들로 링을 만든다. (원형 리스트)
+	Models.TaskRing = ring.New(len(tasks))
+	for i := 0; i < len(tasks); i++ {
+		Models.TaskRing.Value = tasks[i]
+		Models.TaskRing = Models.TaskRing.Next()
+	}
+
+	// 테스트 출력.
+	Models.TaskRing.Do(func(p interface{}) {
+		fmt.Println(p.(Models.Task))
+	})
+
 	// 정렬되어진 태스크드들을 반환.
 	c.JSON(http.StatusOK, tasks)
 }
@@ -284,5 +298,107 @@ func TasksSearch(c *gin.Context) {
 
 // AddReaction 태스크에 리액션을 추가
 func AddReaction(c *gin.Context) {
+	type reqBody struct {
+		TaskID string `json:"TaskID"`
+		Emoji  string `json:"Emoji"`
+		UserID string `json:"UserID"`
+	}
+
+	var req reqBody
+	var task Models.Task
+
+	c.BindJSON(&req)
+
+	err := Models.GetTaskByID(&task, req.TaskID)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	err = Models.GetReaction(&task, req.Emoji)
+
+	// 없을 경우 이모지 이름과 유저를 같이 추가한다.
+	if err != nil {
+
+		newEmoji := map[string]interface{}{
+			req.Emoji: []string{req.UserID},
+		}
+
+		b, err := json.Marshal(newEmoji)
+
+		if err != nil {
+			fmt.Println("JSON Marshal fail : ", err)
+		}
+
+		if task.Reactions == nil {
+			task.Reactions = b
+		} else {
+
+			// f1 기존 이모지
+			var f1 interface{}
+
+			// f2 새롭게 추가된 이모지
+			var f2 interface{}
+
+			err = json.Unmarshal(task.Reactions, &f1)
+
+			if err != nil {
+				fmt.Println("Emoji JSON Unmarshal fail : ", err)
+			}
+
+			err = json.Unmarshal(b, &f2)
+
+			if err != nil {
+				fmt.Println("Emoji JSON Unmarshal fail : ", err)
+			}
+
+			m1 := f1.(map[string]interface{})
+			m2 := f2.(map[string]interface{})
+
+			m1[req.Emoji] = m2[req.Emoji]
+
+			b, err = json.Marshal(m1)
+
+			task.Reactions = b
+		}
+	} else {
+		// 있을 경우 유저만 추가한다.
+
+		var f interface{}
+
+		err = json.Unmarshal(task.Reactions, &f)
+
+		m := f.(map[string]interface{})
+
+		var targetMap []interface{} = m[req.Emoji].([]interface{})
+
+		// 만약 유저 아이디가 이미 존재하는 경우 제거해야함 (TO DO)...
+
+		targetMap = append(targetMap, req.UserID)
+
+		m[req.Emoji] = targetMap
+
+		fmt.Println(m)
+
+		b, err := json.Marshal(m)
+
+		if err != nil {
+			fmt.Println("JSON Marshal fail : ", err)
+		}
+
+		task.Reactions = b
+	}
+
+	err = Models.UpdateTask(&task, req.TaskID)
+
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, task)
+	}
+}
+
+// Attribute 태스크의 속성을 수정한다.
+func Attribute(c *gin.Context) {
 
 }

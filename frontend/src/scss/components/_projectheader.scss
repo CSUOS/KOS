@@ -1,0 +1,16 @@
+.project-header{
+	width: 100%;
+	border-bottom: 1.5px solid $gray;
+	justify-items: flex-start;
+	align-items: center;
+	.main-head-con{
+		height: $header-height;
+		background-color: $main-color;
+		padding: 10px 0;
+		.sidebar-btn{
+			svg{
+				color: white;
+			}
+		}
+	}
+}
