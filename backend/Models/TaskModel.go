@@ -25,7 +25,7 @@ type Task struct {
 					[false, "check2"]
 				]
 			}]
-	    }
+		}
 	*/
 	Attribute datatypes.JSON // 태스크 속성
 
