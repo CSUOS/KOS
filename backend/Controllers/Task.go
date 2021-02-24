@@ -10,7 +10,6 @@ import (
 	"strings"
 
 	"github.com/CSUOS/KOS/backend/Models"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -441,39 +440,45 @@ func Attribute(c *gin.Context) {
 
 	err = Models.GetAttr(&task, req.Type)
 
-	type Attrtemplate struct {
-		Type      string `json:"type"`
-		Attribute []struct {
-			Key   string          `json:"key"`
-			Value [][]interface{} `json:"value"`
-		} `json:"attribute"`
-	}
-
 	// 어트리뷰트가 없는 상태, 추가한다.
 	if err != nil {
-		data := "{" + "\"type\"" + ":\"" + req.Type + "\"," + "\"attribute\"" + ":" + "[{" + "\"key\"" + ":\"" + req.Key + "\"," + "\"value\"" + ":" + "[[" + strconv.FormatBool(req.Modifiable) + "," + "\"modifiable\"" + "]," + "[" + strconv.FormatBool(req.Selectable) + "," + "\"selectable\"" + "]," + "[" + strconv.FormatBool(req.Creatable) + "," + "\"creatable\"" + "]]" + "}]}"
 
-		var newAttr Attrtemplate
+		input := "{" + "\"" + req.Type + "\"" + ":" + "[{" + "\"key\"" + ":\"" + req.Key + "\"," + "\"value\"" + ":" + "[[" + strconv.FormatBool(req.Modifiable) + "," + "\"modifiable\"" + "]," + "[" + strconv.FormatBool(req.Selectable) + "," + "\"selectable\"" + "]," + "[" + strconv.FormatBool(req.Creatable) + "," + "\"creatable\"" + "]]" + "}]}"
 
-		fmt.Println(data)
+		data := make(map[string]interface{})
 
-		err = json.Unmarshal([]byte(data), &newAttr)
+		err := json.Unmarshal([]byte(input), &data)
 
 		if err != nil {
-			fmt.Println("Attribute JSON Unmarshal fail")
+			fmt.Println("Byte to JSON Unmarshal fail.")
 		}
 
-		b, err := json.Marshal(newAttr)
-
-		if err != nil {
-			fmt.Println("Attribute Marshal fail")
+		if len(task.Attribute) > 0 {
+			// 어트리뷰트를 덧 붙인다.
 		} else {
-			task.Attribute = b
-			Models.UpdateTask(&task, req.TaskID)
-			c.JSON(http.StatusOK, task)
-		}
-	} else {
-		// 같은 어트리뷰트가 존재
-	}
+			b, err := json.Marshal(data)
 
+			if err != nil {
+				fmt.Println("Map to JSON Marshal fail.")
+			} else {
+				task.Attribute = b
+				Models.UpdateTask(&task, req.TaskID)
+				c.JSON(http.StatusOK, task)
+			}
+		}
+
+	} else {
+		// 이미 해당 타입의 어트리뷰트가 존재하므로 수정한다.
+		var f interface{}
+
+		err = json.Unmarshal(task.Attribute, &f)
+
+		if err != nil {
+			fmt.Println("JSON Unmarshal fail.")
+		} else {
+			m := f.(map[string]interface{})
+
+			fmt.Println(m)
+		}
+	}
 }
